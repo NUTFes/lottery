@@ -1,21 +1,22 @@
 #Flaskとrender_template（HTMLを表示させるための関数）をインポート
 from flask import Flask,render_template
-from . import studentId
 
 #Flaskオブジェクトの生成
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", static_url_path='')
 
 
 #「/」へアクセスがあった場合に、"Hello World"の文字列を返す
 @app.route("/")
-def hello():
-    return studentId
+def route():
+    return "ID.html"
+
 
 
 #「/index」へアクセスがあった場合に、「index.html」を返す
-@app.route("/index")
+@app.route("/id")
 def index():
-    return render_template("index.html")
+    return render_template("ID.html")
+
 
 
 #おまじない
