@@ -2,6 +2,7 @@
 import nfc
 from time import sleep
 import subprocess
+import datetime
 
 def connected(tag):
     global id
@@ -19,20 +20,16 @@ def connected(tag):
 
 def CardRead():
     while True:
-
         try:
             clf = nfc.ContactlessFrontend('usb') #USB接続のNFCリーダーを開く
             try:
                 clf.connect(rdwr={'on-connect': connected})#NFCリーダーを起動して,NFCリーダーのタッチ検出をします
                 clf.close()
                 writehtml()
-                
                 return res
             except nfc.tag.tt3.Type3TagCommandError:#タッチが弱くて読み取れないとき
                 print("タッチが短すぎます")
                 clf.close()
-
-                
 
         except IOError:
             print("NFCリーダーの接続を確認して、再度実行してください、USBを再起動します(前回予期せぬ終了)")
@@ -46,14 +43,17 @@ def CardRead():
 
 def writehtml():
     file = 'ID.html'
+    log = 'ID.log'
+    dt_now = datetime.datetime.now()
+    log_data = str(dt_now)+' '+str(res)+'\n'
     with open(file,'r',encoding='utf-8') as f:
         data = f.read()
+    print(log_data)
     if len(res)==8 and not str(res)==data:
         with open(file,'w',encoding='utf-8') as f:
             f.write(res)
-    
-
-
+        with open(log,'a',encoding='utf-8') as f:
+            f.write(log_data)
 
 if __name__ == '__main__':
     while True:
