@@ -2,10 +2,10 @@ import React from "react";
 import Title from "./Header/Title";
 
  export default class Header extends React.Component {
-   hendleChange(e){
-     const title = e.target.value;
-     this.props.changeTitle(title);
-   }
+  handleChange(e) {
+    const title = e.target.value;
+    this.props.changeTitle(title);
+  }
    render() {
      console.log(this.props);
      return (
