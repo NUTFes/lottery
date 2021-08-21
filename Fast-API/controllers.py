@@ -213,3 +213,27 @@ def delete(request: Request, t_id, credentials: HTTPBasicCredentials = Depends(s
     db.session.close()
  
     return RedirectResponse('/admin')
+
+
+def get(request: Request, credentials: HTTPBasicCredentials = Depends(security)):
+    # 認証
+    username = auth(credentials)
+ 
+    # ユーザ情報を取得
+    user = db.session.query(User).filter(User.username == username).first()
+ 
+    # タスクを取得
+    task = db.session.query(Task).filter(Task.user_id == user.id).all()
+ 
+    db.session.close()
+ 
+    # JSONフォーマット
+    task = [{
+        'id': t.id,
+        'content': t.content,
+        'deadline': t.deadline.strftime('%Y-%m-%d %H:%M:%S'),
+        'published': t.date.strftime('%Y-%m-%d %H:%M:%S'),
+        'done': t.done,
+    } for t in task]
+ 
+    return task
