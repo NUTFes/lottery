@@ -4,8 +4,9 @@
 <h2>Administrator page</h2>
 <hr>
 <p>Hi, {{ user['username'] }}.</p>
-
+<p><a href="/" class="btn btn-primary">もどる</a></p>
 <br>
+<h3> - 直近の予定 - </h3>
 <table class="table">
     <thead class="table-dark">
     <tr>
@@ -20,7 +21,7 @@
     {% for t in task %}
     <tr>
         <td>{{ t['id'] }}</td>
-        <td>{{ t['content'] }}</td>
+        <td>{{ t['content'] }}</td>  <!-- 修正 -->
         <td>{{ t['deadline'] }}</td>
         <td>{{ t['date'] }}</td>
         <td>{% if t['done'] %}
@@ -33,5 +34,8 @@
     {% endfor %}
     </tbody>
 </table>
+<br><br>
+
+<br>
 
 {% endblock %}
