@@ -14,9 +14,6 @@ import re
 pattern = re.compile(r'\w{4,20}')
 pattern_pw = re.compile(r'\w{6,20}')
 
-from datetime import datetime
-from datetime import timedelta
-
 from auth import auth
 
 from starlette.responses import RedirectResponse
@@ -51,9 +48,9 @@ def admin(request: Request, credentials: HTTPBasicCredentials = Depends(security
     if place is None or place.password != password:
         error = 'ユーザ名かパスワードが間違っています'
         raise HTTPException(
-            status_code=HTTP_401_UNAUTHORIZED,
-            detail=error,
-            headers={"WWW-Authenticate": "Basic"},
+          status_code=HTTP_401_UNAUTHORIZED,
+          detail=error,
+          headers={"WWW-Authenticate": "Basic"},
         )
  
     # 特に問題がなければ管理者ページへ
@@ -179,3 +176,14 @@ async def add_place(request: Request):
     db.session.close()
 
     return RedirectResponse('/')
+
+def place(request: Request, p_id):
+  place = db.session.query(Place).filter(Place.id == p_id)
+  placename = db.session.query(Place).filter(Place.id == p_id).first()
+  log = db.session.query(Log).filter(Log.place_id == p_id).all()
+  db.session.close()
+  return templates.TemplateResponse('admin.html',
+                                      {'request': request,
+                                       'place': place,
+                                       'placename': placename,
+                                       'log': log})
