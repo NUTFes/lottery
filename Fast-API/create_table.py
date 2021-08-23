@@ -11,18 +11,17 @@ if __name__ == "__main__":
         Base.metadata.create_all(db.engine)
 
     # サンプルユーザ(admin)を作成
-    admin = User(username='admin', password='fastapi', mail='hoge@example.com')
+    admin = Place(placename='admin', password='fastapi')
     db.session.add(admin)  # 追加
     db.session.commit()  # データベースにコミット
 
     # サンプルタスク
-    task = Task(
-        user_id=admin.id,
-        content='〇〇の締め切り',
-        deadline=datetime(2019, 12, 25, 12, 00, 00),
+    log = Log(
+        place_id=admin.id,
+        student_id=10001000
     )
-    print(task)
-    db.session.add(task)
+    print(log)
+    db.session.add(log)
     db.session.commit()
 
     db.session.close()  # セッションを閉じる
