@@ -22,8 +22,8 @@ from auth import auth
 from starlette.responses import RedirectResponse
 
 app = FastAPI(
-  title='FastAPIでつくるtoDoアプリケーション',
-  description='FastAPIチュートリアル：FastAPI(とstarlette)でシンプルなtoDoアプリを作りましょう．',
+  title='Stickee',
+  description='student ID keeper',
   version='0.9 beta'
 )
 
@@ -33,8 +33,9 @@ jinja_env = templates.env
 security = HTTPBasic()
 
 def index(request: Request):
+  placename = db.session.query(Place).all()
   return templates.TemplateResponse('index.html', 
-                                   {'request': request})
+                                   {'request': request, 'placename':placename})
 
 
 def admin(request: Request, credentials: HTTPBasicCredentials = Depends(security)):
@@ -45,10 +46,6 @@ def admin(request: Request, credentials: HTTPBasicCredentials = Depends(security
     place = db.session.query(Place).filter(Place.placename == placename).first()
     log = db.session.query(Log).filter(Log.place_id == place.id).all()
     db.session.close()
-
-    # 今日の日付と来週の日付
-    today = datetime.now()
-    next_w = today + timedelta(days=7)  # １週間後の日付
  
     # 該当ユーザがいない場合
     if place is None or place.password != password:
@@ -163,3 +160,22 @@ def get(credentials: HTTPBasicCredentials = Depends(security)):
     } for t in log]
 
     return log
+
+def delete_place(p_id):
+    # 認証
+    placename = db.session.query(Place).filter(Place.id == p_id).first()
+    # 削除してコミット
+    db.session.delete(placename)
+    db.session.commit()
+    db.session.close()
+    
+    return RedirectResponse('/')
+
+async def add_place(request: Request):
+    data = await request.form()
+    place = Place(placename = data['placename'],password='fastapi')
+    db.session.add(place)
+    db.session.commit()
+    db.session.close()
+
+    return RedirectResponse('/')

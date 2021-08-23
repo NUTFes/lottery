@@ -2,17 +2,49 @@
 {% block content %}
 <br>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <h1>Stickee 管理ページ
         </h1>
     </div>
     <div class="col-md-2">
         <a href="/register" class="btn btn-primary">場所登録</a>
     </div>
-    <div class="col-md-2">
-        <a href="/admin" class="btn btn-primary">Login</a>
-    </div>
 </div>
+<br><br>
+<h3>場所の追加</h3>
+<form action="/add_place" method="post">
+    <h5>場所の名前</h5>
+    <p><input type="text" size="50" maxlength="200" name="placename"></p>
+    <button type="submit" class="btn btn-primary">追加する</button>
+</form>
+<br><br>
+
+
+<h3> 場所一覧 </h3>
+<table class="table">
+    <thead class="table-dark">
+    <tr>
+        <th>id</th>
+        <th>場所</th>
+        <th>場所削除</th>
+        <th>ログイン</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in placename %}
+    <tr>
+        <td>{{ p['id'] }}</td>
+        <td>{{ p['placename'] }}</td>
+        <td>
+            <a href="/delete_place/{{ p.id }}" class="btn btn-danger btn-sm">削除</a>
+        </td>
+        <td>
+            <a href="/admin" class="btn btn-primary">Login</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 <hr>
 <p>This is a student ID keeper powered by <b>FastAPI</b>!</p>
