@@ -6,8 +6,6 @@ from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN
 
-import hashlib
-
 SQLITE3_NAME = "./db.sqlite3"
 
 
@@ -17,7 +15,6 @@ class Place(Base):
 
     id       : 主キー
     placename : ユーザネーム
-    password : パスワード
     """
     __tablename__ = 'place'
     id = Column(
@@ -27,12 +24,9 @@ class Place(Base):
         autoincrement=True,
     )
     placename = Column('placename', String(256))
-    password = Column('password', String(256))
 
-    def __init__(self, placename, password):
+    def __init__(self, placename):
         self.placename = placename
-        # パスワードはハッシュ化して保存
-        self.password = hashlib.md5(password.encode()).hexdigest()
 
     def __str__(self):
         return str(self.id) + ':' + self.placename

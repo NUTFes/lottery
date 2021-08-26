@@ -11,7 +11,7 @@ if __name__ == "__main__":
         Base.metadata.create_all(db.engine)
 
     # サンプルユーザ(admin)を作成
-    admin = Place(placename='admin', password='fastapi')
+    admin = Place(placename='admin')
     db.session.add(admin)  # 追加
     db.session.commit()  # データベースにコミット
 
