@@ -39,7 +39,7 @@ def admin(request: Request):
                                        'log': log})
 
 
-async def add(request: Request,):
+async def add(request: Request):
     place = db.session.query(Place).filter(Place.placename == "admin").first()
     # # フォームからデータを取得
     data = await request.form()
