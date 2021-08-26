@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <h1>新規登録</h1>
+    <a href="/top">ログイン画面に戻る</a>
+    {% if status == "exist_user" %}
+    <p>そのユーザーはすでに登録されています</p>
+    {% endif %}
+    <form action="/register" method="post">
+        <input type="text" name="user_name" plaseholder="user name">
+        <input type="password" name="password" placeholder="password">
+        <button type="sudmit" value="新規登録">新規登録</button>
+    </form>
+</body>
+</html>

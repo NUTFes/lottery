@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{name}}</title>
+    </head>
+    <body>
+    {% if name == "tyukada" %}
+    <h1>スペシャル{{name}}神社</h1>
+    {% elif name %}
+    <h1>{{name}}神社</h1>
+    {% else %}
+    <h1>ただの神社</h1>
+    {% endif %}
+
+    <img src="/static/images/torii.jpg" alt="鳥居">
+    <form action="/add" method="post">
+        <input type="text" name="title" placeholder="title">
+        <input type="text" name="body" placeholder="body">
+        <button type="sudmit" value="Add">Add</button>
+    </form>
+
+    <form action="/update" method="post" id="update">
+        <input type="text" name="title" placeholder="title">
+        <input type="text" name="body" placeholder="body">
+        <button type="sudmit" value="Update">Update</button>
+    </form>
+    <form action="/delete" method="post" id="delete">
+        <button type="sudmit" value="Delete Selected All Onegai">Delete Selected</button>
+    </form>
+        {% for onegai in all_onegai %}
+        <div>
+        <input type="radio" name="update" form="update" value={{onegai.id}}>
+        <input type="checkbox" name="delete" form="delete" value={{onegai.id}}>
+        {{onegai.title}}：{{onegai.body}}（{{onegai.date}}
+        </div>>
+        {% endfor %}
+    </body>
+</html>
