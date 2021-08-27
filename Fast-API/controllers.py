@@ -39,7 +39,7 @@ def admin(request: Request):
                                        'log': log})
 
 
-async def add(request: Request):
+async def add_log(request: Request,p_id):
     place = db.session.query(Place).filter(Place.placename == "admin").first()
     # # フォームからデータを取得
     data = await request.form()
@@ -49,22 +49,22 @@ async def add(request: Request):
     db.session.commit()
     db.session.close()
 
-    return RedirectResponse('/admin')
+    return RedirectResponse('/place?id={p_id}')
 
 
-def delete(t_id):
+def delete_log(p_id,t_id):
     place = db.session.query(Place).filter(Place.placename == "admin").first()
     # 該当タスクを取得
     log = db.session.query(Log).filter(Log.id == t_id).first()
     # もしユーザIDが異なれば削除せずリダイレクト
     if log.place_id != place.id:
-        return RedirectResponse('/admin')
+        return RedirectResponse('/place?id={p_id}')
     # 削除してコミット
     db.session.delete(log)
     db.session.commit()
     db.session.close()
     
-    return RedirectResponse('/admin')
+    return RedirectResponse('/place?id={p_id}')
 
 
 def get():
