@@ -6,6 +6,8 @@ from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN
 
+#from wtforms.validators import InputRequired,Length
+
 SQLITE3_NAME = "./db.sqlite3"
 
 
@@ -19,6 +21,7 @@ class Place(Base):
     __tablename__ = 'place'
     id = Column(
         'id',
+        #id = stringField(validators=[DataRequired(),Length(max=8)]), FastAplの記法わからん　WTF みたいなのFASTAPIにあるんですか
         INTEGER(unsigned=True),
         primary_key=True,
         autoincrement=True,
