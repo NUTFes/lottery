@@ -5,7 +5,7 @@ from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.responses import RedirectResponse
 import db
-from models import Place, Log
+from models import Place, User
 
 # 正規表現でバリデーション
 # import re
@@ -21,87 +21,78 @@ app = FastAPI(
 templates = Jinja2Templates(directory="templates")
 jinja_env = templates.env
 
+@app.get('/')
+@app.post('/')
 def index(request: Request):
-  placename = db.session.query(Place).all()
+  place = db.session.query(Place).all()
   return templates.TemplateResponse('index.html', 
-                                   {'request': request, 'placename':placename})
+                                   {'request': request, 'place':place})
 
-
+@app.route('/delete/{p_id}')
 def delete_place(p_id):
-    # 認証
-    placename = db.session.query(Place).filter(Place.id == p_id).first()
-    # 削除してコミット
-    db.session.delete(placename)
+    place = db.session.query(Place).filter(Place.id == p_id).first()
+    db.session.delete(place)
     db.session.commit()
-    db.session.close()
-    
+    db.session.close()   
     return RedirectResponse('/')
 
-
-
+@app.post('/add')
 async def add_place(request: Request):
     data = await request.form()
-    place = Place(placename = data['placename'])
+    place = Place(name = data['place'])
     db.session.add(place)
     db.session.commit()
     db.session.close()
-
     return RedirectResponse('/')
 
-
-def place(request: Request, p_id):
+@app.get('/place/{p_id}')
+@app.post('/place/{p_id}')
+# @app.route('/place/{p_id}', methods=['GET', 'POST'])
+def place(request: Request, p_id :int):
   place = db.session.query(Place).filter(Place.id == p_id).first()
-  placename = db.session.query(Place).filter(Place.id == p_id).first()
-  log = db.session.query(Log).filter(Log.place_id == p_id).all()
+  user = db.session.query(User).filter(User.place_id == p_id).all()
   db.session.close()
   return templates.TemplateResponse('place.html',
-                                      {'p_id': p_id,
-                                       'request': request,
-                                       'place': place,
-                                       'placename': placename,
-                                       'log': log})
+                                    {'request': request,
+                                    'p_id': p_id,
+                                    'place': place,
+                                    'user': user})
 
-
-async def add_log(request: Request,p_id):
+@app.post('/place/{p_id}/add')
+async def add_user(request: Request, p_id :int):
     place = db.session.query(Place).filter(Place.id == p_id).first()
-    # # フォームからデータを取得
     data = await request.form()
-    student_id = int(data['student_id'])
-    log = Log(place.id, student_id)
-    db.session.add(log)
+    st_num = int(data['st_num'])
+    user = User(place.id, st_num)
+    db.session.add(user)
     db.session.commit()
     db.session.close()
-
     return RedirectResponse('/place/'+str(p_id))
 
 
-
-def delete_log(p_id,t_id):
+@app.route('/place/{p_id}/delete/{t_id}')
+def delete_user(p_id :int,t_id :int):
     place = db.session.query(Place).filter(Place.id == p_id).first()
-    # 該当タスクを取得
-    log = db.session.query(Log).filter(Log.id == t_id).first()
-    # もしユーザIDが異なれば削除せずリダイレクト
-    if log.place_id != place.id:
+    user = db.session.query(User).filter(User.id == t_id).first()
+    if user.place_id != place.id:
         return RedirectResponse('/place/'+str(p_id))
-    # 削除してコミット
-    db.session.delete(log)
+    db.session.delete(user)
     db.session.commit()
     db.session.close()
-    
     return RedirectResponse('/place/'+str(p_id))
 
+# @app.add_api_route('/get')
+# def get(p_id :int):
+#     place = db.session.query(Place).filter(Place.id == p_id).first()
+#     user = db.session.query(User).filter(User.place_id == place.id).all()
+#     db.session.close()
 
-def get(p_id):
-    place = db.session.query(Place).filter(Place.id == p_id).first()
-    log = db.session.query(Log).filter(Log.place_id == place.id).all()
-    db.session.close()
+#     # JSONフォーマット
+#     user = [{
+#         'id': t.id,
+#         'place_id': t.place_id,
+#         'st_num': t.st_num,
+#         'updated_at': t.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+#     } for t in user]
 
-    # JSONフォーマット
-    log = [{
-        'id': t.id,
-        'place_id': t.place_id,
-        'student_id': t.student_id,
-        'time': t.time.strftime('%Y-%m-%d %H:%M:%S'),
-    } for t in log]
-
-    return log
+#     return user

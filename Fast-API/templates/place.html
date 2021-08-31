@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <br>
-<h2>場所：{{ placename }}</h2>
+<h2>場所：{{ place }}</h2>
 <hr>
 <p><a href="/" class="btn btn-primary">もどる</a></p>
 <br>
@@ -9,7 +9,7 @@
 <h3>学籍番号の追加</h3>
 <form action="/place/{{ p_id }}/add" method="post">
     <h5>学籍番号</h5>
-    <p><input type="text" size="50" maxlength="200" name="student_id"></p>
+    <p><input type="text" size="50" maxlength="200" name="st_num"></p>
     <button type="submit" class="btn btn-primary">追加する</button>
 </form>
 <br><br>
@@ -20,15 +20,17 @@
         <th>#</th>
         <th>学籍番号</th>
         <th>最終更新</th>
+        <th>登録日時</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    {% for t in log %}
+    {% for t in user %}
     <tr>
         <td>{{ t['id'] }}</td>
-        <td>{{ t['student_id'] }}</td>
-        <td>{{ t['time'] }}</td>
+        <td>{{ t['st_num'] }}</td>
+        <td>{{ t['updated_at'] }}</td>
+        <td>{{ t['created_at'] }}</td>
         <td>
             <a href="/place/{{ p_id }}/delete/{{ t['id'] }}" class="btn btn-danger btn-sm">削除</a>
         </td>

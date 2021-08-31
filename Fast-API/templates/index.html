@@ -10,7 +10,7 @@
 <h3>場所の追加</h3>
 <form action="/add" method="post">
     <h5>場所の名前</h5>
-    <p><input type="text" size="50" maxlength="200" name="placename"></p>
+    <p><input type="text" size="50" maxlength="200" name="place"></p>
     <button type="submit" class="btn btn-primary">追加する</button>
 </form>
 <br><br>
@@ -27,10 +27,10 @@
     </tr>
     </thead>
     <tbody>
-    {% for p in placename %}
+    {% for p in place %}
     <tr>
         <td>{{ p['id'] }}</td>
-        <td>{{ p['placename'] }}</td>
+        <td>{{ p['name'] }}</td>
         <td>
             <a href="/delete/{{ p['id'] }}" class="btn btn-danger btn-sm">削除</a>
         </td>
