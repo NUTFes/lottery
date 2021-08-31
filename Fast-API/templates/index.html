@@ -2,17 +2,13 @@
 {% block content %}
 <br>
 <div class="row">
-    <div class="col-md-10">
-        <h1>Stickee 管理ページ
-        </h1>
-    </div>
-    <div class="col-md-2">
-        <a href="/register" class="btn btn-primary">場所登録</a>
+    <div class="col-md-12">
+        <h1>Stickee 管理ページ</h1>
     </div>
 </div>
 <br><br>
 <h3>場所の追加</h3>
-<form action="/add_place" method="post">
+<form action="/add" method="post">
     <h5>場所の名前</h5>
     <p><input type="text" size="50" maxlength="200" name="placename"></p>
     <button type="submit" class="btn btn-primary">追加する</button>
@@ -36,10 +32,10 @@
         <td>{{ p['id'] }}</td>
         <td>{{ p['placename'] }}</td>
         <td>
-            <a href="/delete_place/{{ p.id }}" class="btn btn-danger btn-sm">削除</a>
+            <a href="/delete/{{ p['id'] }}" class="btn btn-danger btn-sm">削除</a>
         </td>
         <td>
-            <a href="/{{ p.id }}" class="btn btn-primary">Login</a>
+            <a href="/place/{{ p['id'] }}" class="btn btn-primary">Login</a>
         </td>
     </tr>
     {% endfor %}
