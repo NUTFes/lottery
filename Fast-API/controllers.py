@@ -27,20 +27,43 @@ def index(request: Request):
                                    {'request': request, 'placename':placename})
 
 
-def admin(request: Request):
-    place = db.session.query(Place).filter(Place.placename == "admin").first()
-    log = db.session.query(Log).filter(Log.place_id == place.id).all()
+def delete_place(p_id):
+    # 認証
+    placename = db.session.query(Place).filter(Place.id == p_id).first()
+    # 削除してコミット
+    db.session.delete(placename)
+    db.session.commit()
     db.session.close()
- 
-    # 管理者ページへ
-    return templates.TemplateResponse('admin.html',
-                                      {'request': request,
+    
+    return RedirectResponse('/')
+
+
+
+async def add_place(request: Request):
+    data = await request.form()
+    place = Place(placename = data['placename'])
+    db.session.add(place)
+    db.session.commit()
+    db.session.close()
+
+    return RedirectResponse('/')
+
+
+def place(request: Request, p_id):
+  place = db.session.query(Place).filter(Place.id == p_id).first()
+  placename = db.session.query(Place).filter(Place.id == p_id).first()
+  log = db.session.query(Log).filter(Log.place_id == p_id).all()
+  db.session.close()
+  return templates.TemplateResponse('place.html',
+                                      {'p_id': p_id,
+                                       'request': request,
                                        'place': place,
+                                       'placename': placename,
                                        'log': log})
 
 
 async def add_log(request: Request,p_id):
-    place = db.session.query(Place).filter(Place.placename == "admin").first()
+    place = db.session.query(Place).filter(Place.id == p_id).first()
     # # フォームからデータを取得
     data = await request.form()
     student_id = int(data['student_id'])
@@ -49,26 +72,27 @@ async def add_log(request: Request,p_id):
     db.session.commit()
     db.session.close()
 
-    return RedirectResponse('/place?id={p_id}')
+    return RedirectResponse('/place/'+str(p_id))
+
 
 
 def delete_log(p_id,t_id):
-    place = db.session.query(Place).filter(Place.placename == "admin").first()
+    place = db.session.query(Place).filter(Place.id == p_id).first()
     # 該当タスクを取得
     log = db.session.query(Log).filter(Log.id == t_id).first()
     # もしユーザIDが異なれば削除せずリダイレクト
     if log.place_id != place.id:
-        return RedirectResponse('/place?id={p_id}')
+        return RedirectResponse('/place/'+str(p_id))
     # 削除してコミット
     db.session.delete(log)
     db.session.commit()
     db.session.close()
     
-    return RedirectResponse('/place?id={p_id}')
+    return RedirectResponse('/place/'+str(p_id))
 
 
-def get():
-    place = db.session.query(Place).filter(Place.placename == "admin").first()
+def get(p_id):
+    place = db.session.query(Place).filter(Place.id == p_id).first()
     log = db.session.query(Log).filter(Log.place_id == place.id).all()
     db.session.close()
 
@@ -81,33 +105,3 @@ def get():
     } for t in log]
 
     return log
-
-def delete_place(p_id):
-    # 認証
-    placename = db.session.query(Place).filter(Place.id == p_id).first()
-    # 削除してコミット
-    db.session.delete(placename)
-    db.session.commit()
-    db.session.close()
-    
-    return RedirectResponse('/')
-
-async def add_place(request: Request):
-    data = await request.form()
-    place = Place(placename = data['placename'])
-    db.session.add(place)
-    db.session.commit()
-    db.session.close()
-
-    return RedirectResponse('/')
-
-def place(request: Request, p_id):
-  place = db.session.query(Place).filter(Place.id == p_id)
-  placename = db.session.query(Place).filter(Place.id == p_id).first()
-  log = db.session.query(Log).filter(Log.place_id == p_id).all()
-  db.session.close()
-  return templates.TemplateResponse('admin.html',
-                                      {'request': request,
-                                       'place': place,
-                                       'placename': placename,
-                                       'log': log})

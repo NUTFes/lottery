@@ -1,19 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
 <br>
-<h2>場所：{{ place['placename'] }}</h2>
+<h2>場所：{{ placename }}</h2>
 <hr>
 <p><a href="/" class="btn btn-primary">もどる</a></p>
 <br>
 
 <h3>学籍番号の追加</h3>
-<form action="/add" method="post">
+<form action="/place/{{ p_id }}/add" method="post">
     <h5>学籍番号</h5>
     <p><input type="text" size="50" maxlength="200" name="student_id"></p>
     <button type="submit" class="btn btn-primary">追加する</button>
 </form>
 <br><br>
-<h3> - NFCタッチログ - </h3>
+<h3> - NFCタッチログ - {{ p_id }}</h3>
 <table class="table">
     <thead class="table-dark">
     <tr>
@@ -30,7 +30,7 @@
         <td>{{ t['student_id'] }}</td>
         <td>{{ t['time'] }}</td>
         <td>
-            <a href="/delete/admin" class="btn btn-danger btn-sm">削除</a>
+            <a href="/place/{{ p_id }}/delete/{{ t['id'] }}" class="btn btn-danger btn-sm">削除</a>
         </td>
     </tr>
     {% endfor %}
