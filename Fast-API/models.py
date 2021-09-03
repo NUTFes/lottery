@@ -48,10 +48,7 @@ class User(Base):
         autoincrement=True,
     )
     place_id = Column('place_id', ForeignKey('place.id'))
-    st_num = Column(
-        'st_num',
-        INTEGER(unsigned=True)
-    )
+    st_num = Column('st_num', INTEGER(unsigned=True))
     updated_at = Column(
         'updated_at',
         DateTime,
