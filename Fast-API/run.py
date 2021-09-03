@@ -1,4 +1,5 @@
-from urls import app
+from controllers import *
+from urls import *
 import uvicorn
 
 if __name__ == '__main__':

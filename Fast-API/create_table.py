@@ -11,17 +11,16 @@ if __name__ == "__main__":
         Base.metadata.create_all(db.engine)
 
     # サンプルユーザ(admin)を作成
-    admin = Place(placename='admin')
+    admin = Place(name='admin')
     db.session.add(admin)  # 追加
     db.session.commit()  # データベースにコミット
 
     # サンプルタスク
-    log = Log(
+    user = User(
         place_id=admin.id,
-        student_id=10001000
+        st_num=10001000
     )
-    print(log)
-    db.session.add(log)
+    db.session.add(user)
     db.session.commit()
 
     db.session.close()  # セッションを閉じる
