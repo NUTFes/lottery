@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from db import Base
+from db import ENGINE
 
 from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.sql.functions import current_timestamp
@@ -71,3 +72,10 @@ class Log(Base):
                ': place_id -> ' + str(self.place_id) + \
                ', student_id -> ' + str(self.student_id) + \
                ', time -> ' + self.time.strftime('%Y/%m/%d - %H:%M:%S')
+    
+    def main():
+    # テーブルが存在しなければ、テーブルを作成
+        Base.metadata.create_all(bind=ENGINE)
+
+    if __name__ == "__main__":
+        main()
