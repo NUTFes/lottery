@@ -4,6 +4,7 @@ from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.responses import RedirectResponse
+
 import db
 from models import Place, User
 
@@ -12,6 +13,13 @@ app = FastAPI(
   description='student ID keeper',
   version='0.9 beta'
 )
+
+# Dependency
+def get_db():
+    try:
+        yield db.session
+    finally:
+        db.session.close()
 
 templates = Jinja2Templates(directory="templates")
 jinja_env = templates.env
@@ -31,7 +39,7 @@ def delete_place(p_id :int):
   db.session.close()   
   return RedirectResponse('/')
 
-# @app.post('/add')
+@app.post('/add')
 async def add_place(request: Request):
   data = await request.form()
   place = Place(name=data['place'])
@@ -75,15 +83,24 @@ def delete_user(p_id :int,u_id :int):
   db.session.close()
   return RedirectResponse('/place/'+str(p_id))
 
-@app.route('/place/{p_id}/get')
+@app.get('/place/{p_id}/get')
 def get(p_id :int):
   place = db.session.query(Place).filter(Place.id == p_id).first()
   user = db.session.query(User).filter(User.place_id == place.id).all()
-  db.session.close()
   user = [{
       'id': u.id,
       'place_id': u.place_id,
       'st_num': u.st_num,
       'updated_at': u.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+      'created_at': u.created_at.strftime('%Y-%m-%d %H:%M:%S')
   } for u in user]
+  db.session.close()
   return user
+
+# リクエストの度に呼ばれるミドルウェア DB接続用のセッションインスタンスを作成
+@app.middleware("http")
+async def db_session_middleware(request: Request, call_next):
+    request.state.db = db
+    response = await call_next(request)
+    request.state.db.session.close()
+    return response

@@ -7,8 +7,6 @@ from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN
 
 SQLITE3_NAME = "./db.sqlite3"
-
-
 class Place(Base):
     """
     Placeテーブル
