@@ -110,14 +110,15 @@ async def create_place(place: schemas.PlaceCreate, db: Session = Depends(get_db)
     return crud.create_place(db=db, place=place)
 
 @app.delete("/api/delete/{p_id}", response_model=schemas.Place)
-def delete_place(place: schemas.Place, db: Session = Depends(get_db)):
+def delete_place(p_id: int, place: schemas.Place, db: Session = Depends(get_db)):
+    place.id = p_id
     db_place = crud.get_place_by_id(db, id=place.id)
     if db_place is None:
         raise HTTPException(status_code=404, detail="User not found")
     return crud.delete_place(db=db, place=place)
 
 
-@app.get("/api/place/{p_id}", response_model=schemas.User)
+@app.get("/api/place/{p_id}", response_model=List[schemas.User])
 def read_users(p_id: int, db: Session = Depends(get_db)):
     db_users = crud.get_users(db, p_id)
     if db_users is None:
@@ -125,15 +126,18 @@ def read_users(p_id: int, db: Session = Depends(get_db)):
     return db_users
 
 @app.post("/api/place/{p_id}/add", response_model=schemas.User)
-async def create_place(p_id: int, user: schemas.UserCreate, db: Session = Depends(get_db)):
+async def create_user(p_id: int, user: schemas.UserCreate, db: Session = Depends(get_db)):
+    user.place_id = p_id
     db_user = crud.get_user_by_number(db, user=user)
     if db_user:
         raise HTTPException(status_code=400, detail="User number already registered")
-    return crud.create_place(db=db, user=user, p_id=p_id)
+    return crud.create_user(db=db, user=user)
 
 @app.delete("/api/place/{p_id}/delete/{u_id}", response_model=schemas.User)
-def delete_place(p_id: int, u_id: int, user: schemas.User, db: Session = Depends(get_db)):
-    db_user = crud.get_place_by_id(db, p_id=p_id, u_id=u_id)
+def delete_user(p_id: int, u_id: int, user: schemas.User, db: Session = Depends(get_db)):
+    user.place_id = p_id
+    user.id = u_id
+    db_user = crud.get_user_by_id(db, user=user)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return crud.delete_place(db=db, user=user)
+    return crud.delete_user(db=db, user=user)

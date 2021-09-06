@@ -18,6 +18,7 @@ class Place(PlaceBase):
 
 
 class UserBase(BaseModel):
+    place_id: int
     number: int
 # データの作成時に使用 idといった作成時には不要なものを持たない
 class UserCreate(UserBase):
