@@ -9,7 +9,7 @@
 <h3>学籍番号の追加</h3>
 <form action="/place/{{ place.id }}/add" method="post">
     <h5>学籍番号</h5>
-    <p><input type="text" size="50" maxlength="8" name="st_num" Placeholder="8桁の半角数字"></p>
+    <p><input type="text" size="50" maxlength="8" name="number" Placeholder="8桁の半角数字"></p>
     <button type="submit" class="btn btn-primary">追加する</button>
 </form>
 <font color="#ff4500">{{ error }}</font>
@@ -29,11 +29,13 @@
     {% for u in user %}
     <tr>
         <td>{{ u.id }}</td>
-        <td>{{ u.st_num }}</td>
+        <td>{{ u.number }}</td>
         <td>{{ u.updated_at }}</td>
         <td>{{ u.created_at }}</td>
         <td>
-            <a href="/place/{{ place.id }}/delete/{{ u.id }}" class="btn btn-danger btn-sm">削除</a>
+            <form action="/place/{{ place.id }}/delete/{{ u.id }}" method="post">
+                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm">削除</button>
+            </form>
         </td>
     </tr>
     {% endfor %}
