@@ -8,6 +8,9 @@ from starlette.responses import RedirectResponse
 import db
 from models import Place, User
 
+import re
+pattern = re.compile(r'[0-9]{8}')
+
 app = FastAPI(
   title='Stickee',
   description='student ID keeper',
@@ -64,8 +67,16 @@ def place(request: Request, p_id :int):
 async def add_user(request: Request, p_id :int):
   place = db.session.query(Place).filter(Place.id == p_id).first()
   data = await request.form()
-  st_num = int(data['st_num'])
-  user = User(place.id, st_num)
+  user = db.session.query(User).filter(User.place_id == p_id).all()
+  st_num = str(data['st_num'])
+  if pattern.match(st_num) is None:
+    error="idは8桁の半角数字にしてください"
+    return templates.TemplateResponse('place.html',
+                                              {'request': request,
+                                              'place': place,
+                                              'user': user,
+                                               'error': error})
+  user = User(place.id, int(st_num))                                           
   db.session.add(user)
   db.session.commit()
   db.session.close()
