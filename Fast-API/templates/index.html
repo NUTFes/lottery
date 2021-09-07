@@ -32,7 +32,9 @@
         <td>{{ p.id }}</td>
         <td>{{ p.name }}</td>
         <td>
-            <a href="/delete/{{ p.id }}" class="btn btn-danger btn-sm">削除</a>
+            <form action="/delete/{{ p.id }}" method="post">
+                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm">削除</button>
+            </form>
         </td>
         <td>
             <a href="/place/{{ p.id }}" class="btn btn-primary">Login</a>
