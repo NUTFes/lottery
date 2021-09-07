@@ -9,9 +9,10 @@
 <h3>学籍番号の追加</h3>
 <form action="/place/{{ place.id }}/add" method="post">
     <h5>学籍番号</h5>
-    <p><input type="text" size="50" maxlength="200" name="number"></p>
+    <p><input type="text" size="50" maxlength="8" name="number" Placeholder="8桁の半角数字"></p>
     <button type="submit" class="btn btn-primary">追加する</button>
 </form>
+<font color="#ff4500">{{ error }}</font>
 <br><br>
 <h3> - NFCタッチログ - </h3>
 <table class="table">
