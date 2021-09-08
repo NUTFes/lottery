@@ -3,7 +3,8 @@ import nfc
 import requests
 from time import sleep
 import subprocess
-import datetime
+import os
+os.environ["NO_PROXY"] = "localhost"
 
 def connected(tag):
     global id
@@ -20,35 +21,34 @@ def connected(tag):
     
 
 def CardRead():
-    while True:
+    try:
+        clf = nfc.ContactlessFrontend('usb') #USB接続のNFCリーダーを開く
         try:
-            clf = nfc.ContactlessFrontend('usb') #USB接続のNFCリーダーを開く
-            try:
-                clf.connect(rdwr={'on-connect': connected})#NFCリーダーを起動して,NFCリーダーのタッチ検出をします
-                clf.close()
-                post()
-                return res
-            except nfc.tag.tt3.Type3TagCommandError:#タッチが弱くて読み取れないとき
-                print("タッチが短すぎます")
-                clf.close()
+            clf.connect(rdwr={'on-connect': connected})#NFCリーダーを起動して,NFCリーダーのタッチ検出をします
+            clf.close()
+            post()
+            return res
+        except nfc.tag.tt3.Type3TagCommandError:#タッチが弱くて読み取れないとき
+            print("タッチが短すぎます")
+            clf.close()
 
-        except IOError:
-            print("NFCリーダーの接続を確認して、再度実行してください、USBを再起動します(前回予期せぬ終了)")
-            cmd='sudo hub-ctrl -h 0 -P 2 -p 0'#USB OFF
-            off = subprocess.call(cmd.split())
-            cmd='sudo hub-ctrl -h 0 -P 2 -p 1'#USB ON
-            on = subprocess.call(cmd.split())
-            print("再起動をお待ちください")
-            sleep(1)#これ以上早すぎると安定しない
-            print("再起動が完了しました")
+    except IOError:
+        print("NFCリーダーの接続を確認して、再度実行してください、USBを再起動します(前回予期せぬ終了)")
+        cmd='sudo hub-ctrl -h 0 -P 2 -p 0'#USB OFF
+        off = subprocess.call(cmd.split())
+        cmd='sudo hub-ctrl -h 0 -P 2 -p 1'#USB ON
+        on = subprocess.call(cmd.split())
+        print("再起動をお待ちください")
+        sleep(1)#これ以上早すぎると安定しない
+        print("再起動が完了しました")
 
 def post():
     placeid = 1
     headers = {
     'Content-Type': 'application/json',
     }
-    data = '{"place_id": '+ str(placeid) +',"number": '+ str(res) +'}'
-    response = requests.post('http://localhost:8000/api/place/'+ str(placeid) +'/add', headers=headers, data=data) 
+    data = '{"place_id": '+str(placeid)+',"number": '+str(res)+'}'
+    response = requests.post('http://127.0.0.1:8000/api/place/'+ str(placeid) +'/add', headers=headers, data=data)
     print(response.text)
 
 if __name__ == '__main__':
