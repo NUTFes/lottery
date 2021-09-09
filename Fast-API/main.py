@@ -148,7 +148,7 @@ async def create_user(p_id: int, user: schemas.UserCreate, db: Session = Depends
     user.place_id = p_id
     db_user = crud.get_user_by_number(db, user=user)
     if db_user:
-        raise HTTPException(status_code=400, detail="User number already registered")
+        return crud.update_user(db=db, user=user)
     return crud.create_user(db=db, user=user)
 
 @app.delete("/api/place/{p_id}/delete/{u_id}", response_model=schemas.User)
