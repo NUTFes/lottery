@@ -113,6 +113,19 @@ def delete_user(p_id: int, u_id: int, db: Session = Depends(get_db)):
     crud.delete_user(db=db, user=user)
     return RedirectResponse(url='/place/'+str(p_id), status_code=303)
 
+@app.get("/place/{p_id}/latest", response_model=schemas.User)
+def read_latest_users(request: Request, p_id: int, db: Session = Depends(get_db)):
+    db_place = crud.get_place_by_id(db, id=p_id)
+    db_users = crud.get_latest_users(db, p_id)
+    if db_users is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return templates.TemplateResponse('latest.html',
+                                    {'request': request,
+                                    'place': db_place,
+                                    'user': db_users})
+
+
+# =============================================================
 
 
 @app.get("/api", response_model=List[schemas.Place])
@@ -159,3 +172,10 @@ def delete_user(p_id: int, u_id: int, user: schemas.User, db: Session = Depends(
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return crud.delete_user(db=db, user=user)
+
+@app.get("/api/place/{p_id}/latest", response_model=schemas.User)
+def read_latest_users(p_id: int, db: Session = Depends(get_db)):
+    db_users = crud.get_latest_users(db, p_id)
+    if db_users is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_users

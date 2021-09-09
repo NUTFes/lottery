@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 from datetime import datetime
 import models
 import schemas
@@ -53,4 +54,9 @@ def update_user(db: Session, user: schemas.UserCreate):
     db_user.updated_at = datetime.now()
     db.commit()
     db.refresh(db_user)
+    return db_user
+
+def get_latest_users(db: Session, p_id: int):
+    res = db.query(func.max(models.User.updated_at).label("latest_update")).filter(models.User.place_id == p_id).first()
+    db_user = db.query(models.User).filter(models.User.updated_at == res.latest_update).first()
     return db_user
