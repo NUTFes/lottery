@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-
+from datetime import datetime
 import models
 import schemas
 
@@ -36,7 +36,7 @@ def get_user_by_id(db: Session, user: schemas.User):
     return db.query(models.User).filter(models.User.place_id == user.place_id, models.User.id == user.id).first()
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(place_id=user.place_id, number=user.number)
+    db_user = models.User(place_id=user.place_id, number=user.number, updated_at = datetime.now(), created_at = datetime.now())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -47,3 +47,10 @@ def delete_user(db: Session, user: schemas.User):
     db.delete(db_user)
     db.commit()
     return
+
+def update_user(db: Session, user: schemas.UserCreate):
+    db_user = db.query(models.User).filter(models.User.number == user.number).first()
+    db_user.updated_at = datetime.now()
+    db.commit()
+    db.refresh(db_user)
+    return db_user

@@ -92,7 +92,8 @@ async def create_user(request: Request, p_id: int, db: Session = Depends(get_db)
     user.number = data['number']
     db_user = crud.get_user_by_number(db, user=user)
     if db_user:
-        raise HTTPException(status_code=400, detail="User number already registered")
+        crud.update_user(db=db, user=user)
+        return RedirectResponse(url='/place/'+str(p_id), status_code=303)
     if pattern.match(user.number) is None:
         error="idは8桁の半角数字にしてください"
         db_place = crud.get_place_by_id(db, id=p_id)
@@ -147,7 +148,7 @@ async def create_user(p_id: int, user: schemas.UserCreate, db: Session = Depends
     user.place_id = p_id
     db_user = crud.get_user_by_number(db, user=user)
     if db_user:
-        raise HTTPException(status_code=400, detail="User number already registered")
+        return crud.update_user(db=db, user=user)
     return crud.create_user(db=db, user=user)
 
 @app.delete("/api/place/{p_id}/delete/{u_id}", response_model=schemas.User)
