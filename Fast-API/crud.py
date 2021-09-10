@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from datetime import datetime
 import models
 import schemas
+import random
 
 def get_places(db: Session):
     return db.query(models.Place).all()
@@ -59,4 +60,9 @@ def update_user(db: Session, user: schemas.UserCreate):
 def get_latest_users(db: Session, p_id: int):
     res = db.query(func.max(models.User.updated_at).label("latest_update")).filter(models.User.place_id == p_id).first()
     db_user = db.query(models.User).filter(models.User.updated_at == res.latest_update).first()
+    return db_user
+
+def get_random_users(db: Session, p_id: int):
+    res = db.query(models.User).filter(models.User.place_id == p_id).all()
+    db_user = random.choice(res)    
     return db_user
