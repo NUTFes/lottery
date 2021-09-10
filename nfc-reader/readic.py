@@ -3,8 +3,12 @@ import nfc
 import requests
 from time import sleep
 import subprocess
+import json
 import os
 os.environ["NO_PROXY"] = "localhost"
+REQUEST_PLACE_ID = 1
+REQUEST_URL = "http://localhost:8000"
+REQUEST_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/add'
 
 def connected(tag):
     global id
@@ -43,12 +47,14 @@ def CardRead():
         print("再起動が完了しました")
 
 def post():
-    placeid = 1
     headers = {
     'Content-Type': 'application/json',
     }
-    data = '{"place_id": '+str(placeid)+',"number": '+str(res)+'}'
-    response = requests.post('http://127.0.0.1:8000/api/place/'+ str(placeid) +'/add', headers=headers, data=data)
+    data = {
+        "place_id": REQUEST_PLACE_ID,
+        "number": res
+    }
+    response = requests.post(REQUEST_URI, headers=headers, data=json.dumps(data))
     print(response.text)
 
 if __name__ == '__main__':
