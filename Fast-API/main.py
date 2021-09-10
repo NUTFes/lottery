@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
@@ -35,7 +35,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -43,6 +42,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 templates = Jinja2Templates(directory="templates")
 jinja_env = templates.env
@@ -122,7 +122,16 @@ def read_place_message(request: Request, p_id: int, db: Session = Depends(get_db
                                     {'request': request,
                                     'place': db_place})
 
-
+@app.get("/place/{p_id}/random", response_model=schemas.User)
+def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
+    db_place = crud.get_place_by_id(db, id=p_id)
+    db_users = crud.get_random_users(db, p_id)
+    if db_users is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return templates.TemplateResponse('random.html',
+                                    {'request': request,
+                                    'place': db_place,
+                                    'user': db_users})
 # =============================================================
 
 
@@ -170,6 +179,13 @@ def delete_user(p_id: int, u_id: int, user: schemas.User, db: Session = Depends(
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return crud.delete_user(db=db, user=user)
+
+@app.get("/api/place/{p_id}/random", response_model=schemas.User)
+def read_random_users(p_id: int, db: Session = Depends(get_db)):
+    db_users = crud.get_random_users(db, p_id)
+    if db_users is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_users
 
 @app.get("/api/place/{p_id}/message", response_model=schemas.PlaceMessage)
 def read_place_message(p_id: int, db: Session = Depends(get_db)):
