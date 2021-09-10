@@ -66,3 +66,10 @@ def get_random_users(db: Session, p_id: int):
     res = db.query(models.User).filter(models.User.place_id == p_id).all()
     db_user = random.choice(res)    
     return db_user
+    
+def update_place_message(db: Session, place: schemas.PlaceMessage):
+    db_place = db.query(models.Place).filter(models.Place.id == place.id).first()
+    db_place.message = place.message
+    db.commit()
+    db.refresh(db_place)
+    return db_place
