@@ -1,8 +1,7 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.selectable import FromClause, Select
 from starlette.middleware.cors import CORSMiddleware
 
 from starlette.templating import Jinja2Templates
@@ -10,14 +9,9 @@ from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.responses import RedirectResponse
 
-from sqlalchemy.sql import func
-from sqlalchemy.orm import load_only
-
 from database import SessionLocal
 import crud
 import schemas
-
-from  sqlalchemy.sql.expression import func, select
 
 import re
 pattern = re.compile(r'[0-9]{8}')
