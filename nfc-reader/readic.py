@@ -3,8 +3,13 @@ import nfc
 import requests
 from time import sleep
 import subprocess
+import json
 import os
 os.environ["NO_PROXY"] = "localhost"
+REQUEST_PLACE_ID = 1
+REQUEST_URL = "http://localhost:8000"
+POST_NUMBER_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/add'
+POST_MESSAGE_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/message/add'
 
 def connected(tag):
     global id
@@ -26,29 +31,46 @@ def CardRead():
         try:
             clf.connect(rdwr={'on-connect': connected})#NFCリーダーを起動して,NFCリーダーのタッチ検出をします
             clf.close()
-            post()
+            postNumber(res)
+            postMessage(str(res))
             return res
         except nfc.tag.tt3.Type3TagCommandError:#タッチが弱くて読み取れないとき
-            print("タッチが短すぎます")
+            postMessage("タッチが短すぎます")
             clf.close()
 
     except IOError:
-        print("NFCリーダーの接続を確認して、再度実行してください、USBを再起動します(前回予期せぬ終了)")
+        postMessage("接続エラー：NFCリーダーの接続を確認してください")
+        sleep(5)
         cmd='sudo hub-ctrl -h 0 -P 2 -p 0'#USB OFF
-        off = subprocess.call(cmd.split())
+        subprocess.call(cmd.split())
         cmd='sudo hub-ctrl -h 0 -P 2 -p 1'#USB ON
-        on = subprocess.call(cmd.split())
-        print("再起動をお待ちください")
-        sleep(1)#これ以上早すぎると安定しない
-        print("再起動が完了しました")
+        subprocess.call(cmd.split())
+        postMessage("再起動をお待ちください")
+        sleep(5)#これ以上早すぎると安定しない
+        postMessage("再起動が完了しました")
+        sleep(5)
 
-def post():
-    placeid = 1
+def postNumber(number):
     headers = {
     'Content-Type': 'application/json',
     }
-    data = '{"place_id": '+str(placeid)+',"number": '+str(res)+'}'
-    response = requests.post('http://127.0.0.1:8000/api/place/'+ str(placeid) +'/add', headers=headers, data=data)
+    data = {
+        "place_id": REQUEST_PLACE_ID,
+        "number": number
+    }
+    response = requests.post(POST_NUMBER_URI, headers=headers, data=json.dumps(data))
+    print(response.text)
+
+
+def postMessage(message: str):
+    headers = {
+    'Content-Type': 'application/json',
+    }
+    data = {
+        "id": REQUEST_PLACE_ID,
+        "message": message
+    }
+    response = requests.post(POST_MESSAGE_URI, headers=headers, data=json.dumps(data))
     print(response.text)
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-md-12">
-        <h1>Stickee 管理ページ</h1>
+        <h1>Stickee</h1>
     </div>
 </div>
 <br><br>
@@ -23,7 +23,8 @@
         <th>id</th>
         <th>場所</th>
         <th>場所削除</th>
-        <th>ログイン</th>
+        <th>表示ページ</th>
+        <th>管理者ページ</th>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +36,9 @@
             <form action="/delete/{{ p.id }}" method="post">
                 <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm">削除</button>
             </form>
+        </td>
+        <td>
+            <p><a href="/place/{{ p.id }}/message" class="btn btn-primary">Message</a></p>
         </td>
         <td>
             <a href="/place/{{ p.id }}" class="btn btn-primary">Login</a>
