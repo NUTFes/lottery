@@ -39,14 +39,16 @@ def CardRead():
             clf.close()
 
     except IOError:
-        postMessage("NFCリーダーの接続を確認して、再度実行してください、USBを再起動します(前回予期せぬ終了)")
+        postMessage("接続エラー：NFCリーダーの接続を確認してください")
+        sleep(5)
         cmd='sudo hub-ctrl -h 0 -P 2 -p 0'#USB OFF
-        off = subprocess.call(cmd.split())
+        subprocess.call(cmd.split())
         cmd='sudo hub-ctrl -h 0 -P 2 -p 1'#USB ON
-        on = subprocess.call(cmd.split())
-        print("再起動をお待ちください")
-        sleep(1)#これ以上早すぎると安定しない
-        print("再起動が完了しました")
+        subprocess.call(cmd.split())
+        postMessage("再起動をお待ちください")
+        sleep(5)#これ以上早すぎると安定しない
+        postMessage("再起動が完了しました")
+        sleep(5)
 
 def postNumber(number):
     headers = {
@@ -60,12 +62,12 @@ def postNumber(number):
     print(response.text)
 
 
-def postMessage(message):
+def postMessage(message: str):
     headers = {
     'Content-Type': 'application/json',
     }
     data = {
-        "place_id": REQUEST_PLACE_ID,
+        "id": REQUEST_PLACE_ID,
         "message": message
     }
     response = requests.post(POST_MESSAGE_URI, headers=headers, data=json.dumps(data))
