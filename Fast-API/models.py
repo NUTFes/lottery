@@ -11,10 +11,13 @@ class Place(Base):
     Placeテーブル
     id      : 主キー
     name    : Place名
+    message : メッセージ
     """
     __tablename__ = 'place'
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     name = Column('name', String(256))
+    message = Column('message', String(256), default="はじめまして",
+        nullable=False)
 
 class User(Base):
     """
