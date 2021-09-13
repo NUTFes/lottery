@@ -28,9 +28,16 @@ student IC keeper
 ### build
 ```
 docker-compose build
+stickee/Fast-API/create_table.pyがあれば削除
 docker-compose run --rm api python create_table.py
 docker-compose up
 ```
-
+### build（プロキシ内）
+```
+docker-compose build --build-arg http_proxy=http://proxy.nagaokaut.ac.jp:8080 --build-arg https_proxy=http://proxy.nagaokaut.ac.jp:8080
+stickee/Fast-API/create_table.pyがあれば削除
+docker-compose run -e http_proxy=http://proxy.nagaokaut.ac.jp:8080 -e https_proxy=http://proxy.nagaokaut.ac.jp:8080 --rm api python create_table.py
+docker-compose up
+```
 
 
