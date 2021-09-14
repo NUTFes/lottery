@@ -127,7 +127,12 @@ def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db))
     db_place = crud.get_place_by_id(db, id=p_id)
     db_users = crud.get_random_users(db, p_id)
     if db_users is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        error="抽選番号がありません"
+        return templates.TemplateResponse('error.html',
+                                    {'request': request,
+                                    'place': db_place,
+                                    'error':error})
+#        raise HTTPException(status_code=404, detail="User not found")
     return templates.TemplateResponse('random.html',
                                     {'request': request,
                                     'place': db_place,
