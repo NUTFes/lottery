@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from datetime import datetime
+
+from sqlalchemy.sql.expression import null
 import models
 import schemas
 import random
@@ -64,7 +66,13 @@ def get_latest_users(db: Session, p_id: int):
 
 def get_random_users(db: Session, p_id: int):
     res = db.query(models.User).filter(models.User.place_id == p_id).all()
-    db_user = random.choice(res)    
+    try:
+
+        db_user = random.choice(res)
+    except:
+        return None
+#        db_user="抽選番号がありませ"
+          
     return db_user
     
 def update_place_message(db: Session, place: schemas.PlaceMessage):
