@@ -13,6 +13,16 @@ REQUEST_URL = "http://localhost:8000"
 POST_NUMBER_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/add'
 POST_MESSAGE_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/message/add'
 
+
+def scan_card(): 
+  clf = nfc.ContactlessFrontend('usb') #USB接続のNFCリーダーを開く
+  clf.connect(rdwr={'on-connect': connected})
+  clf.close()
+  if confirm_registerable():
+    post_res_number(res["number"])
+    send_message(str(res["expiration"])) 
+
+
 def connected(tag):
   global res
   if isinstance(tag, nfc.tag.tt3.Type3Tag):
@@ -34,6 +44,7 @@ def connected(tag):
   else:
     print("error: tag isn't Type3Tag")
 
+
 def confirm_registerable():
   global oldres
   if res["expiration"] < res["updated_at"]:
@@ -44,13 +55,6 @@ def confirm_registerable():
   oldres = res
   return True
 
-def scan_card(): 
-  clf = nfc.ContactlessFrontend('usb') #USB接続のNFCリーダーを開く
-  clf.connect(rdwr={'on-connect': connected})
-  clf.close()
-  if confirm_registerable():
-    post_res_number(res["number"])
-    send_message(str(res["expiration"]))     
 
 def post_res_number(number):
   headers = {
@@ -63,6 +67,7 @@ def post_res_number(number):
   response = requests.post(POST_NUMBER_URI, headers=headers, data=json.dumps(data))
   print(response.text)
 
+
 def send_message(message: str):
   headers = {
     'Content-Type': 'application/json',
@@ -73,6 +78,7 @@ def send_message(message: str):
   }
   response = requests.post(POST_MESSAGE_URI, headers=headers, data=json.dumps(data))
   print(response.text)
+
 
 
 if __name__ == '__main__':
