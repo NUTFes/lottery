@@ -4,6 +4,10 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
+from starlette.applications import Starlette
+from starlette.websockets import WebSocket
+from starlette.responses import HTMLResponse
+
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
@@ -118,9 +122,9 @@ def read_place_message(request: Request, p_id: int, db: Session = Depends(get_db
     db_place = crud.get_place_by_id(db, p_id)
     if db_place is None:
         raise HTTPException(status_code=404, detail="Place not found")
-    return templates.TemplateResponse('message.html',
-                                    {'request': request,
-                                    'place': db_place})
+    html = Starlette().get_template('templates/message.html')
+    content = html.render(request=request)
+    return HTMLResponse(content)
 
 @app.get("/place/{p_id}/random", response_model=schemas.User)
 def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
@@ -132,6 +136,27 @@ def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db))
                                     {'request': request,
                                     'place': db_place,
                                     'user': db_users})
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(ws: WebSocket):
+    clients = {}
+    print(ws)
+    await ws.accept()
+    # クライアントを識別するためのIDを取得
+    key = ws.headers.get('sec-websocket-key')
+    clients[key] = ws
+    try:
+        while True:
+            # クライアントからメッセージを受信
+            data = await ws.receive_text()
+            # 接続中のクライアントそれぞれにメッセージを送信（ブロードキャスト）
+            for client in clients.values():
+                await client.send_text(f"ID: {key} | Message: {data}")
+    except:
+        await ws.close()
+        # 接続が切れた場合、当該クライアントを削除する
+        del clients[key]
 # =============================================================
 
 
