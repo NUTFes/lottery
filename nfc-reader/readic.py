@@ -22,8 +22,7 @@ def scan_card():
   clf.connect(rdwr={'on-connect': connected})
   clf.close()
   if confirm_registerable():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(send_message(str(res["number"])))
+    send_message(str(res["number"]))
     post_res_number(res["number"])
 
 
@@ -96,6 +95,11 @@ async def send_message_noasync(message):
 if __name__ == '__main__':
   oldmessage = ''
   oldres = {
+    'number': 00000000, 
+    'expiration': 196001010000, 
+    'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
+  }
+  res = {
     'number': 00000000, 
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
