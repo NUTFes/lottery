@@ -1,6 +1,6 @@
 FROM python:3.9
 WORKDIR /var/www/html
-RUN pip install fastapi uvicorn
+RUN pip install fastapi uvicorn[standard]
 RUN pip install sqlalchemy
 RUN pip install jinja2 python-multipart aiofiles
 

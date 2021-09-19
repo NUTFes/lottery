@@ -3,7 +3,7 @@ version: '3'
 services:
   api:
     container_name: FastAPI
-    build: ./Fast-API/docker
+    build: ./docker/Fast-API
     volumes:
       - ./Fast-API:/var/www/html
     ports:
