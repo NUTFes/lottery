@@ -22,9 +22,8 @@ def scan_card():
   clf.connect(rdwr={'on-connect': connected})
   clf.close()
   if confirm_registerable():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(send_message(str(res["number"])))
-    loop.run_until_complete(post_res_number(res["number"]))
+    send_message(str(res["number"]))
+    post_res_number(res["number"])
 
 
 def connected(tag):
@@ -44,10 +43,9 @@ def connected(tag):
         'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
       }
     except Exception as e: #多分これのせいでIOErrorができない
-      print("error: %s" % e)
+      send_message("error: %s" % e)
   else:
-    print("error: tag isn't Type3Tag")
-
+    send_message("error: tag isn't Type3Tag")
 
 def confirm_registerable():
   global oldres
@@ -57,6 +55,13 @@ def confirm_registerable():
     (res["updated_at"] - oldres["updated_at"]) < 5:
     return False
   oldres = res
+  return True
+
+def confirm_sendable(message):
+  global oldmessage
+  if message == oldmessage:
+    return False
+  oldmessage = message
   return True
 
 
@@ -71,8 +76,12 @@ def post_res_number(number):
   response = requests.post(POST_URI, headers=headers, data=json.dumps(data))
   print(response.text)
 
+def send_message(message):
+  if confirm_sendable(message):
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(send_message_noasync(message))
 
-async def send_message(message):
+async def send_message_noasync(message):
   # ウェブソケットに接続する。
   async with websockets.connect(SEND_URI) as websocket:
     # メッセージを送信する。
@@ -84,12 +93,13 @@ async def send_message(message):
 
 
 if __name__ == '__main__':
-  res = {
+  oldmessage = ''
+  oldres = {
     'number': 00000000, 
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
   }
-  oldres = {
+  res = {
     'number': 00000000, 
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
