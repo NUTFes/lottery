@@ -1,19 +1,18 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.types import DecoratedCallable
+
 from sqlalchemy.orm import Session
+
 from starlette.middleware.cors import CORSMiddleware
-
-from starlette.applications import Starlette
-from starlette.websockets import WebSocket
-from starlette.responses import HTMLResponse
-
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
-from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.responses import RedirectResponse
 
 from database import SessionLocal
+from notifier import Notifier
+notifier = Notifier()
 import crud
 import schemas
 
@@ -117,14 +116,10 @@ def delete_user(p_id: int, u_id: int, db: Session = Depends(get_db)):
     crud.delete_user(db=db, user=user)
     return RedirectResponse(url='/place/'+str(p_id), status_code=303)
 
-@app.get("/place/{p_id}/message", response_model=schemas.PlaceMessage)
-def read_place_message(request: Request, p_id: int, db: Session = Depends(get_db)):
-    db_place = crud.get_place_by_id(db, p_id)
-    if db_place is None:
-        raise HTTPException(status_code=404, detail="Place not found")
-    html = Starlette().get_template('templates/message.html')
-    content = html.render(request=request)
-    return HTMLResponse(content)
+@app.get("/place/{p_id}/message", response_model=schemas.User)
+def read_place_message(request: Request,p_id: int, db: Session = Depends(get_db)):
+    db_place = crud.get_place_by_id(db, id=p_id)
+    return templates.TemplateResponse('message.html',{'request': request,'place': db_place})
 
 @app.get("/place/{p_id}/random", response_model=schemas.User)
 def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
@@ -138,25 +133,6 @@ def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db))
                                     'user': db_users})
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(ws: WebSocket):
-    clients = {}
-    print(ws)
-    await ws.accept()
-    # クライアントを識別するためのIDを取得
-    key = ws.headers.get('sec-websocket-key')
-    clients[key] = ws
-    try:
-        while True:
-            # クライアントからメッセージを受信
-            data = await ws.receive_text()
-            # 接続中のクライアントそれぞれにメッセージを送信（ブロードキャスト）
-            for client in clients.values():
-                await client.send_text(f"ID: {key} | Message: {data}")
-    except:
-        await ws.close()
-        # 接続が切れた場合、当該クライアントを削除する
-        del clients[key]
 # =============================================================
 
 
@@ -226,3 +202,35 @@ def update_place_message(p_id: int, place: schemas.PlaceMessage, db: Session = D
     if db_place is None:
         raise HTTPException(status_code=404, detail="Place not found")
     return crud.update_place_message(db=db, place=place)
+
+
+
+# Websocket用のパス
+@app.websocket("/api/place/{p_id}/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    # クライアントとのコネクション確立
+    await notifier.connect(websocket)
+    try:
+        while True:
+            # クライアントからメッセージの受け取り
+            data = await websocket.receive_text()
+            # 双方向通信する場合
+            #  await websocket.send_text(f"Message text was: {data}")
+            # ブロードキャスト
+            await notifier.push(f"{data}")
+    # セッションが切れた場合
+    except WebSocketDisconnect:
+        # 切れたセッションの削除
+        notifier.remove(websocket)
+
+# ブロードキャスト用のAPI
+@app.get("/push/{message}")
+async def push_to_connected_websockets(message: str):
+    # ブロードキャスト
+    await notifier.push(f"! Push notification: {message} !")
+
+# サーバ起動時の処理
+@app.on_event("startup")
+async def startup():
+    # プッシュ通知の準備
+    await notifier.generator.asend(None)

@@ -14,8 +14,8 @@ from time import sleep
 PLACE_ID = 1
 APP_URL = "http://localhost:8000"
 WS_URL =  "ws://localhost:8000"
-POST_URI = APP_URL +'/api/place/'+ str(PLACE_ID) +'/add'
-SEND_URI = WS_URL +'/ws'
+POST_URI = APP_URL +'/api/place/'+ str(PLACE_ID) + '/add'
+SEND_URI = WS_URL + '/api/place/'+ str(PLACE_ID) + '/ws'
 
 
 def scan_card(): 

@@ -10,10 +10,11 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 import asyncio
 import websockets
 
-REQUEST_PLACE_ID = 1
-REQUEST_URL = "http://localhost:8000"
-POST_NUMBER_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/add'
-POST_MESSAGE_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/message/add'
+PLACE_ID = 1
+APP_URL = "http://localhost:8000"
+WS_URL =  "ws://localhost:8000"
+POST_URI = APP_URL +'/api/place/'+ str(PLACE_ID) +'/add'
+SEND_URI = WS_URL + '/api/place/'+ str(PLACE_ID) + '/ws'
 
 
 def scan_card(): 
@@ -21,8 +22,9 @@ def scan_card():
   clf.connect(rdwr={'on-connect': connected})
   clf.close()
   if confirm_registerable():
-    post_res_number(res["number"])
-    send_message(str(res["expiration"])) 
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(send_message(str(res["number"])))
+    loop.run_until_complete(post_res_number(res["number"]))
 
 
 def connected(tag):
@@ -63,16 +65,16 @@ def post_res_number(number):
     'Content-Type': 'application/json',
   }
   data = {
-    "place_id": REQUEST_PLACE_ID,
+    "place_id": PLACE_ID,
     "number": number
   }
-  response = requests.post(POST_NUMBER_URI, headers=headers, data=json.dumps(data))
+  response = requests.post(POST_URI, headers=headers, data=json.dumps(data))
   print(response.text)
 
 
-async def send_message(message: str):
+async def send_message(message):
   # ウェブソケットに接続する。
-  async with websockets.connect("ws://localhost:9000/ws") as websocket:
+  async with websockets.connect(SEND_URI) as websocket:
     # メッセージを送信する。
     await websocket.send(message)
     # WebSocketサーバからメッセージを受信すればコンソールに出力する。
@@ -92,7 +94,5 @@ if __name__ == '__main__':
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
   }
-  # 非同期でサーバに接続する。
-  asyncio.get_event_loop().run_until_complete(send_message())
   while True:
     scan_card()
