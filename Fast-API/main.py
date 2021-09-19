@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
@@ -21,6 +22,8 @@ app = FastAPI(
   description='student ID keeper',
   version='0.9 beta'
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 #: Configure CORS
 origins = [
