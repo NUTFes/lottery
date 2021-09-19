@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<meta http-equiv="refresh" content="1" >
+
 <br>
 <div class="row">
     <div class="col-md-12">
@@ -15,11 +15,29 @@
 
 <hr>
 <div align="center">
-    <h1> {{ place.message }} </h1>
-</div>
-
+    <h1>
+        <ul id='messages'></ul>
+    </h1>
+    
+</div>        
+<script>
+    var WS_URL = "ws://localhost:8000"
+    var PLACE_ID = {{ place.id | tojson }}
+    messages = document.getElementById('messages')
+    messages.innerHTML = "Hello Stickee!"
+    var ws = new WebSocket(WS_URL + '/api/place/'+ PLACE_ID + '/ws');
+    ws.onmessage = function(event) {
+        messages = document.getElementById('messages')
+        var message = document.createTextNode(event.data)
+        messages.innerHTML = event.data
+    }
+</script>
 
 <hr>
 
 
 {% endblock %}
+
+
+
+        
