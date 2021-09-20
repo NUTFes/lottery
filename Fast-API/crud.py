@@ -8,6 +8,13 @@ import schemas
 import random
 
 def get_places(db: Session):
+    # list = []
+    # print("=============================")
+    # for place in db.query(models.Place).all():
+    #     print("=============================")
+    #     list.append(place.id)
+    #     print(place.id)
+    # print("=============================")
     return db.query(models.Place).all()
 
 def get_place_by_name(db: Session, name: str):
@@ -31,7 +38,7 @@ def delete_place(db: Session, place: schemas.Place):
 
 
 def get_users(db: Session, p_id: int):
-    return db.query(models.User).filter(models.User.place_id == p_id).all()
+    return db.query(models.User).filter(models.User.place_id == p_id).order_by(models.User.updated_at).all()
 
 def get_user_by_number(db: Session, user: schemas.UserCreate):
     return db.query(models.User).filter(models.User.place_id == user.place_id, models.User.number == user.number).first()
@@ -64,20 +71,40 @@ def get_latest_users(db: Session, p_id: int):
     db_user = db.query(models.User).filter(models.User.updated_at == res.latest_update).first()
     return db_user
 
-def get_random_users(db: Session, p_id: int):
-    res = db.query(models.User).filter(models.User.place_id == p_id).all()
+def get_random_user(db: Session, p_id: int):
+    winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
+    list = []
+    for winner in winners:
+        list.append(winner.user_id)
+    res = db.query(models.User).filter(models.User.id.notin_(list)).all()
     try:
-
         db_user = random.choice(res)
     except:
         return None
 #        db_user="抽選番号がありませ"
-          
     return db_user
-    
-def update_place_message(db: Session, place: schemas.PlaceMessage):
-    db_place = db.query(models.Place).filter(models.Place.id == place.id).first()
-    db_place.message = place.message
+
+
+def get_winners(db: Session, p_id: int):
+    winners = db.query(models.Winner).join(models.User.id==models.Winner.user_id).all
+    print("============================")
+    print(winners)
+    for winner in winners:
+        print("============================")
+        print(winner.id)
+    return winners
+
+def create_winner(db: Session, winner: schemas.WinnerCreate):
+    db_winner = models.Winner(place_id=winner.place_id, user_id=winner.user_id, updated_at = datetime.now(), created_at = datetime.now())
+    db.add(db_winner)
     db.commit()
-    db.refresh(db_place)
-    return db_place
+    db.refresh(db_winner)
+
+def get_winner_by_id(db: Session, winner: schemas.Winner):
+    return db.query(models.Winner).filter(models.Winner.place_id == winner.place_id, models.Winner.id == winner.id).first()
+
+def delete_winner(db: Session, winner: schemas.Winner):
+    db_winner = db.query(models.Winner).filter(models.Winner.id == winner.id).first()
+    db.delete(db_winner)
+    db.commit()
+    return
