@@ -85,26 +85,27 @@ def get_random_user(db: Session, p_id: int):
     return db_user
 
 
-def get_winners(db: Session, p_id: int):
-    winners = db.query(models.Winner).join(models.User.id==models.Winner.user_id).all
-    print("============================")
-    print(winners)
+def get_win_users(db: Session, p_id: int):
+# placeを絞り込んだWinnersでUserを絞込んでUserを返している
+    winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
+    list = []
     for winner in winners:
-        print("============================")
-        print(winner.id)
-    return winners
+        list.append(winner.user_id)
+    win_users = db.query(models.User).filter(models.User.id.in_(list)).all()
+    return win_users
 
 def create_winner(db: Session, winner: schemas.WinnerCreate):
     db_winner = models.Winner(place_id=winner.place_id, user_id=winner.user_id, updated_at = datetime.now(), created_at = datetime.now())
     db.add(db_winner)
     db.commit()
     db.refresh(db_winner)
+    return db_winner
 
-def get_winner_by_id(db: Session, winner: schemas.Winner):
-    return db.query(models.Winner).filter(models.Winner.place_id == winner.place_id, models.Winner.id == winner.id).first()
+def get_winner_by_user_id(db: Session, winner: schemas.Winner):
+    return db.query(models.Winner).filter(models.Winner.place_id == winner.place_id, models.Winner.user_id == winner.user_id).first()
 
 def delete_winner(db: Session, winner: schemas.Winner):
-    db_winner = db.query(models.Winner).filter(models.Winner.id == winner.id).first()
+    db_winner = db.query(models.Winner).filter(models.Winner.user_id == winner.user_id).first()
     db.delete(db_winner)
     db.commit()
     return

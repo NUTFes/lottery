@@ -10,18 +10,16 @@
 <font color="#ff4500">{{ error }}</font>
 <br><br>
 <h3> 当選者 </h3>
-<table class="table">
+<table class="table" >
     <thead class="table-dark">
-    <tr>
-        <th>#</th>
+    <tr align="center">
         <th>学籍番号</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
     {% for w in winner[::-1] %}
-    <tr>
-        <td>{{ w.id }}</td>
+    <tr align="center">
         <td>{{ w.number }}</td>
         <td>
             <form action="/place/{{ place.id }}/winner/delete/{{ w.id }}" method="post">

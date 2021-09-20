@@ -28,7 +28,7 @@ def scan_card():
   if confirm_registerable(res):
     loop = asyncio.get_event_loop()
     loop.run_until_complete(send_message(str(res["number"])))
-    # loop.run_until_complete(post_res_number(res["number"]))
+    post_res_number(res["number"])
 
 def confirm_registerable(res):
   global oldres
@@ -41,16 +41,16 @@ def confirm_registerable(res):
   return True
 
 
-# async def post_res_number(number):
-#     headers = {
-#       'Content-Type': 'application/json',
-#     }
-#     data = {
-#       "place_id": PLACE_ID,
-#       "number": number
-#     }
-#     response = requests.post(POST_URI, headers=headers, data=json.dumps(data))
-#     print(response.text)
+def post_res_number(number):
+    headers = {
+      'Content-Type': 'application/json',
+    }
+    data = {
+      "place_id": PLACE_ID,
+      "number": number
+    }
+    response = requests.post(POST_URI, headers=headers, data=json.dumps(data))
+    print(response.text)
 
 
 async def send_message(message):

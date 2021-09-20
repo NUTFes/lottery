@@ -143,7 +143,7 @@ def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db))
 
 @app.get("/place/{p_id}/winner", response_model=List[schemas.Winner])
 def read_winners(request: Request, p_id: int, db: Session = Depends(get_db)):
-    db_winners = crud.get_winners(db, p_id)
+    db_winners = crud.get_win_users(db, p_id)
     db_place = crud.get_place_by_id(db, id=p_id)
     if db_winners is None:
         raise HTTPException(status_code=404, detail="Winner not found")
@@ -156,8 +156,8 @@ def read_winners(request: Request, p_id: int, db: Session = Depends(get_db)):
 def delete_winner(p_id: int, w_id: int, db: Session = Depends(get_db)):
     winner = schemas.Winner
     winner.place_id = p_id
-    winner.id = w_id
-    db_user = crud.get_winner_by_id(db, winner=winner)
+    winner.user_id = w_id
+    db_user = crud.get_winner_by_user_id(db, winner=winner)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Winner not found")
     crud.delete_winner(db=db, winner=winner)
@@ -223,18 +223,19 @@ def read_random_user(p_id: int, db: Session = Depends(get_db)):
     crud.create_winner(db, winner)
     return db_user
 
-@app.get("/api/place/{p_id}/winner", response_model=List[schemas.Winner])
+@app.get("/api/place/{p_id}/winner", response_model=List[schemas.User])
+#返しているのはUserなのでresponseはUser
 def read_winners(p_id: int, db: Session = Depends(get_db)):
-    db_winner = crud.get_winners(db, p_id)
-    if db_winner is None:
+    db_win_users = crud.get_win_users(db, p_id)
+    if db_win_users is None:
         raise HTTPException(status_code=404, detail="Winner not found")
-    return db_winner
+    return db_win_users
 
 @app.delete("/api/place/{p_id}/winner/delete/{w_id}", response_model=schemas.WinnerDelete)
 def delete_winner(p_id: int, w_id: int, winner: schemas.Winner, db: Session = Depends(get_db)):
     winner.place_id = p_id
-    winner.id = w_id
-    db_user = crud.get_winner_by_id(db, winner=winner)
+    winner.user_id = w_id
+    db_user = crud.get_winner_by_user_id(db, winner=winner)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return crud.delete_winner(db=db, winner=winner)
