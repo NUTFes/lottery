@@ -126,18 +126,44 @@ def read_place_message(request: Request,p_id: int, db: Session = Depends(get_db)
 @app.get("/place/{p_id}/random", response_model=schemas.User)
 def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
-    db_users = crud.get_random_users(db, p_id)
-    if db_users is None:
+    db_user = crud.get_random_user(db, p_id)
+    if db_user is None:
         error="抽選番号がありません"
         return templates.TemplateResponse('error.html',
                                     {'request': request,
                                     'place': db_place,
                                     'error':error})
 #        raise HTTPException(status_code=404, detail="User not found")
+    winner = schemas.WinnerCreate
+    winner.place_id = db_user.place_id
+    winner.user_id = db_user.id
+    crud.create_winner(db, winner)
     return templates.TemplateResponse('random.html',
                                     {'request': request,
                                     'place': db_place,
-                                    'user': db_users})
+                                    'user': db_user})
+
+@app.get("/place/{p_id}/winner", response_model=List[schemas.Winner])
+def read_winners(request: Request, p_id: int, db: Session = Depends(get_db)):
+    db_winners = crud.get_win_users(db, p_id)
+    db_place = crud.get_place_by_id(db, id=p_id)
+    if db_winners is None:
+        raise HTTPException(status_code=404, detail="Winner not found")
+    return templates.TemplateResponse('winner.html',
+                                    {'request': request,
+                                    'place': db_place,
+                                    'winner': db_winners})
+
+@app.post("/place/{p_id}/winner/delete/{w_id}", response_model=schemas.WinnerDelete)
+def delete_winner(p_id: int, w_id: int, db: Session = Depends(get_db)):
+    winner = schemas.Winner
+    winner.place_id = p_id
+    winner.user_id = w_id
+    db_user = crud.get_winner_by_user_id(db, winner=winner)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Winner not found")
+    crud.delete_winner(db=db, winner=winner)
+    return RedirectResponse(url='/place/'+str(p_id)+'/winner', status_code=303)
 
 
 # =============================================================
@@ -189,27 +215,32 @@ def delete_user(p_id: int, u_id: int, user: schemas.User, db: Session = Depends(
     return crud.delete_user(db=db, user=user)
 
 @app.get("/api/place/{p_id}/random", response_model=schemas.User)
-def read_random_users(p_id: int, db: Session = Depends(get_db)):
-    db_users = crud.get_random_users(db, p_id)
-    if db_users is None:
+def read_random_user(p_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_random_user(db, p_id)
+    if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_users
+    winner = schemas.WinnerCreate
+    winner.place_id = db_user.place_id
+    winner.user_id = db_user.id
+    crud.create_winner(db, winner)
+    return db_user
 
-@app.get("/api/place/{p_id}/message", response_model=schemas.PlaceMessage)
-def read_place_message(p_id: int, db: Session = Depends(get_db)):
-    db_place = crud.get_place_by_id(db, p_id)
-    if db_place is None:
-        raise HTTPException(status_code=404, detail="Place not found")
-    return db_place
+@app.get("/api/place/{p_id}/winner", response_model=List[schemas.User])
+#返しているのはUserなのでresponseはUser
+def read_winners(p_id: int, db: Session = Depends(get_db)):
+    db_win_users = crud.get_win_users(db, p_id)
+    if db_win_users is None:
+        raise HTTPException(status_code=404, detail="Winner not found")
+    return db_win_users
 
-@app.post("/api/place/{p_id}/message/add", response_model=schemas.PlaceMessage)
-def update_place_message(p_id: int, place: schemas.PlaceMessage, db: Session = Depends(get_db)):
-    place.id = p_id
-    db_place = crud.get_place_by_id(db, p_id)
-    if db_place is None:
-        raise HTTPException(status_code=404, detail="Place not found")
-    return crud.update_place_message(db=db, place=place)
-
+@app.delete("/api/place/{p_id}/winner/delete/{w_id}", response_model=schemas.WinnerDelete)
+def delete_winner(p_id: int, w_id: int, winner: schemas.Winner, db: Session = Depends(get_db)):
+    winner.place_id = p_id
+    winner.user_id = w_id
+    db_user = crud.get_winner_by_user_id(db, winner=winner)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return crud.delete_winner(db=db, winner=winner)
 
 
 # Websocket用のパス

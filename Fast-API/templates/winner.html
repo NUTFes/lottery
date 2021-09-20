@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<h1>Stickee at {{ place.name }}</h1>
+<hr>
+<p><a href="/" class="btn btn-primary">もどる</a></p>
+<br>
+
+
+<font color="#ff4500">{{ error }}</font>
+<br><br>
+<h3> 当選者 </h3>
+<table class="table" >
+    <thead class="table-dark">
+    <tr align="center">
+        <th>学籍番号</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for w in winner[::-1] %}
+    <tr align="center">
+        <td>{{ w.number }}</td>
+        <td>
+            <form action="/place/{{ place.id }}/winner/delete/{{ w.id }}" method="post">
+                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm">削除</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br><br>
+
+<br>
+
+{% endblock %}
