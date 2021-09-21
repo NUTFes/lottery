@@ -1,25 +1,33 @@
-{% extends "layout.html" %}
-{% block content %}
-
-<br>
-<div class="row">
-    <div class="col-md-12">
-        <h1>Stickee at {{ place.name }}</h1>
-        <hr>
-        <p><a href="/" class="btn btn-primary">もどる</a></p>
-        <br>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stickee｜抽選画面</title>
+	<link rel="stylesheet" href="http://localhost:8000/static/css/reset.css">
+	<link rel="stylesheet" href="http://localhost:8000/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="http://localhost:8000/static/css/message-custom.css">
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Stickee at {{ place.name }}</h1>
+            <hr>
+            <p><a href="/" class="btn btn-primary">もどる</a></p>
+            <br>
+        </div>
     </div>
-</div>
 
-<br>
+	<div class="view1" align="center">
+        <h1 class="view2">
+            <ul id="messages"></ul>
+        </h1>
+        
+    </div> 
+	
+</body>
 
-<hr>
-<div align="center">
-    <h1>
-        <ul id='messages'></ul>
-    </h1>
-    
-</div>        
 <script>
     var WS_URL = "ws://localhost:8000"
     var PLACE_ID = '{{ place.id | tojson }}'
@@ -33,11 +41,5 @@
     }
 </script>
 
-<hr>
+</html>
 
-
-{% endblock %}
-
-
-
-        

@@ -6,6 +6,7 @@ services:
     build: ./docker/Fast-API
     volumes:
       - ./Fast-API:/var/www/html
+      
     ports:
       - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
