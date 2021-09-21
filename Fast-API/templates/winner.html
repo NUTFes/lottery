@@ -13,13 +13,17 @@
 <table class="table" >
     <thead class="table-dark">
     <tr align="center">
+        <th>当選番号</th>
         <th>学籍番号</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    {% for w in winner[::-1] %}
+    {%- set ns = namespace(cnt=0) -%}
+    {% for w in winner %}
     <tr align="center">
+        {%- set ns.cnt = ns.cnt + 1 -%}
+        <td>{{ ns.cnt }}</td>
         <td>{{ w.number }}</td>
         <td>
             <form action="/place/{{ place.id }}/winner/delete/{{ w.id }}" method="post">
