@@ -123,6 +123,14 @@ def read_place_message(request: Request,p_id: int, db: Session = Depends(get_db)
     db_place = crud.get_place_by_id(db, id=p_id)
     return templates.TemplateResponse('message.html',{'request': request,'place': db_place})
 
+
+@app.get("/place/{p_id}/random_before")
+def read_random_users(request: Request, p_id: int, db: Session = Depends(get_db)):
+    db_place = crud.get_place_by_id(db, id=p_id)
+    return templates.TemplateResponse('random_before.html',
+                                    {'request': request, 'place': db_place})
+
+
 @app.get("/place/{p_id}/random", response_model=schemas.User)
 def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
