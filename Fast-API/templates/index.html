@@ -34,7 +34,7 @@
         <td>{{ p.name }}</td>
         <td>
             <form action="/delete/{{ p.id }}" method="post">
-                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm">削除</button>
+                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか?')">削除</button>
             </form>
         </td>
         <td>
