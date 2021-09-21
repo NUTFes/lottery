@@ -1,6 +1,6 @@
 Fast-API/__pycache__
-Fast-API/db.sqlite3
+Fast-API/stickee.db
 nfc-reader/__pychache__
 __pycache__
 react-view/node_modules
-/Fast-API/db.sqlite3
+/Fast-API/stickee.db
