@@ -9,7 +9,7 @@
 .odometer {
   font-size: 25px;
   position: absolute;
-  top: 14%;
+  top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
@@ -24,19 +24,70 @@
     transition-duration: 5s !important
 }
 
-table{
-  width: auto;
-}
 thead,tbody{
   display: block;
   width: auto;
+  overflow:scroll;
+  height: 300px;
 }
 td{
   width: auto;
   text-align: center;
+  padding: 5px 5px 5px 5px;
 }
 tbody{
   overflow-y: scroll;
-  height: 100px;
   width: auto;
+}
+
+.corner1 {
+  margin-top: 30px;
+  width: 20%;
+  transform: rotateZ( 90deg );
+  height: auto;
+  position:absolute;
+  top: -2vw;
+  left: 3vw;
+}
+
+.corner2 {
+  margin-top: 30px;
+  width: 20%;
+  transform: rotateZ( 180deg );
+  height: auto;
+  position:absolute;
+  top: -2vw;
+  right: 3vw;
+}
+
+.corner3 {
+  margin-bottom: 30px;
+  width: 20%;
+  transform: rotateZ( -90deg );
+  height: auto;
+  position:absolute;
+  bottom: -2vw;
+  right: 3vw;
+}
+
+.corner4 {
+  margin-bottom: 30px;
+  width: 20%;
+  transform: rotateZ( 0deg );
+  height: auto;
+  position:absolute;
+  bottom: -2vw;
+  left: 3vw;
+}
+.center1 {
+  width: 50%;
+  height: auto;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+.center2 {
+  width: 50%;
+  height: auto;
+  margin-left: 25%;
+  margin-right: 25%;
 }
