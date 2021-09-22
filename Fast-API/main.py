@@ -52,6 +52,14 @@ def get_db():
 templates = Jinja2Templates(directory="templates")
 jinja_env = templates.env
 
+@app.get("/place/{p_id}/chat", response_model=List[schemas.Winner])
+def read_places(request: Request, p_id: int, db: Session = Depends(get_db)):
+    place = schemas.Place
+    place.id = p_id
+    db_place = crud.get_place_by_id(db, id=place.id)
+    db_winners = crud.get_win_users(db, p_id)
+    return templates.TemplateResponse('chat.html', {'request': request, 'place':db_place,'winner': db_winners})
+
 @app.get("/", response_model=List[schemas.Place])
 def read_places(request: Request, db: Session = Depends(get_db)):
     db_places = crud.get_places(db)
@@ -132,7 +140,7 @@ def read_random_users(request: Request, p_id: int, db: Session = Depends(get_db)
 
 
 @app.get("/place/{p_id}/random", response_model=schemas.User)
-def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
+async def read_random_users(request: Request, p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
     db_user = crud.get_random_user(db, p_id)
     if db_user is None:
@@ -141,11 +149,16 @@ def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db))
                                     {'request': request,
                                     'place': db_place,
                                     'error':error})
-#        raise HTTPException(status_code=404, detail="User not found")
     winner = schemas.WinnerCreate
     winner.place_id = db_user.place_id
     winner.user_id = db_user.id
     crud.create_winner(db, winner)
+    data = {
+        "place_id": db_user.place_id,
+        "client"  : "Random", 
+        "message" : str(db_user.number)
+    }
+    await notifier.push(data)
     return templates.TemplateResponse('random.html',
                                     {'request': request,
                                     'place': db_place,
@@ -252,18 +265,18 @@ def delete_winner(p_id: int, w_id: int, winner: schemas.Winner, db: Session = De
 
 
 # Websocket用のパス
-@app.websocket("/api/place/{p_id}/ws")
+@app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     # クライアントとのコネクション確立
     await notifier.connect(websocket)
     try:
         while True:
             # クライアントからメッセージの受け取り
-            data = await websocket.receive_text()
+            data = await websocket.receive_json()
             # 双方向通信する場合
             #  await websocket.send_text(f"Message text was: {data}")
             # ブロードキャスト
-            await notifier.push(f"{data}")
+            await notifier.push(data)
     # セッションが切れた場合
     except WebSocketDisconnect:
         # 切れたセッションの削除
@@ -273,7 +286,7 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.get("/push/{message}")
 async def push_to_connected_websockets(message: str):
     # ブロードキャスト
-    await notifier.push(f"! Push notification: {message} !")
+    await notifier.push(f"{message}")
 
 # サーバ起動時の処理
 @app.on_event("startup")

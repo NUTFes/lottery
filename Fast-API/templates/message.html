@@ -21,15 +21,17 @@
     
 </div>        
 <script>
-    var WS_URL = "ws://localhost:8000"
     var PLACE_ID = '{{ place.id | tojson }}'
+    var WS_URL = "ws://localhost:8000"
+    var WS_URI = `${WS_URL}/ws`
     messages = document.getElementById('messages')
     messages.innerHTML = "Hello Stickee!"
-    var ws = new WebSocket(WS_URL + '/api/place/'+ PLACE_ID + '/ws');
+    var ws = new WebSocket(WS_URI);
     ws.onmessage = function(event) {
         messages = document.getElementById('messages')
-        var message = document.createTextNode(event.data)
-        messages.innerHTML = event.data
+        const json = JSON.parse(event.data);
+        if( json.place_id==PLACE_ID && json.client=="NFC" )
+            messages.innerHTML = json.message
     }
 </script>
 

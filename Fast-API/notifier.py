@@ -33,6 +33,6 @@ class Notifier:
             # await websocket.send_text(message)処理時
             # セッションが切れたときの対策
             websocket = self.connections.pop()
-            await websocket.send_text(message)
+            await websocket.send_json(message)
             living_connections.append(websocket)
         self.connections = living_connections

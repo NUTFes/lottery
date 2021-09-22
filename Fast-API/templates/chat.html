@@ -1,0 +1,136 @@
+<ul id='number'>
+</ul>
+
+
+<script>
+  var PLACE_ID = '{{ place.id | tojson }}'
+  var WS_URL = "ws://localhost:8000"
+  var WS_URI = `${WS_URL}/ws`
+  messages = document.getElementById('number')
+  messages.innerHTML = "77777777"
+  var ws = new WebSocket(WS_URI);
+  ws.onmessage = function(event) {
+    var json = JSON.parse(event.data)
+    if( json.place_id==Number(PLACE_ID) && json.client=="Random" ){
+      messages = document.getElementById('number')
+      document.getElementById('number').innerHTML = json.message
+    }         
+  }
+</script>
+
+
+
+
+
+
+<div class="tab_container">
+  <input id="tab1" type="radio" name="tab_item" checked>
+  <label class="tab_item" for="tab1">タブ1</label>
+  <input id="tab2" type="radio" name="tab_item">
+  <label class="tab_item" for="tab2">タブ2</label>
+  <div class="tab_content" id="tab1_content">
+    <div class="tab_content_description">
+      <p class="c-txtsp">
+        <form action="" onsubmit="sendMessage(event)">
+          <input type="text" id="messageText" autocomplete="off"/>
+          <button>Send</button>
+      </form>
+      <ul id='messages'>
+      </ul>
+      <script>
+          var ws = new WebSocket("ws://localhost:8000/ws");
+          ws.onmessage = function(event) {
+            var json = JSON.parse(event.data)
+            if( json.client=="Host" && json.place_id==Number('{{ place.id | tojson }}')){
+              var messages = document.getElementById('messages')
+              var message = document.createElement('li')
+              var content = document.createTextNode(json.message)
+              message.appendChild(content)
+              messages.appendChild(message)
+            }
+          };
+          function sendMessage(event) {
+              var input = document.getElementById("messageText")
+              var data = {
+                place_id: Number('{{ place.id | tojson }}'),
+                client  : "Host",
+                message : input.value
+              }
+              var json = JSON.stringify(data)
+              ws.send(json)
+              input.value = ''
+              event.preventDefault()
+          }
+      </script>
+      </p>
+    </div>
+  </div>
+  <div class="tab_content" id="tab2_content">
+    <div class="tab_content_description">
+      <p class="c-txtsp">
+        <h3> 当選者 </h3>
+          <table class="table" >
+              <thead class="table-dark">
+              <tr align="center">
+                  <th>当選番号</th>
+                  <th>学籍番号</th>
+              </tr>
+              </thead>
+              <tbody>
+              {%- set ns = namespace(cnt=0) -%}
+              {% for w in winner %}
+              <tr align="center">
+                  {%- set ns.cnt = ns.cnt + 1 -%}
+                  <td>{{ ns.cnt }}</td>
+                  <td>{{ w.number }}</td>
+              </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+      </p>
+    </div>
+  </div>
+</div>
+<style>
+  .tab_container {
+    padding-bottom: 1em;
+    background-color: #fff;
+    border:1px solid #37beb0;
+    margin: 0 auto;}
+  .tab_item {
+    width: calc(100%/2);    /*100%/4を100%/2に変更*/
+    padding:15px 0;
+    border-bottom: 3px solid #37beb0 ;
+    background-color: #ececec;
+    text-align: center;
+    color: #37beb0 ;
+    display: block;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.2s ease;
+  }
+  .tab_item:hover {
+    opacity: 0.75;
+  }
+  input[name="tab_item"] {
+    display: none;
+  }
+  .tab_content {
+    display: none;
+    padding: 1em 1em 0;
+    clear: both;
+    overflow: hidden;
+  }
+  #tab1:checked ~ #tab1_content,
+  #tab2:checked ~ #tab2_content {  /*, #tab3:checked ~ #tab3_content , #tab4:checked ~ #tab4_contentを削除*/
+    display: block;
+  }
+  .tab_container input:checked + .tab_item {
+    background-color: #37beb0 ;
+    color: #fff;
+  }
+</style>
+
+</body>
+</html>
