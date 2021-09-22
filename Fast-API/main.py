@@ -9,12 +9,20 @@ from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 from starlette.responses import RedirectResponse
 
+from datetime import datetime
 from database import SessionLocal
 import crud
 import schemas
 
 import re
 pattern = re.compile(r'[0-9]{8}')
+
+
+# start='2021-10-03 23:48:00'
+# if 2021-10-03 23:48:00 > 2021-10-03 23:47:00:
+#     123456 > 123567
+# dte=datetime.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
+# print(dte)
 
 app = FastAPI(
   title='Stickee',
@@ -57,6 +65,7 @@ async def create_place(request: Request, db: Session = Depends(get_db)):
     place = schemas.PlaceCreate
     data = await request.form() 
     place.name = data['place']
+    print(data)
     db_place = crud.get_place_by_name(db, name=place.name)
     if db_place:
         raise HTTPException(status_code=400, detail="Place already registered")
@@ -77,6 +86,7 @@ def delete_place(p_id: int, db: Session = Depends(get_db)):
 def read_users(request: Request, p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
     db_users = crud.get_users(db, p_id)
+
     if db_users is None:
         raise HTTPException(status_code=404, detail="User not found")
     return templates.TemplateResponse('place.html',
@@ -122,10 +132,31 @@ def read_place_message(request: Request, p_id: int, db: Session = Depends(get_db
                                     {'request': request,
                                     'place': db_place})
 
-@app.get("/place/{p_id}/random", response_model=schemas.User)
-def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
+# @app.post("/place/{p_id}/random", response_model=schemas.Place)
+# async def create_place(request: Request, db: Session = Depends(get_db)):
+#     place = schemas.PlaceCreate
+#     data = await request.form() 
+#     print(data)
+#     db_place = crud.get_place_by_name(db, name=place.name)
+#     if db_place:
+#         raise HTTPException(status_code=400, detail="Place already registered")
+#     crud.create_place(db=db, place=place)
+#     return RedirectResponse(url="/", status_code=303)
+
+@app.post("/place/{p_id}/random", response_model=schemas.User)
+async def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
+    data = await request.form()
+    print(data)
     db_place = crud.get_place_by_id(db, id=p_id)
-    db_users = crud.get_random_users(db, p_id)
+    start = data['startdate'] +  " " +data['starttime']
+    print(start)
+    end = data['enddate'] + " " +data['endtime']
+    print(end)
+    starttime=datetime.strptime(start, '%Y-%m-%d %H:%M')
+    print(starttime)
+    endtime=datetime.strptime(end, '%Y-%m-%d %H:%M')
+    print(endtime)
+    db_users = crud.get_random_users_period(db, p_id,starttime,endtime)
     if db_users is None:
         error="抽選番号がありません"
         return templates.TemplateResponse('error.html',
@@ -137,6 +168,24 @@ def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db))
                                     {'request': request,
                                     'place': db_place,
                                     'user': db_users})
+
+
+# @app.get("/place/{p_id}/random", response_model=schemas.User)
+# async def read_random_users(request: Request,p_id: int, db: Session = Depends(get_db)):
+#     db_place = crud.get_place_by_id(db, id=p_id)
+#     db_users = crud.get_random_users(db, p_id)
+#     if db_users is None:
+#         error="抽選番号がありません"
+#         return templates.TemplateResponse('error.html',
+#                                     {'request': request,
+#                                     'place': db_place,
+#                                     'error':error})
+# #        raise HTTPException(status_code=404, detail="User not found")
+#     return templates.TemplateResponse('random.html',
+#                                     {'request': request,
+#                                     'place': db_place,
+#                                     'user': db_users})
+
 # =============================================================
 
 

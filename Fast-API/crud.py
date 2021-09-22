@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from datetime import datetime
 
-from sqlalchemy.sql.expression import null
+from sqlalchemy.sql.expression import null, update
 import models
 import schemas
 import random
@@ -71,13 +71,25 @@ def get_random_users(db: Session, p_id: int):
         db_user = random.choice(res)
     except:
         return None
-#        db_user="抽選番号がありませ"
           
     return db_user
-    
+
+def get_random_users_period(db: Session, p_id: int, starttime:datetime, endtime:datetime):
+    res = db.query(models.User).filter(models.User.place_id == p_id,models.User.updated_at>=starttime,models.User.updated_at<=endtime).all()
+    print(res)
+    try:
+
+        db_user = random.choice(res)
+    except:
+        return None
+          
+    return db_user
 def update_place_message(db: Session, place: schemas.PlaceMessage):
     db_place = db.query(models.Place).filter(models.Place.id == place.id).first()
     db_place.message = place.message
     db.commit()
     db.refresh(db_place)
     return db_place
+
+def get_times(db: Session, time: int):
+    return db.query(models.User).filter(models.User == time).all()

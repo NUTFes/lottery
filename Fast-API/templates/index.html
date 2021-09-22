@@ -15,6 +15,14 @@
 </form>
 <br><br>
 
+    <h5>抽選期間</h5>
+    <h7>開始時間</h7>
+    <input type="date" name="startdate" form="period">
+    <input type="time" name="starttime" form="period">
+    <br><h7>終了時間</h7>
+    <input type="date" name="enddate" form="period">
+    <input type="time" name="endtime" form="period">
+    
 
 <h3> 場所一覧 </h3>
 <table class="table">
@@ -42,7 +50,9 @@
             <p><a href="/place/{{ p.id }}/message" class="btn btn-primary">Message</a></p>
         </td>
         <td>
-            <a href="/place/{{ p.id }}/random" class="btn btn-primary">抽選</a>
+            <form action="/place/{{ p.id }}/random" method="post" id="period">
+                <button type="submit" name="random"  class="btn btn-primary">抽選</button>
+            </form>
         </td>
         <td>
             <a href="/place/{{ p.id }}" class="btn btn-primary">Login</a>
@@ -52,7 +62,6 @@
     {% endfor %}
     </tbody>
 </table>
-
 <hr>
 <p>This is a student ID keeper powered by <b>FastAPI</b>!</p>
 
