@@ -32,7 +32,7 @@
     var WS_URL = "ws://localhost:8000"
     var PLACE_ID = '{{ place.id | tojson }}'
     messages = document.getElementById('messages')
-    messages.innerHTML = "Hello Stickee!"
+    messages.innerHTML = "21311082"
     var ws = new WebSocket(WS_URL + '/api/place/'+ PLACE_ID + '/ws');
     ws.onmessage = function(event) {
         messages = document.getElementById('messages')
