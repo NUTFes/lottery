@@ -24,70 +24,94 @@
     transition-duration: 5s !important
 }
 
-thead,tbody{
+.design {
   display: block;
-  width: auto;
-  overflow:scroll;
-  height: 300px;
+  height: 40vh;
+  overflow: scroll;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  border-radius: 15px;
+  font-weight: bold;
+  background-color: white;
 }
+
 td{
   width: auto;
   text-align: center;
   padding: 5px 5px 5px 5px;
 }
-tbody{
-  overflow-y: scroll;
-  width: auto;
-}
-
 .corner1 {
-  margin-top: 30px;
+  top: 1%;
   width: 20%;
   transform: rotateZ( 90deg );
   height: auto;
   position:absolute;
-  top: -2vw;
-  left: 3vw;
+  left: 2%;
 }
 
 .corner2 {
-  margin-top: 30px;
+  top: 1%;
   width: 20%;
   transform: rotateZ( 180deg );
   height: auto;
   position:absolute;
-  top: -2vw;
-  right: 3vw;
+  right: 2%;
 }
 
 .corner3 {
-  margin-bottom: 30px;
+  bottom: 1%;
   width: 20%;
   transform: rotateZ( -90deg );
   height: auto;
   position:absolute;
-  bottom: -2vw;
-  right: 3vw;
+  right: 2%;
 }
 
 .corner4 {
-  margin-bottom: 30px;
+  bottom: 1%;
   width: 20%;
   transform: rotateZ( 0deg );
   height: auto;
   position:absolute;
-  bottom: -2vw;
-  left: 3vw;
+  left: 2%;
 }
 .center1 {
+  width: 40%;
+  height: auto;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+.center2 {
+  width: 40%;
+  height: auto;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+.center3 {
   width: 50%;
   height: auto;
   margin-left: 25%;
   margin-right: 25%;
 }
-.center2 {
-  width: 50%;
+.center4 {
+  width: 40%;
   height: auto;
-  margin-left: 25%;
-  margin-right: 25%;
+  margin-left: 30%;
+  margin-right: 30%;
+  position:absolute;
+  bottom: 1%;
+}
+.word1{
+  position: sticky;
+  top: 0;
+  padding: 0 10vw 0 10vw;
+  background-color: white;
+}
+.word2{
+  position: sticky;
+  top: 0;
+  padding: 0 10vw 0 10vw;
+  background-color: white;
 }
