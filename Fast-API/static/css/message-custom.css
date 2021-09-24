@@ -1,21 +1,54 @@
 body {
-    background-color: #E2F2DA;
+    background-color: #FFB27F;
+}
+
+.bard {
+    width: 32%;
+    height: auto;
+    position:absolute;
+    top: -5.5vw;
+    left: 0vw;
+}
+
+.logo {
+    width: 13%;
+    height: auto;
+    position:absolute;
+    bottom: 1vw;
+    right: 3vw;
 }
 
 .view1 {
     position:relative;
     height:85vh;
     width: 90vw;
-    text-align:center;
     margin: auto;
-    border: 8px solid #5D310C;
-    border-radius: 240px 15px 185px 15px / 15px 200px 15px 185px;
+    margin-top: 6vh;
+    padding: 0.5em 1.5em;
+    border-top: solid 5px black;
+    border-bottom: solid 5px black;
+}
+
+.view1:before, .view1:after{
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 5px;
+    height: -webkit-calc(100% + 20px);
+    height: calc(100% + 20px);
+    background-color: black;
+}
+.view1:before {left: 10px;}
+.view1:after {right: 10px;}
+.view1 ul {
+    margin: 0; 
+    padding: 0;
 }
 
 .view2 {
     font-size: 15vw;
-    font-family: Comic Sans MS;
-    color: #361d08;
+    color: black;
+    text-shadow: 6px 6px 17px white;
 
     margin: auto;
     position:absolute;
