@@ -29,7 +29,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 #: Configure CORS
 origins = [
-    "http://localhost:8080",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -129,6 +129,7 @@ def delete_user(p_id: int, u_id: int, db: Session = Depends(get_db)):
 @app.get("/place/{p_id}/message", response_model=schemas.User)
 def read_place_message(request: Request,p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
+    print(db_place.id)
     return templates.TemplateResponse('message.html',{'request': request,'place': db_place})
 
 
