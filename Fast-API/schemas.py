@@ -11,14 +11,10 @@ class PlaceDelete(BaseModel):
     pass
 # データ読み取り時に使用
 class Place(BaseModel):
+    id: int
     name: str
-    id: int
-    # ORMを使用する
-    class Config:
-        orm_mode = True
-class PlaceMessage(BaseModel):
-    id: int
-    message :str
+    updated_at: datetime
+    created_at: datetime
     # ORMを使用する
     class Config:
         orm_mode = True
@@ -35,6 +31,28 @@ class UserDelete(UserBase):
 # データ読み取り時に使用
 class User(UserBase):
     id: int
+    place_id: int
+    number: int
+    updated_at: datetime
+    created_at: datetime
+    # ORMを使用する
+    class Config:
+        orm_mode = True
+
+
+class WinnerBase(BaseModel):
+    place_id: int
+    user_id: int
+# データの作成時に使用 idといった作成時には不要なものを持たない
+class WinnerCreate(WinnerBase):
+    pass
+class WinnerDelete(WinnerBase):
+    pass
+# データ読み取り時に使用
+class Winner(WinnerBase):
+    id: int
+    updated_at: datetime
+    created_at: datetime
     # ORMを使用する
     class Config:
         orm_mode = True

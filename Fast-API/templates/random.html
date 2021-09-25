@@ -1,25 +1,33 @@
-{% extends "layout.html" %}
-{% block content %}
-
-<br>
-<div class="row">
-    <div class="col-md-12">
-        <h1>Stickee at {{ place.name }}</h1>
-        <hr>
-        <p><a href="/" class="btn btn-primary">もどる</a></p>
-        <br>
-    </div>
-</div>
-
-<br>
-
-<hr>
-<div align="center">
-    <h1> {{ user.number }} </h1>
-</div>
-
-
-<hr>
-
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stickee｜抽選画面</title>
+	<link rel="stylesheet" href="http://localhost:8000/static/css/reset.css">
+	<link rel="stylesheet" href="http://localhost:8000/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="http://localhost:8000/static/css/custom.css">
+</head>
+<body>
+	
+	<div class="odometer-container">
+		<a href="/place/{{ place.id }}/random" class="btn btn-primary">
+			<div class="odometer">
+				77777777
+			</div>
+		</a>
+	</div>
+	<script>
+		setTimeout(function(){
+			$('.odometer').html('{{ user.number | tojson }}');
+		}, 1000);/* ←回転するまでの時間(1000の時1秒) */
+		window.odometerOptions = {
+			format: '(ddd).dd'
+		};
+	</script>
+	
+	<script type="text/javascript" src="http://localhost:8000/static/js/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="http://localhost:8000/static/js/odometer.js"></script>
+</body>
+</html>

@@ -9,9 +9,9 @@
 <br><br>
 <h3>場所の追加</h3>
 <form action="/add" method="post">
-    <h5>場所の名前</h5>
-    <p><input type="text"  size="50" maxlength="200" name="place"></p>
+    <p><input type="text"  size="50" maxlength="200" name="place" Placeholder="場所の名前">&emsp;
     <button type="submit" class="btn btn-primary">追加する</button>
+    </p>
 </form>
 <br><br>
 <!--
@@ -32,32 +32,27 @@
 <h3> 場所一覧 </h3>
 <table class="table">
     <thead class="table-dark">
-    <tr>
+    <tr align="center">
         <th>id</th>
         <th>場所</th>
         <th>場所削除</th>
-        <th>表示ページ</th>
-        <th>抽選</th>
+        <th>リンク</th>
         <th>管理者ページ</th>
     </tr>
     </thead>
     <tbody>
     {% for p in place %}
-    <tr>
+    <tr align="center">
         <td>{{ p.id }}</td>
         <td>{{ p.name }}</td>
         <td>
             <form action="/delete/{{ p.id }}" method="post">
-                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm">削除</button>
+                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか?')">削除</button>
             </form>
         </td>
         <td>
-            <p><a href="/place/{{ p.id }}/message" class="btn btn-primary">Message</a></p>
-        </td>
-        <td>
-            <form action="/place/{{ p.id }}/random" method="post">
-                <button type="submit" name="random"  class="btn btn-primary">抽選</button>
-            </form>
+            <p><a href="/place/{{ p.id }}/message" class="btn btn-primary">NFC</a>&emsp;<a href="/place/{{ p.id }}/winner" class="btn btn-primary">当選者</a>&emsp;
+            <a href="/place/{{ p.id }}/random_before" class="btn btn-primary">抽選</a></p>
         </td>
         <td>
             <a href="/place/{{ p.id }}" class="btn btn-primary">Login</a>

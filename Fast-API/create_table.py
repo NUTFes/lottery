@@ -29,4 +29,11 @@ if __name__ == "__main__":
     db.add(user)
     db.commit()
 
+    winner = Winner(
+        place_id=admin.id,
+        user_id=user.id
+    )
+    db.add(winner)
+    db.commit()
+
     db.close()  # セッションを閉じる

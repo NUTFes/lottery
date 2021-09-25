@@ -7,11 +7,14 @@ os.environ["NO_PROXY"] = "localhost"
 from datetime import datetime as dt
 import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
+import asyncio
+import websockets
 
-REQUEST_PLACE_ID = 1
-REQUEST_URL = "http://localhost:8000"
-POST_NUMBER_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/add'
-POST_MESSAGE_URI = REQUEST_URL +'/api/place/'+ str(REQUEST_PLACE_ID) +'/message/add'
+PLACE_ID  = 1
+APP_URL   = "http://localhost:8000"
+WS_URL    =  "ws://localhost:8000"
+POST_URI  =  f'{APP_URL}/api/place/{PLACE_ID}/add'
+SEND_URI  =  f'{WS_URL}/ws'
 
 
 def scan_card(): 
@@ -19,8 +22,8 @@ def scan_card():
   clf.connect(rdwr={'on-connect': connected})
   clf.close()
   if confirm_registerable():
+    send_message(str(res["number"]))
     post_res_number(res["number"])
-    send_message(str(res["expiration"])) 
 
 
 def connected(tag):
@@ -40,10 +43,9 @@ def connected(tag):
         'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
       }
     except Exception as e: #多分これのせいでIOErrorができない
-      print("error: %s" % e)
+      send_message("error: %s" % e)
   else:
-    print("error: tag isn't Type3Tag")
-
+    send_message("error: tag isn't Type3Tag")
 
 def confirm_registerable():
   global oldres
@@ -55,39 +57,54 @@ def confirm_registerable():
   oldres = res
   return True
 
+def confirm_sendable(message):
+  global oldmessage
+  if message == oldmessage:
+    return False
+  oldmessage = message
+  return True
+
 
 def post_res_number(number):
   headers = {
     'Content-Type': 'application/json',
   }
   data = {
-    "place_id": REQUEST_PLACE_ID,
+    "place_id": PLACE_ID,
     "number": number
   }
-  response = requests.post(POST_NUMBER_URI, headers=headers, data=json.dumps(data))
+  response = requests.post(POST_URI, headers=headers, data=json.dumps(data))
   print(response.text)
 
+def send_message(message):
+  if confirm_sendable(message):
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(send_message_noasync(message))
 
-def send_message(message: str):
-  headers = {
-    'Content-Type': 'application/json',
-  }
-  data = {
-    "id": REQUEST_PLACE_ID,
-    "message": message
-  }
-  response = requests.post(POST_MESSAGE_URI, headers=headers, data=json.dumps(data))
-  print(response.text)
-
+async def send_message_noasync(message):
+  # ウェブソケットに接続する。
+  async with websockets.connect(SEND_URI) as websocket:
+    # メッセージを送信する。
+    data = {
+      "place_id": PLACE_ID,
+      "client"  : "NFC", 
+      "message" : message
+    }
+    await websocket.send(json.dumps(data))
+    # WebSocketサーバからメッセージを受信すればコンソールに出力する。
+    data = await websocket.recv()
+    # コンソール出力
+    print(data)
 
 
 if __name__ == '__main__':
-  res = {
+  oldmessage = ''
+  oldres = {
     'number': 00000000, 
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
   }
-  oldres = {
+  res = {
     'number': 00000000, 
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
