@@ -50,6 +50,11 @@
 			$('.odometer').html(<div id='number'></div>);
 		}, 1000);/* ←回転するまでの時間(1000の時1秒) */
 	</script>
+  <script>
+    window.odometerOptions = {
+     format: '(ddd).dd'
+    };
+  </script>
 	<script type="text/javascript" src="http://localhost:3000/static/js/jquery-3.6.0.min.js"></script>
 	<script type="text/javascript" src="http://localhost:3000/static/js/odometer.js"></script>
   <script type="text/javascript" src="http://localhost:3000/static/js/websocket.js"></script>
