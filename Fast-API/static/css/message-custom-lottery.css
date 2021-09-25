@@ -2,9 +2,56 @@ body {
     width: 100vw;
     height: 92vh;
     position: relative;
-    background-image: url(http://localhost:8000/static/images/bg-16-9.png);
+    background-image: url(http://localhost:8000/static/images/bg_flame.png);
     background-size: contain;
     background-position: center;
+}
+
+.corner1 {
+    width: 20%;
+    transform: rotateZ( 90deg );
+    height: auto;
+    position:absolute;
+    top: -2vw;
+    left: 3vw;
+}
+
+.corner2 {
+    width: 20%;
+    transform: rotateZ( 180deg );
+    height: auto;
+    position:absolute;
+    top: -2vw;
+    right: 3vw;
+}
+
+.corner3 {
+    width: 20%;
+    transform: rotateZ( -90deg );
+    height: auto;
+    position:absolute;
+    bottom: -2vw;
+    right: 3vw;
+}
+
+.corner4 {
+    width: 20%;
+    transform: rotateZ( 0deg );
+    height: auto;
+    position:absolute;
+    bottom: -2vw;
+    left: 3vw;
+}
+
+.title {
+    width: 43%;
+    height: auto;
+    position:absolute;
+    top:35%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
 }
 
 .view1 {
@@ -26,7 +73,7 @@ body {
 
     margin: auto;
     position:absolute;
-    top:50%;
+    top:55%;
     left:50%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
