@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from datetime import datetime
 
-from sqlalchemy.sql.expression import null
+from sqlalchemy.sql.expression import null, update
 import models
 import schemas
 import random
@@ -64,18 +64,49 @@ def get_latest_users(db: Session, p_id: int):
     db_user = db.query(models.User).filter(models.User.updated_at == res.latest_update).first()
     return db_user
 
-def get_random_user(db: Session, p_id: int):
+# def get_random_user(db: Session, p_id: int, starttime:datetime, endtime:datetime):
+#     winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
+#     list = []
+#     for winner in winners:
+#         list.append(winner.user_id)
+#     res = db.query(models.User).filter(models.User.id.notin_(list),models.User.updated_at>=starttime,models.User.updated_at<=endtime).all()
+#     try:
+#         db_user = random.choice(res)
+#     except:
+#         return None
+          
+#     return db_user
+
+def get_random_user(db: Session, p_id: int, starttime:datetime, endtime:datetime):
     winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
     list = []
     for winner in winners:
         list.append(winner.user_id)
-    res = db.query(models.User).filter(models.User.id.notin_(list)).all()
+    res = db.query(models.User).filter(models.User.id.notin_(list),models.User.updated_at>=starttime,models.User.updated_at<=endtime).all()
     try:
+
         db_user = random.choice(res)
     except:
         return None
-#        db_user="抽選番号がありませ"
+          
     return db_user
+
+def update_time(db: Session, time:schemas.Time):
+    db_time = db.query(models.Time).filter(models.Time.id == 1).first()
+    print(vars(db_time))
+    db_time.start = time.start
+    db_time.end = time.end
+    db.commit()
+    db.refresh(db_time)
+    return db_time
+
+def get_times(db: Session, time: int):
+    return db.query(models.User).filter(models.User == time).all()
+
+def get_limit_time(db: Session ):
+    time = db.query(models.Time).first()
+    return time
+
 
 
 def get_win_users(db: Session, p_id: int):

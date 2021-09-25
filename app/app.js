@@ -19,8 +19,7 @@ var server = http.createServer(function(req,res){
     'jpg' :'image/jpeg',
     'jpeg':'image/jpeg',
     'png' :'image/png',
-    'ico' :'image/x-icon',
-    '/'   :'text/html'
+    'ico' :'image/x-icon'
   };
 
   switch(key = type[type.length - 1]){
@@ -39,6 +38,7 @@ var server = http.createServer(function(req,res){
       break;
 
     default:
+      key = 'html'
       path += '/index.html';
       encoding = 'utf-8';
   };

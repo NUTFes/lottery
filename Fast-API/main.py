@@ -10,6 +10,7 @@ from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
+from datetime import datetime
 from database import SessionLocal
 from notifier import Notifier
 notifier = Notifier()
@@ -62,19 +63,39 @@ def read_places(request: Request, p_id: int, db: Session = Depends(get_db)):
 
 @app.get("/", response_model=List[schemas.Place])
 def read_places(request: Request, db: Session = Depends(get_db)):
-    db_places = crud.get_places(db)
-    return templates.TemplateResponse('index.html', {'request': request, 'place':db_places})
+    db_time     = crud.get_limit_time(db)
+    start       = db_time.start.strftime('%Y-%m-%d')
+    starttime   = db_time.start.strftime('%H:%M')
+    end         = db_time.end.strftime('%Y-%m-%d')
+    endtime     = db_time.end.strftime('%H:%M')
 
+
+    db_places = crud.get_places(db)
+    return templates.TemplateResponse('index.html', {'request': request, 'place':db_places, 'startdate':start,'starttime':starttime,'enddate':end,'endtime':endtime})
 @app.post("/add", response_model=schemas.Place)
 async def create_place(request: Request, db: Session = Depends(get_db)):
     place = schemas.PlaceCreate
     data = await request.form() 
     place.name = data['place']
+    print(data)
     db_place = crud.get_place_by_name(db, name=place.name)
     if db_place:
         raise HTTPException(status_code=400, detail="Place already registered")
     crud.create_place(db=db, place=place)
     return RedirectResponse(url="/", status_code=303)
+
+@app.post("/updatetime",response_model=schemas.Time)
+async def update_time(request: Request, db:Session=Depends(get_db)):
+    data = await request.form()
+    start = data['startdate'] +  " " +data['starttime']
+    end = data['enddate'] + " " +data['endtime']
+    time = schemas.Time
+    time.start=datetime.strptime(start, '%Y-%m-%d %H:%M')
+    time.end=datetime.strptime(end, '%Y-%m-%d %H:%M')
+    crud.update_time(db , time)
+    return RedirectResponse(url="/", status_code=303)
+
+
 
 @app.post("/delete/{p_id}", response_model=schemas.Place)
 def delete_place(p_id: int, db: Session = Depends(get_db)):
@@ -90,6 +111,7 @@ def delete_place(p_id: int, db: Session = Depends(get_db)):
 def read_users(request: Request, p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
     db_users = crud.get_users(db, p_id)
+
     if db_users is None:
         raise HTTPException(status_code=404, detail="User not found")
     return templates.TemplateResponse('place.html',
@@ -143,7 +165,11 @@ def read_random_users(request: Request, p_id: int, db: Session = Depends(get_db)
 @app.get("/place/{p_id}/random", response_model=schemas.User)
 async def read_random_users(request: Request, p_id: int, db: Session = Depends(get_db)):
     db_place = crud.get_place_by_id(db, id=p_id)
-    db_user = crud.get_random_user(db, p_id)
+    time = crud.get_limit_time(db)
+    # DBに登録したTimeを引っ張り出してくる
+    # time.start, time.endを使ってランダムやるよ
+    db_user = crud.get_random_user(db, p_id,time.start,time.end)
+    db_place = crud.get_place_by_id(db, id=p_id)
     if db_user is None:
         error="抽選番号がありません"
         return templates.TemplateResponse('error.html',

@@ -56,3 +56,7 @@ class Winner(WinnerBase):
     # ORMを使用する
     class Config:
         orm_mode = True
+
+class Time(BaseModel):
+    start:datetime
+    end:datetime

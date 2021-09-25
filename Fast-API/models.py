@@ -62,6 +62,26 @@ class User(Base):
         server_default=current_timestamp(),
     )
 
+class Time(Base):
+    """
+    Placeテーブル
+    id    : 主キー
+    start :　開始時間
+    end   : 終了時間
+    """
+    __tablename__ = 'time'
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    start = Column(
+        'starttime',
+        DateTime,
+        default=datetime.strptime("2021-01-01 00:00", '%Y-%m-%d %H:%M'),
+        nullable=False,
+    )
+    end = Column(
+        'endtime',
+        DateTime,
+        default=datetime.strptime("2021-12-31 00:00", '%Y-%m-%d %H:%M'),
+        nullable=False)
 class Winner(Base):
     """
     当選者テーブル

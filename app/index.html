@@ -10,11 +10,11 @@
 	<link rel="stylesheet" href="http://localhost:3000/static/css/custom-mobile.css">
   <script type="text/javascript">
     // グローバル変数定義
-    var PLACE_ID =  Number('1')
-    var WS_URL = "ws://localhost:8000"
-    var WS_URI = `${WS_URL}/ws`
-    var APP_URL= "http://localhost:8000"
-    var APP_URI= `${APP_URL}`
+    var PLACE_ID  =  Number('1')
+    var WS_URL    = "ws://localhost:8000"
+    var WS_URI    = `${WS_URL}/ws`
+    var APP_URL   = "http://localhost:8000"
+    var APP_URI   = `${APP_URL}`
   </script>
 </head>
 <body>
@@ -57,32 +57,17 @@
     fetch(`${APP_URL}/api/place/${PLACE_ID}/winner`)
       .then(response => response.json())
       .then((data) => {
-        console.log(data)
-        console.log(data[0].number)
-        console.log(data.length)
-
-        
-
-
         for (let i=0;i<data.length;i++){
           let table = document.getElementById('targetTable');
           let newRow = table.insertRow();
-
           let newCell = newRow.insertCell();
           let newText = document.createTextNode(i+1);
           newCell.appendChild(newText);
-
           newCell = newRow.insertCell();
           newText = document.createTextNode(data[i].number);
           newCell.appendChild(newText);
-        }
-
-        
-        
+        } 
       });
-   
-
-
   </script>
 </body>
 </html>
