@@ -9,3 +9,13 @@ services:
     ports:
       - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+  web:
+    container_name: "web"
+    build: ./docker/node
+    restart: always
+    tty: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./app:/usr/src/app

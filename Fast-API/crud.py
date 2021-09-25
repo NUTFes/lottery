@@ -8,13 +8,6 @@ import schemas
 import random
 
 def get_places(db: Session):
-    # list = []
-    # print("=============================")
-    # for place in db.query(models.Place).all():
-    #     print("=============================")
-    #     list.append(place.id)
-    #     print(place.id)
-    # print("=============================")
     return db.query(models.Place).all()
 
 def get_place_by_name(db: Session, name: str):

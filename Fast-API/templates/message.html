@@ -1,37 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<script type="text/javascript">
+  // グローバル変数定義
+  var PLACE_ID =  Number('{{ place.id | tojson }}')
+  var WS_URL = "ws://localhost:8000"
+  var WS_URI = `${WS_URL}/ws`
+</script>
+
 <br>
 <div class="row">
-    <div class="col-md-12">
-        <h1>Stickee at {{ place.name }}</h1>
-        <hr>
-        <p><a href="/" class="btn btn-primary">もどる</a></p>
-        <br>
-    </div>
+  <div class="col-md-12">
+    <h1>Stickee at {{ place.name }}</h1>
+    <hr>
+    <p><a href="/" class="btn btn-primary">もどる</a></p>
+    <br>
+  </div>
 </div>
 
 <br>
 
 <hr>
 <div align="center">
-    <h1>
-        <ul id='messages'></ul>
-    </h1>
+  <h1>
+    <ul id='messages'></ul>
+  </h1>
     
-</div>        
-<script>
-    var WS_URL = "ws://localhost:8000"
-    var PLACE_ID = '{{ place.id | tojson }}'
-    messages = document.getElementById('messages')
-    messages.innerHTML = "Hello Stickee!"
-    var ws = new WebSocket(WS_URL + '/api/place/'+ PLACE_ID + '/ws');
-    ws.onmessage = function(event) {
-        messages = document.getElementById('messages')
-        var message = document.createTextNode(event.data)
-        messages.innerHTML = event.data
-    }
-</script>
+</div>
+
+<script type="text/javascript" src="http://localhost:8000/static/js/websocket.js"></script>
 
 <hr>
 
