@@ -1,7 +1,7 @@
 if(disp_ws_num=document.getElementById('number'))
   disp_ws_num.innerHTML = "77777777"
 if(disp_ws_txt=document.getElementById('messages'))
-  disp_ws_txt.innerHTML = "Yey! You're on Stickee!"
+  disp_ws_txt.innerHTML = "Hello Stickee!"
 
 var ws = new WebSocket(WS_URI);
 ws.onmessage = function(event) {

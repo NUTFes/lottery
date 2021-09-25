@@ -49,4 +49,4 @@ var server = http.createServer(function(req,res){
   res.end(fs.readFileSync(__dirname + path), encoding);
 }).listen(3000);
 
-console.log('Server running http://localhost:3000/');
+console.log('INFO:     Server running http://localhost:3000/');

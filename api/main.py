@@ -53,14 +53,6 @@ def get_db():
 templates = Jinja2Templates(directory="templates")
 jinja_env = templates.env
 
-@app.get("/place/{p_id}/chat", response_model=List[schemas.Winner])
-def read_places(request: Request, p_id: int, db: Session = Depends(get_db)):
-    place = schemas.Place
-    place.id = p_id
-    db_place = crud.get_place_by_id(db, id=place.id)
-    db_winners = crud.get_win_users(db, p_id)
-    return templates.TemplateResponse('chat.html', {'request': request, 'place':db_place,'winner': db_winners})
-
 @app.get("/", response_model=List[schemas.Place])
 def read_places(request: Request, db: Session = Depends(get_db)):
     db_time     = crud.get_limit_time(db)
@@ -68,10 +60,9 @@ def read_places(request: Request, db: Session = Depends(get_db)):
     starttime   = db_time.start.strftime('%H:%M')
     end         = db_time.end.strftime('%Y-%m-%d')
     endtime     = db_time.end.strftime('%H:%M')
-
-
     db_places = crud.get_places(db)
     return templates.TemplateResponse('index.html', {'request': request, 'place':db_places, 'startdate':start,'starttime':starttime,'enddate':end,'endtime':endtime})
+
 @app.post("/add", response_model=schemas.Place)
 async def create_place(request: Request, db: Session = Depends(get_db)):
     place = schemas.PlaceCreate
@@ -94,8 +85,6 @@ async def update_time(request: Request, db:Session=Depends(get_db)):
     time.end=datetime.strptime(end, '%Y-%m-%d %H:%M')
     crud.update_time(db , time)
     return RedirectResponse(url="/", status_code=303)
-
-
 
 @app.post("/delete/{p_id}", response_model=schemas.Place)
 def delete_place(p_id: int, db: Session = Depends(get_db)):

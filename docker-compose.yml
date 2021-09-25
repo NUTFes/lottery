@@ -2,21 +2,18 @@ version: '3'
 
 services:
   api:
-    container_name: FastAPI
-    build: ./docker/Fast-API
+    container_name: "ST-API"
+    build: ./docker/fastapi
     volumes:
-      - ./Fast-API:/var/www/html
-      
+      - ./api:/var/www/html
     ports:
       - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
   web:
-    container_name: "web"
+    container_name: "ST-WEB"
     build: ./docker/node
-    restart: always
-    tty: true
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ./app:/usr/src/app

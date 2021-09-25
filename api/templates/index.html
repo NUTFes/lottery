@@ -13,22 +13,23 @@
     <button type="submit" class="btn btn-primary">追加する</button>
     </p>
 </form>
-<br><br>
+<br>
 <!--
     時間の初期値をDBのTimeの時間で設定したい
     がんばって
 -->
 <form action="/updatetime" method="post">
-    <h5>抽選期間</h5>
-    <h7>開始時間</h7>
+    <h3>抽選期間</h3>
+    <h7>開始時間：</h7>
     <input type="date" name="startdate" value="{{ startdate }}">
     <input type="time" name="starttime" value="{{ starttime }}">
-    <br><h7>終了時間</h7>
+    <br>
+    <h7>終了時間：</h7>
     <input type="date" name="enddate" value="{{ enddate }}">
     <input type="time" name="endtime" value="{{ endtime }}">
-    <br><button type="sudmit" class="btn btn-primary">登録</button>
+    &emsp;<button type="sudmit" class="btn btn-primary" onclick="return alert('抽選期間を設定しました')">設定</button>
 </form>
-
+<br>
 <h3> 場所一覧 </h3>
 <table class="table">
     <thead class="table-dark">
