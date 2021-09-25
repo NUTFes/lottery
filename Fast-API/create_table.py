@@ -16,6 +16,11 @@ if __name__ == "__main__":
     db.add(admin)  # 追加
     db.commit()  # データベースにコミット
 
+    time = Time()
+    db.add(time)
+    db.commit()
+
+
     # サンプルタスク
     user = User(
         place_id=admin.id,

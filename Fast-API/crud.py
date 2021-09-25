@@ -91,5 +91,18 @@ def update_place_message(db: Session, place: schemas.PlaceMessage):
     db.refresh(db_place)
     return db_place
 
+def update_time(db: Session, time:schemas.Time):
+    db_time = db.query(models.Time).filter(models.Time.id == 1).first()
+    print(vars(db_time))
+    db_time.start = time.start
+    db_time.end = time.end
+    db.commit()
+    db.refresh(db_time)
+    return db_time
+
 def get_times(db: Session, time: int):
     return db.query(models.User).filter(models.User == time).all()
+
+def get_limit_time(db: Session ):
+    time = db.query(models.Time).first()
+    return time

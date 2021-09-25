@@ -14,15 +14,20 @@
     <button type="submit" class="btn btn-primary">追加する</button>
 </form>
 <br><br>
-
+<!--
+    時間の初期値をDBのTimeの時間で設定したい
+    がんばって
+-->
+<form action="/updatetime" method="post">
     <h5>抽選期間</h5>
     <h7>開始時間</h7>
-    <input type="date" name="startdate" form="period">
-    <input type="time" name="starttime" form="period">
+    <input type="date" name="startdate" value="{{ startdate }}">
+    <input type="time" name="starttime" value="{{ starttime }}">
     <br><h7>終了時間</h7>
-    <input type="date" name="enddate" form="period">
-    <input type="time" name="endtime" form="period">
-    
+    <input type="date" name="enddate" value="{{ enddate }}">
+    <input type="time" name="endtime" value="{{ endtime }}">
+    <br><button type="sudmit" class="btn btn-primary">登録</button>
+</form>
 
 <h3> 場所一覧 </h3>
 <table class="table">
@@ -50,7 +55,7 @@
             <p><a href="/place/{{ p.id }}/message" class="btn btn-primary">Message</a></p>
         </td>
         <td>
-            <form action="/place/{{ p.id }}/random" method="post" id="period">
+            <form action="/place/{{ p.id }}/random" method="post">
                 <button type="submit" name="random"  class="btn btn-primary">抽選</button>
             </form>
         </td>

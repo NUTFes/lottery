@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -37,3 +38,7 @@ class User(UserBase):
     # ORMを使用する
     class Config:
         orm_mode = True
+
+class Time(BaseModel):
+    start:datetime
+    end:datetime
