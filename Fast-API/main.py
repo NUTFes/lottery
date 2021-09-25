@@ -50,11 +50,11 @@ jinja_env = templates.env
 
 @app.get("/", response_model=List[schemas.Place])
 def read_places(request: Request, db: Session = Depends(get_db)):
-    db_time=crud.get_limit_time(db)
-    start = db_time.start.strftime('%Y-%m-%d')
-    starttime=db_time.start.strftime('%H:%M')
-    end = db_time.end.strftime('%Y-%m-%d')
-    endtime=db_time.end.strftime('%H:%M')
+    db_time     = crud.get_limit_time(db)
+    start       = db_time.start.strftime('%Y-%m-%d')
+    starttime   = db_time.start.strftime('%H:%M')
+    end         = db_time.end.strftime('%Y-%m-%d')
+    endtime     = db_time.end.strftime('%H:%M')
 
 
     db_places = crud.get_places(db)

@@ -59,13 +59,13 @@ class Time(Base):
     start = Column(
         'starttime',
         DateTime,
-        default=datetime.strptime("1990-01-01 00:00", '%Y-%m-%d %H:%M'),
+        default=datetime.strptime("2021-01-01 00:00", '%Y-%m-%d %H:%M'),
         nullable=False,
     )
     end = Column(
         'endtime',
         DateTime,
-        default=datetime.strptime("2030-01-01 00:00", '%Y-%m-%d %H:%M'),
+        default=datetime.strptime("2021-12-31 00:00", '%Y-%m-%d %H:%M'),
         nullable=False)
 
 
