@@ -11,11 +11,11 @@ import websockets
 import random
 from time import sleep
 
-PLACE_ID = 1
-APP_URL = "http://localhost:8000"
-WS_URL =  "ws://localhost:8000"
-POST_URI = APP_URL +'/api/place/'+ str(PLACE_ID) + '/add'
-SEND_URI = WS_URL + '/api/place/'+ str(PLACE_ID) + '/ws'
+PLACE_ID  = 1
+APP_URL   = "http://localhost:8000"
+WS_URL    =  "ws://localhost:8000"
+POST_URI  =  f'{APP_URL}/api/place/{PLACE_ID}/add'
+SEND_URI  =  f'{WS_URL}/ws'
 
 
 def scan_card(): 
@@ -57,7 +57,12 @@ async def send_message(message):
   # ウェブソケットに接続する。
   async with websockets.connect(SEND_URI) as websocket:
     # メッセージを送信する。
-    await websocket.send(message)
+    data = {
+      "place_id": PLACE_ID,
+      "client"  : "NFC", 
+      "message" : message
+    }
+    await websocket.send(json.dumps(data))
     # WebSocketサーバからメッセージを受信すればコンソールに出力する。
     data = await websocket.recv()
     # コンソール出力
@@ -65,7 +70,7 @@ async def send_message(message):
 
 if __name__ == '__main__':
   oldres = {
-    'number': 00000000, 
+    'number'    : 00000000, 
     'expiration': 196001010000, 
     'updated_at': int(dt.now().strftime('%Y%m%d%H%M'))
   }

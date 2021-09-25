@@ -6,14 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Stickee｜抽選画面</title>
 	<link rel="stylesheet" href="http://localhost:8000/static/css/reset.css">
-	<link rel="stylesheet" href="http://localhost:8000/static/css/odometer-theme-slot-machine.css">
 	<link rel="stylesheet" href="http://localhost:8000/static/css/custom.css">
+	<link rel="stylesheet" href="http://localhost:8000/static/css/standby.css">
 </head>
 <body>
 
 	<div class="odometer-container">
-		<div class="odometer">	
-			<a href="/place/{{ place.id }}/random" class="btn btn-primary">Click to Start</a></p>
+		<div>
+				<p>
+				<button onclick="location.href='/place/{{ place.id }}/random'" class="btn01" >Click to Start</button>
+				</p>	
 		</div>
 	</div>
 	

@@ -2,14 +2,14 @@
   width: 100vw;
   height: 100vh;
   position: relative;
-  background-image: url(http://localhost:8000/static/images/bg-4-3.png);
+  background-image: url(http://localhost:3000/static/images/bg_none-relief_16-9.png);
   background-size: contain;
-  background-position: center;
+  background-position: top;
 }
 .odometer {
-  font-size: 11.5vh;
+  font-size: 25px;
   position: absolute;
-  top: 50%;
+  top: 14%;
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
@@ -22,4 +22,21 @@
     -ms-transition-duration: 5s !important;
     -o-transition-duration: 5s !important;
     transition-duration: 5s !important
+}
+
+table{
+  width: auto;
+}
+thead,tbody{
+  display: block;
+  width: auto;
+}
+td{
+  width: auto;
+  text-align: center;
+}
+tbody{
+  overflow-y: scroll;
+  height: 100px;
+  width: auto;
 }

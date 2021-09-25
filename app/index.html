@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stickee｜抽選結果</title>
+	<link rel="stylesheet" href="http://localhost:3000/static/css/reset.css">
+	<link rel="stylesheet" href="http://localhost:3000/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="http://localhost:3000/static/css/custom-mobile.css">
+  <script type="text/javascript">
+    // グローバル変数定義
+    var PLACE_ID  =  Number('1')
+    var WS_URL    = "ws://localhost:8000"
+    var WS_URI    = `${WS_URL}/ws`
+    var APP_URL   = "http://localhost:8000"
+    var APP_URI   = `${APP_URL}`
+  </script>
+</head>
+<body>
+	
+	<div class="odometer-container">
+		<div class="odometer">
+			77777777
+		</div>
+  </div>
+
+  
+    
+    
+  </div>
+
+  <br><br>
+<div style="width: 100%">
+  <table align="center" id="targetTable">
+    <tr>
+        <th>当選番号</th>
+        <th>学籍番号</th>
+    </tr>
+    </thead>
+
+  </table>
+  <br><br>
+  
+</div>
+
+
+	<script>
+		setTimeout(function(){
+			$('.odometer').html(<div id='number'></div>);
+		}, 1000);/* ←回転するまでの時間(1000の時1秒) */
+	</script>
+	<script type="text/javascript" src="http://localhost:3000/static/js/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="http://localhost:3000/static/js/odometer.js"></script>
+  <script type="text/javascript" src="http://localhost:3000/static/js/websocket.js"></script>
+  <script>
+    fetch(`${APP_URL}/api/place/${PLACE_ID}/winner`)
+      .then(response => response.json())
+      .then((data) => {
+        for (let i=0;i<data.length;i++){
+          let table = document.getElementById('targetTable');
+          let newRow = table.insertRow();
+          let newCell = newRow.insertCell();
+          let newText = document.createTextNode(i+1);
+          newCell.appendChild(newText);
+          newCell = newRow.insertCell();
+          newText = document.createTextNode(data[i].number);
+          newCell.appendChild(newText);
+        } 
+      });
+  </script>
+</body>
+</html>

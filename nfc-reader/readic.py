@@ -10,11 +10,11 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 import asyncio
 import websockets
 
-PLACE_ID = 1
-APP_URL = "http://localhost:8000"
-WS_URL =  "ws://localhost:8000"
-POST_URI = APP_URL +'/api/place/'+ str(PLACE_ID) +'/add'
-SEND_URI = WS_URL + '/api/place/'+ str(PLACE_ID) + '/ws'
+PLACE_ID  = 1
+APP_URL   = "http://localhost:8000"
+WS_URL    =  "ws://localhost:8000"
+POST_URI  =  f'{APP_URL}/api/place/{PLACE_ID}/add'
+SEND_URI  =  f'{WS_URL}/ws'
 
 
 def scan_card(): 
@@ -85,7 +85,12 @@ async def send_message_noasync(message):
   # ウェブソケットに接続する。
   async with websockets.connect(SEND_URI) as websocket:
     # メッセージを送信する。
-    await websocket.send(message)
+    data = {
+      "place_id": PLACE_ID,
+      "client"  : "NFC", 
+      "message" : message
+    }
+    await websocket.send(json.dumps(data))
     # WebSocketサーバからメッセージを受信すればコンソールに出力する。
     data = await websocket.recv()
     # コンソール出力

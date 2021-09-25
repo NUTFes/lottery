@@ -14,7 +14,20 @@
     </p>
 </form>
 <br><br>
-
+<!--
+    時間の初期値をDBのTimeの時間で設定したい
+    がんばって
+-->
+<form action="/updatetime" method="post">
+    <h5>抽選期間</h5>
+    <h7>開始時間</h7>
+    <input type="date" name="startdate" value="{{ startdate }}">
+    <input type="time" name="starttime" value="{{ starttime }}">
+    <br><h7>終了時間</h7>
+    <input type="date" name="enddate" value="{{ enddate }}">
+    <input type="time" name="endtime" value="{{ endtime }}">
+    <br><button type="sudmit" class="btn btn-primary">登録</button>
+</form>
 
 <h3> 場所一覧 </h3>
 <table class="table">
@@ -49,7 +62,6 @@
     {% endfor %}
     </tbody>
 </table>
-
 <hr>
 <p>This is a student ID keeper powered by <b>FastAPI</b>!</p>
 
