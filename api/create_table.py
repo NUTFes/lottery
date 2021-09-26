@@ -11,28 +11,19 @@ if __name__ == "__main__":
         # テーブルを作成する
         Base.metadata.create_all(engine)
 
-    # サンプルユーザ(admin)を作成
-    admin = Place(name='admin')
-    db.add(admin)  # 追加
-    db.commit()  # データベースにコミット
+    admin = Place(name='体育館前')
+    db.add(admin)
+    db.commit()
 
     time = Time()
     db.add(time)
     db.commit()
 
-
-    # サンプルタスク
-    user = User(
-        place_id=admin.id,
-        number=10001000
-    )
+    user = User()
     db.add(user)
     db.commit()
 
-    winner = Winner(
-        place_id=admin.id,
-        user_id=user.id
-    )
+    winner = Winner()
     db.add(winner)
     db.commit()
 
