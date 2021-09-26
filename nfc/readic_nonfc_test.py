@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
+from requests.auth import HTTPBasicAuth
 import json
-import os
-os.environ["NO_PROXY"] = "localhost"
 from datetime import datetime as dt
 import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -11,11 +10,19 @@ import websockets
 import random
 from time import sleep
 
+# .env ファイルをロードして環境変数へ反映
+from dotenv import load_dotenv
+load_dotenv()
+import os
+os.environ["NO_PROXY"] = "localhost"
+ST_USER   = os.getenv('ST_USER')
+ST_PASS   = os.getenv('ST_PASS')
+ST_APP_URL = os.getenv('ST_APP_URL')
+ST_WS_URL = os.getenv('ST_WS_URL')
+
 PLACE_ID  = 1
-APP_URL   = "http://localhost:8000"
-WS_URL    =  "ws://localhost:8000"
-POST_URI  =  f'{APP_URL}/api/place/{PLACE_ID}/add'
-SEND_URI  =  f'{WS_URL}/ws'
+POST_URI  =  f'{ST_APP_URL}/api/place/{PLACE_ID}/add'
+SEND_URI  =  f'{ST_WS_URL}/ws'
 
 
 def scan_card(): 
@@ -49,7 +56,8 @@ def post_res_number(number):
       "place_id": PLACE_ID,
       "number": number
     }
-    response = requests.post(POST_URI, headers=headers, data=json.dumps(data))
+    response = requests.post(POST_URI, headers=headers, data=json.dumps(data),
+    auth=HTTPBasicAuth(ST_USER, ST_PASS))
     print(response.text)
 
 
