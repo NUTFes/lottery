@@ -82,9 +82,8 @@ def get_random_user(db: Session, p_id: int, starttime:datetime, endtime:datetime
     list = []
     for winner in winners:
         list.append(winner.user_id)
-    res = db.query(models.User).filter(models.User.id.notin_(list),models.User.updated_at>=starttime,models.User.updated_at<=endtime).all()
+    res = db.query(models.User).filter(models.User.id.notin_(list), models.User.updated_at>=starttime, models.User.updated_at<=endtime).all()
     try:
-
         db_user = random.choice(res)
     except:
         return None
@@ -133,3 +132,7 @@ def delete_winner(db: Session, winner: schemas.Winner):
     db.delete(db_winner)
     db.commit()
     return
+
+def get_admin_by_name(db: Session, name):
+    admin = db.query(models.Admin).filter(models.Admin.name==name).first()
+    return admin

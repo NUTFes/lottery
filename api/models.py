@@ -2,9 +2,8 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from datetime import datetime
 from sqlalchemy.sql.functions import current_timestamp
 
-
 from database import Base, engine
-
+import hashlib
 
 class Place(Base):
     """
@@ -109,6 +108,21 @@ class Winner(Base):
         nullable=False,
         server_default=current_timestamp(),
     )
+class Admin(Base):
+    """
+    Adminテーブル
+    id      : 主キー
+    name    :　開始時間
+    password: 終了時間
+    """
+    __tablename__ = 'admin'
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    name = Column('name', String(256))
+    password = Column('password', String(256))
+    def __init__(self, name, password):
+        self.name = name
+        # パスワードはハッシュ化して保存
+        self.password = hashlib.md5(password.encode()).hexdigest()
 
 
 if __name__ == "__main__":

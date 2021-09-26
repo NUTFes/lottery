@@ -9,7 +9,14 @@
 	<link rel="stylesheet" href="http://localhost:8000/static/css/odometer-theme-slot-machine.css">
 	<link rel="stylesheet" href="http://localhost:8000/static/css/message-custom-lottery.css">
 </head>
-<body>
+<script type="text/javascript">
+  // グローバル変数定義
+  var PLACE_ID =  Number('{{ place.id | tojson }}')
+  var WS_URL = "ws://localhost:8000"
+  var WS_URI = `${WS_URL}/ws`
+  var APP_URL = "http://localhost:8000"
+</script>
+<body onLoad="refcheck()">
 	<div class="view1" align="center">
         <img src="http://localhost:8000/static/images/bg_corner.png" class="corner1" />
         <img src="http://localhost:8000/static/images/bg_corner.png" class="corner2" />
@@ -22,13 +29,6 @@
     </div> 
 </body>
 
-<script type="text/javascript">
-  // グローバル変数定義
-  var PLACE_ID =  Number('{{ place.id | tojson }}')
-  var WS_URL = "ws://localhost:8000"
-  var WS_URI = `${WS_URL}/ws`
-</script>
-
 <br>
 <div class="row">
   <div class="col-md-12">
@@ -38,15 +38,12 @@
     <br>
   </div>
 </div>
-
 <br>
-
 <hr>
 <div align="center">
   <h1>
     <ul id='messages'></ul>
   </h1>
-    
 </div>
 
 <script type="text/javascript" src="http://localhost:8000/static/js/websocket.js"></script>
