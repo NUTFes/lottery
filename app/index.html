@@ -18,32 +18,36 @@
   </script>
 </head>
 <body>
-	
 	<div class="odometer-container">
-		<div class="odometer">
+
+
+    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner1" />
+    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner2" />
+    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner3" />
+    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner4" />
+    <div class="righttopcorner"></div>
+    <br /><br /><br />
+    <img src="http://localhost:3000/static/images/side.png" class="center3" />
+    <img src="http://localhost:3000/static/images/Lotelly.png" class="center2" />
+		<span class="odometer">
 			77777777
-		</div>
+    </span>
+    <br /><br /><br />
+    <img src="http://localhost:3000/static/images/side.png" class="center3" />
+    <img src="http://localhost:3000/static/images/Results.png" class="center1" />
+
+    <br /><br />
+    <table id="targetTable" class="design">
+      <thead>
+        <tr>
+          <th class="word1"><br />当選番号<hr color="gold" /></th>
+          <th class="word2"><br />学籍番号<hr color="gold" /></th>
+        </tr>
+      </thead>
+    </table>
+    <br /><br /><br />
+    <img src="http://localhost:3000/static/images/up.png" class="center4" />
   </div>
-
-  
-    
-    
-  </div>
-
-  <br><br>
-<div style="width: 100%">
-  <table align="center" id="targetTable">
-    <tr>
-        <th>当選番号</th>
-        <th>学籍番号</th>
-    </tr>
-    </thead>
-
-  </table>
-  <br><br>
-  
-</div>
-
 
 	<script>
 		setTimeout(function(){
@@ -65,12 +69,23 @@
         for (let i=0;i<data.length;i++){
           let table = document.getElementById('targetTable');
           let newRow = table.insertRow();
-          let newCell = newRow.insertCell();
-          let newText = document.createTextNode(i+1);
+          let newCell;
+          let newText;
+          // newCell = newRow.insertCell();
+          // newText = document.createTextNode(" ");
+          // newCell.appendChild(newText);
+
+          newCell = newRow.insertCell();
+          newText = document.createTextNode(i+1);
           newCell.appendChild(newText);
+
           newCell = newRow.insertCell();
           newText = document.createTextNode(data[i].number);
           newCell.appendChild(newText);
+
+          // newCell = newRow.insertCell();
+          // newText = document.createTextNode(" ");
+          // newCell.appendChild(newText);
         } 
       });
   </script>
