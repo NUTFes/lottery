@@ -277,8 +277,7 @@ def read_random_user(p_id: int, db: Session = Depends(get_db), credentials: HTTP
 
 @app.get("/api/place/{p_id}/winner", response_model=List[schemas.User])
 #返しているのはUserなのでresponseはUser
-def read_winners(p_id: int, db: Session = Depends(get_db), credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
-    auth(db, credentials)
+def read_winners(p_id: int, db: Session = Depends(get_db)):
     db_win_users = crud.get_win_users(db, p_id)
     if db_win_users is None:
         raise HTTPException(status_code=404, detail="Winner not found")
