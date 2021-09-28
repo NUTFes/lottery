@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <h1>Stickee</h1>
+    </div>
+</div>
+<br><br>
+<h3>場所の追加</h3>
+<form action="/add" method="post">
+    <p><input type="text"  size="50" maxlength="200" name="place" Placeholder="場所の名前">&emsp;
+    <button type="submit" class="btn btn-primary">追加する</button>
+    </p>
+</form>
+<br>
+<!--
+    時間の初期値をDBのTimeの時間で設定したい
+    がんばって
+-->
+<form action="/updatetime" method="post">
+    <h3>抽選期間</h3>
+    <h7>開始時間：</h7>
+    <input type="date" name="startdate" value="{{ startdate }}">
+    <input type="time" name="starttime" value="{{ starttime }}">
+    <br>
+    <h7>終了時間：</h7>
+    <input type="date" name="enddate" value="{{ enddate }}">
+    <input type="time" name="endtime" value="{{ endtime }}">
+    &emsp;<button type="sudmit" class="btn btn-primary" onclick="return alert('抽選期間を設定しました')">設定</button>
+</form>
+<br>
+<h3> 場所一覧 </h3>
+<table class="table">
+    <thead class="table-dark">
+    <tr align="center">
+        <th>id</th>
+        <th>場所</th>
+        <th>場所削除</th>
+        <th>リンク</th>
+        <th>管理者ページ</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in place %}
+    <tr align="center">
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>
+            <form action="/delete/{{ p.id }}" method="post">
+                <button type="submit" name="_method" value="DELETE" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか?')">削除</button>
+            </form>
+        </td>
+        <td>
+            <p><a href="/place/{{ p.id }}/message" class="btn btn-primary">NFC</a>&emsp;<a href="/place/{{ p.id }}/winner" class="btn btn-primary">当選者</a>&emsp;
+            <a href="/place/{{ p.id }}/random_before" class="btn btn-primary">抽選</a></p>
+        </td>
+        <td>
+            <a href="/place/{{ p.id }}" class="btn btn-primary">Login</a>
+        </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<hr>
+<p>This is a student ID keeper powered by <b>FastAPI</b>!</p>
+
+{% endblock %}

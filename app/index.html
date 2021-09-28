@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stickee｜抽選結果</title>
+	<link rel="stylesheet" href="https://lottery.nutfes.net/static/css/reset.css">
+	<link rel="stylesheet" href="https://lottery.nutfes.net/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="https://lottery.nutfes.net/static/css/custom-mobile.css">
+  <script type="text/javascript">
+    // グローバル変数定義
+    var PLACE_ID  =  Number('1')
+    var WS_URL    = "wss://lottery-api.nutfes.net"
+    var WS_URI    = `${WS_URL}/ws`
+    var APP_URL   = "https://lottery-api.nutfes.net"
+    var APP_URI   = `${APP_URL}`
+  </script>
+</head>
+<body>
+	<div class="odometer-container">
+
+
+    <img src="https://lottery.nutfes.net/static/images/bg_corner.png" class="corner1" />
+    <img src="https://lottery.nutfes.net/static/images/bg_corner.png" class="corner2" />
+    <img src="https://lottery.nutfes.net/static/images/bg_corner.png" class="corner3" />
+    <img src="https://lottery.nutfes.net/static/images/bg_corner.png" class="corner4" />
+    <div class="righttopcorner"></div>
+    <br /><br /><br />
+    <img src="https://lottery.nutfes.net/static/images/side.png" class="center3" />
+    <img src="https://lottery.nutfes.net/static/images/Lotelly.png" class="center2" />
+		<span class="odometer">
+			77777777
+    </span>
+    <br /><br /><br />
+    <img src="https://lottery.nutfes.net/static/images/side.png" class="center3" />
+    <img src="https://lottery.nutfes.net/static/images/Results.png" class="center1" />
+
+    <br /><br />
+    <table id="targetTable" class="design">
+      <thead>
+        <tr>
+          <th class="word1"><br />当選番号<hr color="gold" /></th>
+          <th class="word2"><br />学籍番号<hr color="gold" /></th>
+        </tr>
+      </thead>
+    </table>
+    <br /><br /><br />
+    <img src="https://lottery.nutfes.net/static/images/up.png" class="center4" />
+  </div>
+
+	<script>
+		setTimeout(function(){
+			$('.odometer').html(<div id='number'></div>);
+		}, 1000);/* ←回転するまでの時間(1000の時1秒) */
+	</script>
+  <script>
+    window.odometerOptions = {
+     format: '(ddd).dd'
+    };
+  </script>
+	<script type="text/javascript" src="https://lottery.nutfes.net/static/js/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="https://lottery.nutfes.net/static/js/odometer.js"></script>
+  <script type="text/javascript" src="https://lottery.nutfes.net/static/js/websocket.js"></script>
+  <script>
+    fetch(`${APP_URL}/api/place/${PLACE_ID}/winner`)
+      .then(response => response.json())
+      .then((data) => {
+        for (let i=0;i<data.length;i++){
+          let table = document.getElementById('targetTable');
+          let newRow = table.insertRow();
+          let newCell;
+          let newText;
+          // newCell = newRow.insertCell();
+          // newText = document.createTextNode(" ");
+          // newCell.appendChild(newText);
+
+          newCell = newRow.insertCell();
+          newText = document.createTextNode(i+1);
+          newCell.appendChild(newText);
+
+          newCell = newRow.insertCell();
+          newText = document.createTextNode(data[i].number);
+          newCell.appendChild(newText);
+
+          // newCell = newRow.insertCell();
+          // newText = document.createTextNode(" ");
+          // newCell.appendChild(newText);
+        } 
+      });
+  </script>
+</body>
+</html>
