@@ -31,7 +31,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 #: Configure CORS
 origins = [
-    "https://lottery.nutfes.net",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
