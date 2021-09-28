@@ -5,24 +5,24 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Stickee｜抽選画面</title>
-	<link rel="stylesheet" href="http://localhost:8000/static/css/reset.css">
-	<link rel="stylesheet" href="http://localhost:8000/static/css/odometer-theme-slot-machine.css">
-	<link rel="stylesheet" href="http://localhost:8000/static/css/message-custom-lottery.css">
+	<link rel="stylesheet" href="https://lottery-api.nutfes.net/static/css/reset.css">
+	<link rel="stylesheet" href="https://lottery-api.nutfes.net/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="https://lottery-api.nutfes.net/static/css/message-custom-lottery.css">
 </head>
 <script type="text/javascript">
   // グローバル変数定義
   var PLACE_ID =  Number('{{ place.id | tojson }}')
-  var WS_URL = "ws://localhost:8000"
+  var WS_URL = "wss://lottery-api.nutfes.net"
   var WS_URI = `${WS_URL}/ws`
-  var APP_URL = "http://localhost:8000"
+  var APP_URL = "https://lottery-api.nutfes.net"
 </script>
 <body onLoad="refcheck()">
 	<div class="view1" align="center">
-        <img src="http://localhost:8000/static/images/bg_corner.png" class="corner1" />
-        <img src="http://localhost:8000/static/images/bg_corner.png" class="corner2" />
-        <img src="http://localhost:8000/static/images/bg_corner.png" class="corner3" />
-        <img src="http://localhost:8000/static/images/bg_corner.png" class="corner4" />
-        <img src="http://localhost:8000/static/images/bg_title.png" class="title" />
+        <img src="https://lottery-api.nutfes.net/static/images/bg_corner.png" class="corner1" />
+        <img src="https://lottery-api.nutfes.net/static/images/bg_corner.png" class="corner2" />
+        <img src="https://lottery-api.nutfes.net/static/images/bg_corner.png" class="corner3" />
+        <img src="https://lottery-api.nutfes.net/static/images/bg_corner.png" class="corner4" />
+        <img src="https://lottery-api.nutfes.net/static/images/bg_title.png" class="title" />
         <h1 class="view2">
             <ul id="messages"></ul>
         </h1>
@@ -46,7 +46,7 @@
   </h1>
 </div>
 
-<script type="text/javascript" src="http://localhost:8000/static/js/websocket.js"></script>
+<script type="text/javascript" src="https://lottery-api.nutfes.net/static/js/websocket.js"></script>
 
 </html>
 
