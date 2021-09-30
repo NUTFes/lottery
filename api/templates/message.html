@@ -16,6 +16,7 @@
   var WS_URI = `${WS_URL}/ws`
   var APP_URL = "http://localhost:8000"
 </script>
+
 <body onLoad="refcheck()">
 	<div class="view1" align="center">
         <img src="http://localhost:8000/static/images/bg_corner.png" class="corner1" />
@@ -28,23 +29,6 @@
         </h1>
     </div> 
 </body>
-
-<br>
-<div class="row">
-  <div class="col-md-12">
-    <h1>Stickee at {{ place.name }}</h1>
-    <hr>
-    <p><a href="/" class="btn btn-primary">もどる</a></p>
-    <br>
-  </div>
-</div>
-<br>
-<hr>
-<div align="center">
-  <h1>
-    <ul id='messages'></ul>
-  </h1>
-</div>
 
 <script type="text/javascript" src="http://localhost:8000/static/js/websocket.js"></script>
 
