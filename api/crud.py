@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+# タイムゾーンの生成
+JST = timezone(timedelta(hours=+9), 'JST')
 
 from sqlalchemy.sql.expression import null, update
 import models
@@ -40,7 +42,7 @@ def get_user_by_id(db: Session, user: schemas.User):
     return db.query(models.User).filter(models.User.place_id == user.place_id, models.User.id == user.id).first()
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(place_id=user.place_id, number=user.number, updated_at = datetime.now(), created_at = datetime.now())
+    db_user = models.User(place_id=user.place_id, number=user.number, updated_at = datetime.now(JST), created_at = datetime.now(JST))
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -54,7 +56,7 @@ def delete_user(db: Session, user: schemas.User):
 
 def update_user(db: Session, user: schemas.UserCreate):
     db_user = db.query(models.User).filter(models.User.number == user.number).first()
-    db_user.updated_at = datetime.now()
+    db_user.updated_at = datetime.now(JST)
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -63,19 +65,6 @@ def get_latest_users(db: Session, p_id: int):
     res = db.query(func.max(models.User.updated_at).label("latest_update")).filter(models.User.place_id == p_id).first()
     db_user = db.query(models.User).filter(models.User.updated_at == res.latest_update).first()
     return db_user
-
-# def get_random_user(db: Session, p_id: int, starttime:datetime, endtime:datetime):
-#     winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
-#     list = []
-#     for winner in winners:
-#         list.append(winner.user_id)
-#     res = db.query(models.User).filter(models.User.id.notin_(list),models.User.updated_at>=starttime,models.User.updated_at<=endtime).all()
-#     try:
-#         db_user = random.choice(res)
-#     except:
-#         return None
-          
-#     return db_user
 
 def get_random_user(db: Session, p_id: int, starttime:datetime, endtime:datetime):
     winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
@@ -118,7 +107,7 @@ def get_win_users(db: Session, p_id: int):
     return win_users
 
 def create_winner(db: Session, winner: schemas.WinnerCreate):
-    db_winner = models.Winner(place_id=winner.place_id, user_id=winner.user_id, updated_at = datetime.now(), created_at = datetime.now())
+    db_winner = models.Winner(place_id=winner.place_id, user_id=winner.user_id, updated_at = datetime.now(JST), created_at = datetime.now(JST))
     db.add(db_winner)
     db.commit()
     db.refresh(db_winner)
