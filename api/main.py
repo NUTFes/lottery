@@ -12,6 +12,7 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
 from datetime import datetime
+
 from database import SessionLocal
 from notifier import Notifier
 notifier = Notifier()
