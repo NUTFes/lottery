@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+JST = timezone(timedelta(hours=+9), 'JST')
 from sqlalchemy.sql.functions import current_timestamp
 
 from database import Base, engine
@@ -19,14 +20,14 @@ class Place(Base):
     updated_at = Column(
         'updated_at',
         DateTime,
-        default=datetime.now(),
+        default=datetime.now(JST),
         nullable=False,
         server_default=current_timestamp(),
     )
     created_at = Column(
         'created_at',
         DateTime,
-        default=datetime.now(),
+        default=datetime.now(JST),
         nullable=False,
         server_default=current_timestamp(),
     )
@@ -49,14 +50,14 @@ class User(Base):
     updated_at = Column(
         'updated_at',
         DateTime,
-        default=datetime.now(),
+        default=datetime.now(JST),
         nullable=False,
         server_default=current_timestamp(),
     )
     created_at = Column(
         'created_at',
         DateTime,
-        default=datetime.now(),
+        default=datetime.now(JST),
         nullable=False,
         server_default=current_timestamp(),
     )
@@ -97,14 +98,14 @@ class Winner(Base):
     updated_at = Column(
         'updated_at',
         DateTime,
-        default=datetime.now(),
+        default=datetime.now(JST),
         nullable=False,
         server_default=current_timestamp(),
     )
     created_at = Column(
         'created_at',
         DateTime,
-        default=datetime.now(),
+        default=datetime.now(JST),
         nullable=False,
         server_default=current_timestamp(),
     )
@@ -112,8 +113,8 @@ class Admin(Base):
     """
     Adminテーブル
     id      : 主キー
-    name    :　開始時間
-    password: 終了時間
+    name    : admin name
+    password: admin pass
     """
     __tablename__ = 'admin'
     id = Column('id', Integer, primary_key=True, autoincrement=True)

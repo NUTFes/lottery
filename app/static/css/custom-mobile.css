@@ -2,13 +2,14 @@
   width: 100vw;
   height: 100vh;
   position: relative;
-  background-image: url(https://lottery.nutfes.net/static/images/bg_none-relief_16-9.png);
+  background-image: url(https:/lottery-api.nutfes.net/static/images/bg_none-relief_16-9.png);
   background-size: contain;
   background-position: top;
 }
 .odometer {
   font-size: 25px;
   position: absolute;
+  margin-top: 10%;
   top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -29,6 +30,7 @@
   height: 40vh;
   overflow: scroll;
   width: 80%;
+  height: 40%;
   margin-left: 10%;
   margin-right: 10%;
   margin-bottom: 10%;
@@ -92,6 +94,7 @@ td{
 .center3 {
   width: 50%;
   height: auto;
+  margin-top: 7%;
   margin-left: 25%;
   margin-right: 25%;
 }
