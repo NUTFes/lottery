@@ -47,6 +47,6 @@ var server = http.createServer(function(req,res){
   res.writeHead(200,{'Content-Type' : mime[key]});
   console.log(__dirname + path + ',' +encoding);
   res.end(fs.readFileSync(__dirname + path), encoding);
-}).listen(8888);
+}).listen(3000);
 
 console.log('INFO:     Server running http://localhost:3000/');

@@ -12,13 +12,15 @@ ws.onmessage = function(event) {
 		}, 1000);
   }
   if( json.place_id==PLACE_ID && json.client=="Host"){
-    var message = document.createElement('li')
+    var message = document.createElement('p')
     var content = document.createTextNode(json.message)
     message.appendChild(content)
     disp_ws_txt.appendChild(message)
   }
   if( json.place_id==PLACE_ID && json.client=="NFC" )
     disp_ws_txt.innerHTML = json.message
+
+  scrollToBottom();
 };
 
 function sendMessage(event) {
@@ -33,3 +35,18 @@ function sendMessage(event) {
   input.value = ''
   event.preventDefault()
 }
+
+var scrollToBottom = () => {
+  var contentSpace = document.getElementById('comment-space');
+  contentSpace.scrollTop = contentSpace.scrollHeight;
+};
+
+var isScrollBottom = () => {
+  return contentSpace.scrollHeight === contentSpace.scrollTop + contentSpace.offsetHeight;
+};
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  sendMessage(e);
+});
