@@ -1,5 +1,6 @@
 api/__pycache__
 api/stickee.db
 api/.env
+app/.env
 nfc/__pychache__
 nfc/.env

@@ -7,6 +7,7 @@
 	<title>Stickee｜抽選結果</title>
 	<link rel="stylesheet" href="http://localhost:3000/static/css/reset.css">
 	<link rel="stylesheet" href="http://localhost:3000/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="http://localhost:3000/static/css/comment.css">
 	<link rel="stylesheet" href="http://localhost:3000/static/css/custom-mobile.css">
   <script type="text/javascript">
     // グローバル変数定義
@@ -43,9 +44,40 @@
         </tr>
       </thead>
     </table>
+    <dialog class="comment-dialog">
+      <h1 class="comment-title">コメント入力欄</h1>
+      <br />
+        <div id="comment-space">
+          <p id="messages" />
+        </div>
+      <br />
+      <form id="form">
+          <input type="text" id="messageText" autocomplete="off"/>
+          <button id="send-btn">送信</button>
+      </form>
+      <br />
+      <div class="comment">
+        <button class="comment-btn" id="close" type="button">コメントを閉じる</button>
+      </div>
+    </dialog>
+    <div class="comment">
+      <button class="comment-btn" id="show" type="button">コメントはこちらから</button>
+    </div>
     <br /><br /><br />
     <img src="http://localhost:3000/static/images/up.png" class="center4" />
   </div>
+
+  <script>
+    var dialog = document.querySelector('dialog');
+    var btn_show = document.getElementById('show');
+    var btn_close = document.getElementById('close');
+    btn_show.addEventListener('click', function() {
+      dialog.showModal();
+    }, false);
+    btn_close.addEventListener('click', function() {
+      dialog.close();
+    }, false);
+  </script>
 
 	<script>
 		setTimeout(function(){
@@ -84,7 +116,7 @@
           // newCell = newRow.insertCell();
           // newText = document.createTextNode(" ");
           // newCell.appendChild(newText);
-        } 
+        }
       });
   </script>
 </body>
