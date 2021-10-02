@@ -49,4 +49,4 @@ var server = http.createServer(function(req,res){
   res.end(fs.readFileSync(__dirname + path), encoding);
 }).listen(8888);
 
-console.log('INFO:     Server running https:/lottery-api.nutfes.net/');
+console.log('INFO:     Server running https://lottery-api.nutfes.net/');
