@@ -5,16 +5,16 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Stickee｜抽選結果</title>
-	<link rel="stylesheet" href="http://localhost:3000/static/css/reset.css">
-	<link rel="stylesheet" href="http://localhost:3000/static/css/odometer-theme-slot-machine.css">
-	<link rel="stylesheet" href="http://localhost:3000/static/css/comment.css">
-	<link rel="stylesheet" href="http://localhost:3000/static/css/custom-mobile.css">
+	<link rel="stylesheet" href="/static/css/reset.css">
+	<link rel="stylesheet" href="/static/css/odometer-theme-slot-machine.css">
+	<link rel="stylesheet" href="/static/css/comment.css">
+	<link rel="stylesheet" href="/static/css/custom-mobile.css">
   <script type="text/javascript">
     // グローバル変数定義
     var PLACE_ID  =  Number('1')
-    var WS_URL    = "ws://localhost:8000"
+    var WS_URL    = "wss://lottery-api.nutfes.net"
     var WS_URI    = `${WS_URL}/ws`
-    var APP_URL   = "http://localhost:8000"
+    var APP_URL   = "https://lottery-api.nutfes.net"
     var APP_URI   = `${APP_URL}`
   </script>
 </head>
@@ -22,18 +22,18 @@
 	<div class="odometer-container">
 
 
-    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner1" />
-    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner2" />
-    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner3" />
-    <img src="http://localhost:3000/static/images/bg_corner.png" class="corner4" />
+    <img src="/static/images/bg_corner.png" class="corner1" />
+    <img src="/static/images/bg_corner.png" class="corner2" />
+    <img src="/static/images/bg_corner.png" class="corner3" />
+    <img src="/static/images/bg_corner.png" class="corner4" />
     <div class="righttopcorner"></div>
-    <img src="http://localhost:3000/static/images/side.png" class="center3" />
-    <img src="http://localhost:3000/static/images/Lotelly.png" class="center2" />
+    <img src="/static/images/side.png" class="center3" />
+    <img src="/static/images/Lotelly.png" class="center2" />
 		<span class="odometer">
 			77777777
     </span>
-    <img src="http://localhost:3000/static/images/side.png" class="center3" />
-    <img src="http://localhost:3000/static/images/Results.png" class="center1" />
+    <img src="/static/images/side.png" class="center3" />
+    <img src="/static/images/Results.png" class="center1" />
 
     <br /><br />
     <table id="targetTable" class="design">
@@ -64,7 +64,7 @@
       <button class="comment-btn" id="show" type="button">コメントはこちらから</button>
     </div>
     <br /><br /><br />
-    <img src="http://localhost:3000/static/images/up.png" class="center4" />
+    <img src="/static/images/up.png" class="center4" />
   </div>
 
   <script>
@@ -89,9 +89,9 @@
      format: '(ddd).dd'
     };
   </script>
-	<script type="text/javascript" src="http://localhost:3000/static/js/jquery-3.6.0.min.js"></script>
-	<script type="text/javascript" src="http://localhost:3000/static/js/odometer.js"></script>
-  <script type="text/javascript" src="http://localhost:3000/static/js/websocket.js"></script>
+	<script type="text/javascript" src="/static/js/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="/static/js/odometer.js"></script>
+  <script type="text/javascript" src="/static/js/websocket.js"></script>
   <script>
     fetch(`${APP_URL}/api/place/${PLACE_ID}/winner`)
       .then(response => response.json())
