@@ -1,4 +1,4 @@
-# stickee
+# stickee_lottery
 student IC keeper
 
 ## git
