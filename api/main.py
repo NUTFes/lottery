@@ -209,7 +209,15 @@ def delete_winner(p_id: int, w_id: int, db: Session = Depends(get_db)):
     crud.delete_winner(db=db, winner=winner)
     return RedirectResponse(url='/place/'+str(p_id)+'/winner', status_code=303)
 
-
+#現在の登録人数の取得
+@app.get("/register")
+def get_registers(db: Session = Depends(get_db)):
+    register_num=0
+    place_num=len(crud.get_places(db))
+    for i in range(1,place_num+1):
+        register=crud.get_users(db,i)
+        register_num+=len(register)
+    return register_num
 # =============================================================
 
 
