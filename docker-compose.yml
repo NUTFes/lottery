@@ -9,6 +9,9 @@ services:
     ports:
       - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    environment:
+      - ST_USER: admin
+      - ST_PASS: password
 
   web:
     container_name: "ST-WEB"
@@ -17,3 +20,6 @@ services:
       - "3000:3000"
     volumes:
       - ./app:/usr/src/app
+    environment:
+      - ST_USER: admin
+      - ST_PASS: password

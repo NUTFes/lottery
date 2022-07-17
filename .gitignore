@@ -4,3 +4,4 @@ api/.env
 app/.env
 nfc/__pychache__
 nfc/.env
+lottery.env
