@@ -10,8 +10,8 @@ services:
       - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
     environment:
-      - ST_USER: admin
-      - ST_PASS: password
+      ST_USER: admin
+      ST_PASS: password
 
   web:
     container_name: "ST-WEB"
@@ -21,5 +21,14 @@ services:
     volumes:
       - ./app:/usr/src/app
     environment:
-      - ST_USER: admin
-      - ST_PASS: password
+      ST_USER: admin
+      ST_PASS: password
+
+  app:
+    container_name: "ST-APP"
+    build: ./docker/nextjs
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./next:/app/next-project
+    command: "npm run dev"
