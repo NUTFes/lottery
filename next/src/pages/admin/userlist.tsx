@@ -1,10 +1,34 @@
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
+import React from 'react';
+import { useState } from 'react';
 import AdminLayout from '@/components/AdminLayout'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { get } from '@/utils/api_methods'
 
-const UserList: NextPage = () => {
+type User = {
+  id: number;
+  place_id: string
+  number: string
+  updated_at: string
+  created_at: string
+  detail: string
+};
+
+type Props = {
+  users: User[];
+}
+
+export const getServerSideProps = async() => {
+  const getUrl = 'http://api:8000/api/place/1';
+  const json = await get(getUrl);
+  return {
+    props: {
+      users: json,
+    }
+  }
+}
+
+const UserList: NextPage<Props> = (props) => {
+  const [users, setUsers] = useState<User[]>(props.users)
   return (
   <AdminLayout className="bg-white lg:pb-12">
     <div className="bg-white py-6 sm:py-8 lg:py-12">
@@ -12,9 +36,10 @@ const UserList: NextPage = () => {
       <div className="mb-6 sm:mb-10 lg:mb-16">
       <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">管理者ページ - ユーザーリスト</h2>
       </div>
-
+      
       <div className="flex flex-col sm:border-t sm:border-b sm:divide-y mb-5 sm:mb-8">
 
+      {users.map((user) => (
       <div className="py-5 sm:py-1">
         <div className="flex flex-wrap gap-4 lg:gap-6 sm:py-2.5">
           <div className="sm:-my-2.5">
@@ -25,15 +50,15 @@ const UserList: NextPage = () => {
 
           <div className="flex flex-col justify-between flex-1">
             <div>
-              <a href="#" className="inline-block text-gray-800 hover:text-gray-500 text-lg lg:text-xl font-bold transition duration-100 mb-1">20301789</a>
-              <span className="block text-gray-500">user_id: 1</span>
+              <a href="#" className="inline-block text-gray-800 hover:text-gray-500 text-lg lg:text-xl font-bold transition duration-100 mb-1">{user.number}</a>
+              <span className="block text-gray-500">user_id: {user.id}</span>
             </div>
           </div>
 
           <div className="flex flex-col justify-between flex-1">
             <div>
-              <span className="block text-gray-500">登録日時: 2022-07-18 23:46:57.212203</span>
-              <span className="block text-gray-500">更新日時: 2022-07-18 23:46:57.212203</span>
+              <span className="block text-gray-500">登録日時: {user.created_at}</span>
+              <span className="block text-gray-500">更新日時: {user.updated_at}</span>
             </div>
           </div>
 
@@ -44,6 +69,7 @@ const UserList: NextPage = () => {
           </div>
         </div>
       </div>
+      ))}
 
       </div>
 

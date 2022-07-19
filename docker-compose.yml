@@ -13,16 +13,16 @@ services:
       ST_USER: admin
       ST_PASS: password
 
-  web:
-    container_name: "ST-WEB"
-    build: ./docker/node
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./app:/usr/src/app
-    environment:
-      ST_USER: admin
-      ST_PASS: password
+  # web:
+  #   container_name: "ST-WEB"
+  #   build: ./docker/node
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./app:/usr/src/app
+  #   environment:
+  #     ST_USER: admin
+  #     ST_PASS: password
 
   app:
     container_name: "ST-APP"
@@ -32,3 +32,6 @@ services:
     volumes:
       - ./next:/app/next-project
     command: "npm run dev"
+    environment:
+      SSR_API_URI: 'http://localhost:8000/api'
+      CSR_API_URI: 'http://api:8000/api'
