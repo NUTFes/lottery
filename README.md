@@ -1,17 +1,56 @@
-# stickee_lottery
-student IC keeper
+# 学籍番号抽選会アプリ
 
-## git
-### git clone
-- `git clone git@github.com:NUTFes/stickee.git`  
+Raspberry PiとNFC端末で学生証を読み取り，学籍番号を用いて抽選を行うシステム
 
-### git add
-- `git add <file_name or directory_name>`
+抽選は会場で行うが，WebSocketによってスマホでの確認も可能
 
-### git commit
-- `git commit -m "<commit message>"`
+## 背景
+## 構成
+## 今後の展望
 
-### commitメッセージの書式
+---
+## 開発手順
+
+### 1. クローン
+```
+git clone git@github.com:NUTFes/lottery.git
+```
+
+### 2. ビルド
+```
+# ビルド
+docker compose build
+
+# dbを削除してテーブルを作成
+sudo rm api/lottery.db
+docker compose run --rm api python create_table.py
+
+# 立ち上げ
+docker compose up
+```
+ 
+### 3. 開発
+issueに応じて，`dev/<issue番号>`でブランチを切ってそのブランチで開発してください
+```
+# 例
+git switch -c dev/issue123
+```
+
+### 4. add, commit, push
+- コミットはコミットメッセージの書式に従ってください。
+- プッシュは今いるブランチと同じ名前の場所にプッシュしてください。
+```
+# add
+git add <file_name or directory_name>
+
+# commit 
+git commit -m "<commit message>"
+
+# push
+git push origin <branch名>
+```
+
+#### commitメッセージの書式
 - ファイルを追加したとき
 `git commit -m "[add] 内容 (#<issue番号>)"`
 - ファイルを変更したとき
@@ -19,25 +58,7 @@ student IC keeper
 - ファイルを削除したとき
 `git commit -m "[del] 内容 (#<issue番号>)"`
 - 例
-`git commit -m "[mod] コントローラーを変更した (#12)"`
+`git commit -m "[mod] 学籍番号の送信書式をJSONに変更 (#12)"`
 
-### git push
-- `git push origin <branch名>`
-
-## Docker
-### build
-```
-docker-compose build
-stickee/Fast-API/stickee.dbがあれば削除
-docker-compose run --rm api python create_table.py
-docker-compose up
-```
-### build（プロキシ内）
-```
-docker-compose build --build-arg http_proxy=http://proxy.nagaokaut.ac.jp:8080 --build-arg https_proxy=http://proxy.nagaokaut.ac.jp:8080
-stickee/Fast-API/stickee.dbがあれば削除
-docker-compose run -e http_proxy=http://proxy.nagaokaut.ac.jp:8080 -e https_proxy=http://proxy.nagaokaut.ac.jp:8080 --rm api python create_table.py
-docker-compose up
-```
-
-
+### 5. Pull Request
+- 確認してほしい点を明記してプルリクを書いてください 
