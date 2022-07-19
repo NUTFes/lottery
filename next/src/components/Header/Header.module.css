@@ -1,0 +1,7 @@
+.HeaderContainer {
+    width: 100%;
+    color: var(--accent-7);
+    background-color: var(--accent-0);
+    position: fixed;
+    
+  }
