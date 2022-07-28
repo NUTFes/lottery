@@ -1,7 +1,7 @@
 import React from 'react';
 import al from './AdminLayout.module.css';
 import Header from '@/components/Header'
-import Footer from '@/components/Footers'
+import Footer from '@/components/Footer'
 interface AdminLayoutProps {
   className?: string;
   align?: string;

@@ -32,3 +32,6 @@ services:
     volumes:
       - ./next:/app/next-project
     command: "npm run dev"
+    environment:
+      SSR_API_URI: 'http://localhost:8000/api'
+      CSR_API_URI: 'http://api:8000/api'
