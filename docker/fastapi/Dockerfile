@@ -1,8 +1,8 @@
-FROM python:3.9
+FROM python:3.10-buster
 WORKDIR /var/www/html
-RUN pip install fastapi uvicorn[standard]
-RUN pip install sqlalchemy
-RUN pip install jinja2 python-multipart aiofiles
-
-# 今後必要かもしれないもの
-# RUN pip install ujson email_validator Starlette requests aiofiles itsdangerous pyyaml graphene ujson orjson
+# ENV POETRY_HOME=/opt/poetry
+RUN pip install poetry && \
+    poetry config --local virtualenvs.create true && \
+    poetry config --local cache-dir .cache/pypoetry && \
+    poetry config --local virtualenvs.in-project true
+ENV PATH=/var/www/html/.venv/bin:$PATH

@@ -3,8 +3,16 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "python.formatting.provider": "black",
+  "python.linting.banditEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": ["--max-line-length", "150"],
+  "python.linting.pylintEnabled": false,
+  "black-formatter.args": ["--line-length=120"],
   "[python]": {
-    "editor.defaultFormatter": null,
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
   }
 }
