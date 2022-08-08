@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   position: relative;
-  background-image: url(http://localhost:3000/static/images/bg-4-3.png);
+  background-image: url(/static/images/bg-4-3.png);
   background-size: contain;
   background-position: center;
 }
@@ -32,13 +32,13 @@
   background-color: #fc0;
   border-bottom: solid 4px #000000;
   border-radius: 8px;
-  color: #1B1464;
+  color: #1b1464;
   text-shadow: 1px 2px 3px #808080;
   text-decoration: none;
   font-weight: bold;
   line-height: 1.2em;
-  -webkit-transition: .100s;
-  transition: .100s;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
 }
 
 .btn01:hover {
