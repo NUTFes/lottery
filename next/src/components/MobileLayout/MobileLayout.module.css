@@ -47,6 +47,9 @@
   height: auto;
   margin-left: 30%;
   margin-right: 30%;
+  padding-top: 1%;
+  padding-bottom: 5%;
+
 }
 .center2 {
   width: 40%;
@@ -57,9 +60,9 @@
 .center3 {
   width: 50%;
   height: auto;
-  margin-top: 7%;
   margin-left: 25%;
   margin-right: 25%;
+  padding-top: 7%;
 }
 .center4 {
   width: 40%;
@@ -68,4 +71,50 @@
   margin-right: 30%;
   position: absolute;
   bottom: 1%;
+}
+
+.odometerContainer {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  /* background-image: url(http://localhost:3000/static/images/bg_none-relief_16-9.png); */
+  background-image: url(/bg_none-relief_16-9.png);
+  background-size: contain;
+  background-position: top;
+}
+
+
+.design {
+  display: block;
+  height: 40vh;
+  overflow: scroll;
+  width: 80%;
+  height: 40%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  border-radius: 15px;;
+  font-weight: bold;
+  background-color: white;
+}
+
+.word1{
+  position: sticky;
+  top: 0;
+  padding: 0 10vw 0 10vw;
+  background-color: white;
+  padding-top: 5%;
+}
+.word2{
+  position: sticky;
+  top: 0;
+  padding: 0 10vw 0 10vw;
+  background-color: white;
+  padding-top: 5%;
+}
+
+.line{
+  border: 1px gold solid;
+  height: 1px;
+  margin-top: 1rem;
 }
