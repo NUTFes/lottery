@@ -18,24 +18,20 @@ if __name__ == "__main__":
         # テーブルを作成する
         Base.metadata.create_all(engine)
 
-    place = Place(name="体育館前")
-    db.add(place)
-    db.commit()
-
-    time = Time()
-    db.add(time)
-    db.commit()
-
-    user = User(place_id=place.id, number=10001000)
-    db.add(user)
-    db.commit()
-
-    winner = Winner(place_id=place.id, user_id=user.id)
-    db.add(winner)
-    db.commit()
-
     admin = Admin(name=ST_USER, password=ST_PASS)
     db.add(admin)
-    db.commit()
+    time = Time()
+    db.add(time)
+    winner = Winner()
+    db.add(winner)
 
+    place = Place()
+    place.name = "体育館前-1"
+
+    user = User()
+    user.number = 10001000
+    user.places.append(place)
+    db.add(user)
+
+    db.commit()
     db.close()  # セッションを閉じる

@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -75,20 +76,20 @@ class Time(BaseModel):
     end: datetime
 
 
-class PlaceUserBase(BaseModel):
+class UserPlacesBase(BaseModel):
     place_id: int
     user_id: int
 
 
-class PlaceUserCreate(PlaceUserBase):
+class UserPlacesCreate(UserPlacesBase):
     pass
 
 
-class PlaceUserDelete(PlaceUserBase):
+class UserPlacesDelete(UserPlacesBase):
     pass
 
 
-class PlaceUser(PlaceUserBase):
+class UserPlaces(UserPlacesBase):
     place_id: int
     user_id: int
 

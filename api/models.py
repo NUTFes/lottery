@@ -10,17 +10,16 @@ from database import Base, engine
 JST = timezone(timedelta(hours=+9), "JST")
 
 
-class PlaceUser(Base):
+class UserPlaces(Base):
     """
     PlaceUserテーブル
     place_id    : 外部キー
     user_id     : 外部キー
     """
 
-    __tablename__ = "place_users"
-
-    place_id = Column("place_id", Integer, ForeignKey("place.id"), primary_key=True)
-    user_id = Column("user_id", Integer, ForeignKey("user.id"), primary_key=True)
+    __tablename__ = "user_places"
+    user_id = Column(Integer, ForeignKey("user.id"), primary_key=True, nullable=False)
+    place_id = Column(Integer, ForeignKey("place.id"), primary_key=True, nullable=False)
 
 
 class Place(Base):
@@ -28,7 +27,7 @@ class Place(Base):
     Placeテーブル
     id          : 主キー
     name        : Place名
-    user        : userテーブルとのリレーション
+    users       : userテーブルとのリレーション
     updated_at  : 最終更新
     created_at  : 登録日時
     """
@@ -36,9 +35,6 @@ class Place(Base):
     __tablename__ = "place"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     name = Column("name", String(256))
-    user = relationship(
-        "User", secondary=PlaceUser.__tablename__, back_populates="place"
-    )
     updated_at = Column(
         "updated_at",
         DateTime,
@@ -53,13 +49,14 @@ class Place(Base):
         nullable=False,
         server_default=current_timestamp(),
     )
+    users = relationship("User", secondary=UserPlaces.__tablename__, back_populates="places")
 
 
 class User(Base):
     """
     Userテーブル
     id          : 主キー
-    place       : placeテーブルとのリレーション
+    places      : placeテーブルとのリレーション
     number      : 学籍番号
     updated_at  : 最終更新
     created_at  : 登録日時
@@ -67,9 +64,6 @@ class User(Base):
 
     __tablename__ = "user"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    place = relationship(
-        "Place", secondary=PlaceUser.__tablename__, back_populates="user"
-    )
     number = Column("number", Integer)
     updated_at = Column(
         "updated_at",
@@ -85,6 +79,7 @@ class User(Base):
         nullable=False,
         server_default=current_timestamp(),
     )
+    places = relationship("Place", secondary=UserPlaces.__tablename__, back_populates="users")
 
 
 class Time(Base):

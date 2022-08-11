@@ -7,6 +7,7 @@
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": ["--max-line-length", "150"],
   "python.linting.pylintEnabled": false,
+  "python.analysis.extraPaths": ["api/.venv/lib/python3.10/site-packages"],
   "black-formatter.args": ["--line-length=120"],
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
