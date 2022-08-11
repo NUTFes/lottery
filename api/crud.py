@@ -1,22 +1,31 @@
+import random
+from datetime import datetime, timedelta, timezone
+from typing import Union
+
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
-from datetime import datetime, timedelta, timezone
-# タイムゾーンの生成
-JST = timezone(timedelta(hours=+9), 'JST')
 
-from sqlalchemy.sql.expression import null, update
 import models
 import schemas
-import random
 
-def get_places(db: Session):
-    return db.query(models.Place).all()
+# タイムゾーンの生成
+JST = timezone(timedelta(hours=+9), "JST")
+
+
+def get_places(db: Session, user_id: Union[int, None]):
+    if user_id is None:
+        return db.query(models.Place).all()
+    else:
+        return db.query(models.Place).filter(models.User.id == user_id).all()
+
 
 def get_place_by_name(db: Session, name: str):
     return db.query(models.Place).filter(models.Place.name == name).first()
 
+
 def get_place_by_id(db: Session, id: int):
     return db.query(models.Place).filter(models.Place.id == id).first()
+
 
 def create_place(db: Session, place: schemas.PlaceCreate):
     db_place = models.Place(name=place.name)
@@ -25,6 +34,7 @@ def create_place(db: Session, place: schemas.PlaceCreate):
     db.refresh(db_place)
     return db_place
 
+
 def delete_place(db: Session, place: schemas.Place):
     db_place = db.query(models.Place).filter(models.Place.id == place.id).first()
     db.delete(db_place)
@@ -32,54 +42,116 @@ def delete_place(db: Session, place: schemas.Place):
     return
 
 
-def get_users(db: Session, p_id: int):
-    return db.query(models.User).filter(models.User.place_id == p_id).order_by(models.User.updated_at).all()
+def get_users(db: Session, place_id: Union[int, None]):
+    if place_id is None:
+        return db.query(models.User).all()
+    else:
+        return db.query(models.User).filter(models.Place.id == place_id).all()
 
-def get_user_by_number(db: Session, user: schemas.UserCreate):
-    return db.query(models.User).filter(models.User.place_id == user.place_id, models.User.number == user.number).first()
 
-def get_user_by_id(db: Session, user: schemas.User):
-    return db.query(models.User).filter(models.User.place_id == user.place_id, models.User.id == user.id).first()
+def get_user_by_number(db: Session, user: schemas.UserCreate, place_id: int):
+    return (
+        db.query(models.User)
+        .filter(models.Place.id == place_id, models.User.number == user.number)
+        .first()
+    )
 
-def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(place_id=user.place_id, number=user.number, updated_at = datetime.now(JST), created_at = datetime.now(JST))
+
+def get_user_by_id(db: Session, user: schemas.User, place_id: Union[int, None]):
+    if place_id is None:
+        return db.query(models.User).filter(models.User.id == user.id).first()
+    else:
+        return (
+            db.query(models.User)
+            .filter(models.Place.id == place_id, models.User.id == user.id)
+            .first()
+        )
+
+
+def create_user(db: Session, user: schemas.UserCreate, place_id: int):
+    db_place = db.query(models.Place).filter(models.Place.id == place_id).first()
+    db_user = models.User(
+        number=user.number,
+        updated_at=datetime.now(JST),
+        created_at=datetime.now(JST),
+    )
+    db_user.places.append(db_place)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-def delete_user(db: Session, user: schemas.User):
-    db_user = db.query(models.User).filter(models.User.id == user.id).first()
+
+def delete_user(db: Session, user: schemas.User, place_id: Union[int, None]):
+    if place_id is None:
+        db_user = db.query(models.User).filter(models.User.id == user.id).all()
+    else:
+        db_user = (
+            db.query(models.User)
+            .filter(models.Place.id == place_id, models.User.id == user.id)
+            .first()
+        )
     db.delete(db_user)
     db.commit()
     return
 
-def update_user(db: Session, user: schemas.UserCreate):
-    db_user = db.query(models.User).filter(models.User.number == user.number).first()
+
+def update_user(db: Session, user: schemas.UserCreate, place_id: int):
+    db_user = (
+        db.query(models.User)
+        .filter(models.Place.id == place_id, models.User.number == user.number)
+        .first()
+    )
     db_user.updated_at = datetime.now(JST)
     db.commit()
     db.refresh(db_user)
     return db_user
 
+
+def add_user_places(db: Session, user: schemas.UserCreate, place_id: int):
+    db_place = db.query(models.Place).filter(models.Place.id == place_id).first()
+    db_user = db.query(models.User).filter(models.User.number == user.number).first()
+    db_user.updated_at = datetime.now(JST)
+    db_user.places.append(db_place)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def get_latest_users(db: Session, p_id: int):
-    res = db.query(func.max(models.User.updated_at).label("latest_update")).filter(models.User.place_id == p_id).first()
+    res = (
+        db.query(func.max(models.User.updated_at).label("latest_update"))
+        .filter(models.User.place_id == p_id)
+        .first()
+    )
     db_user = db.query(models.User).filter(models.User.updated_at == res.latest_update).first()
     return db_user
 
-def get_random_user(db: Session, p_id: int, starttime:datetime, endtime:datetime):
-    winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
+
+def get_random_user(db: Session, starttime: datetime, endtime: datetime):
+    winners = db.query(models.Winner).all()
     list = []
     for winner in winners:
         list.append(winner.user_id)
-    res = db.query(models.User).filter(models.User.id.notin_(list), models.User.updated_at>=starttime, models.User.updated_at<=endtime).all()
+    res = (
+        db.query(models.User)
+        .filter(
+            models.User.id.notin_(list),
+            models.User.updated_at >= starttime,
+            models.User.updated_at <= endtime,
+        )
+        .all()
+    )
     try:
         db_user = random.choice(res)
-    except:
+    except BaseException:
         return None
-          
+
     return db_user
 
-def update_time(db: Session, time:schemas.Time):
+
+def update_time(db: Session, time: schemas.Time):
     db_time = db.query(models.Time).filter(models.Time.id == 1).first()
     print(vars(db_time))
     db_time.start = time.start
@@ -88,33 +160,41 @@ def update_time(db: Session, time:schemas.Time):
     db.refresh(db_time)
     return db_time
 
+
 def get_times(db: Session, time: int):
     return db.query(models.User).filter(models.User == time).all()
 
-def get_limit_time(db: Session ):
+
+def get_limit_time(db: Session):
     time = db.query(models.Time).first()
     return time
 
 
-
-def get_win_users(db: Session, p_id: int):
-# placeを絞り込んだWinnersでUserを絞込んでUserを返している
-    winners = db.query(models.Winner).filter(models.Winner.place_id == p_id).all()
+def get_win_users(db: Session):
+    # placeを絞り込んだWinnersでUserを絞込んでUserを返している
+    winners = db.query(models.Winner).all()
     list = []
     for winner in winners:
         list.append(winner.user_id)
     win_users = db.query(models.User).filter(models.User.id.in_(list)).all()
     return win_users
 
+
 def create_winner(db: Session, winner: schemas.WinnerCreate):
-    db_winner = models.Winner(place_id=winner.place_id, user_id=winner.user_id, updated_at = datetime.now(JST), created_at = datetime.now(JST))
+    db_winner = models.Winner(
+        user_id=winner.user_id,
+        updated_at=datetime.now(JST),
+        created_at=datetime.now(JST),
+    )
     db.add(db_winner)
     db.commit()
     db.refresh(db_winner)
     return db_winner
 
+
 def get_winner_by_user_id(db: Session, winner: schemas.Winner):
-    return db.query(models.Winner).filter(models.Winner.place_id == winner.place_id, models.Winner.user_id == winner.user_id).first()
+    return db.query(models.Winner).filter(models.Winner.user_id == winner.user_id).first()
+
 
 def delete_winner(db: Session, winner: schemas.Winner):
     db_winner = db.query(models.Winner).filter(models.Winner.user_id == winner.user_id).first()
@@ -122,6 +202,15 @@ def delete_winner(db: Session, winner: schemas.Winner):
     db.commit()
     return
 
+
 def get_admin_by_name(db: Session, name):
-    admin = db.query(models.Admin).filter(models.Admin.name==name).first()
+    admin = db.query(models.Admin).filter(models.Admin.name == name).first()
     return admin
+
+
+def get_user_places(db: Session, user: schemas.User, place_id: int):
+    return (
+        db.query(models.UserPlaces)
+        .filter(models.UserPlaces.place_id == place_id, models.User.number == user.number)
+        .first()
+    )

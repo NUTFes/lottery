@@ -5,3 +5,6 @@ app/.env
 nfc/__pychache__
 nfc/.env
 lottery.env
+lottery.db
+api/.cache
+api/.venv
