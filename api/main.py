@@ -1,10 +1,10 @@
 import hashlib
 import re
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-from fastapi.security import HTTPBasic, HTTPBasicCredentials  # new
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
@@ -175,9 +175,7 @@ def read_place_message_view(
     auth(db, credentials)
     db_place = crud.get_place_by_id(db, id=p_id)
     print(db_place.id)
-    return templates.TemplateResponse(
-        "message.html", {"request": request, "place": db_place}
-    )
+    return templates.TemplateResponse("message.html", {"request": request, "place": db_place})
 
 
 @app.get("/place/{p_id}/random_before")
@@ -189,9 +187,7 @@ def read_random_before_users_view(
 ):
     auth(db, credentials)
     db_place = crud.get_place_by_id(db, id=p_id)
-    return templates.TemplateResponse(
-        "random_before.html", {"request": request, "place": db_place}
-    )
+    return templates.TemplateResponse("random_before.html", {"request": request, "place": db_place})
 
 
 @app.get("/place/{p_id}/random", response_model=schemas.User)
@@ -271,17 +267,18 @@ def get_registers_view(db: Session = Depends(get_db)):
 # =============================================================
 
 
-@app.get("/api", response_model=List[schemas.Place])
+@app.get("/api/places", response_model=List[schemas.Place])
 def read_places(
+    user_id: Union[int, None] = None,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    db_places = crud.get_places(db)
+    db_places = crud.get_places(db, user_id=user_id)
     return db_places
 
 
-@app.post("/api/add", response_model=schemas.Place)
+@app.post("/api/place", response_model=schemas.Place)
 async def create_place(
     place: schemas.PlaceCreate,
     db: Session = Depends(get_db),
@@ -294,105 +291,101 @@ async def create_place(
     return crud.create_place(db=db, place=place)
 
 
-@app.delete("/api/delete/{p_id}", response_model=schemas.Place)
+@app.delete("/api/place/{place_id}", response_model=schemas.Place)
 def delete_place(
-    p_id: int,
+    place_id: int,
     place: schemas.Place,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    place.id = p_id
+    place.id = place_id
     db_place = crud.get_place_by_id(db, id=place.id)
     if db_place is None:
         raise HTTPException(status_code=404, detail="Place not found")
     return crud.delete_place(db=db, place=place)
 
 
-@app.get("/api/place/{p_id}", response_model=List[schemas.User])
+@app.get("/api/users", response_model=List[schemas.User])
 def read_users(
-    p_id: int,
+    place_id: Union[int, None] = None,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    db_users = crud.get_users(db, p_id)
+    db_users = crud.get_users(db, place_id=place_id)
     if db_users is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_users
 
 
-@app.post("/api/place/{p_id}/add", response_model=schemas.User)
+@app.post("/api/user", response_model=schemas.User)
 async def create_user(
-    p_id: int,
     user: schemas.UserCreate,
+    place_id: int,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    user.place_id = p_id
-    db_user = crud.get_user_by_number(db, user=user)
+    db_user = crud.get_user_by_number(db, user=user, place_id=place_id)
+    db_user_places = crud.get_user_places(db, user=user, place_id=place_id)
+    if db_user_places:
+        # 同じ番号が既に登録されている場合はUPDATE
+        return crud.update_user(db=db, user=user, place_id=place_id)
     if db_user:
-        return crud.update_user(db=db, user=user)
-    return crud.create_user(db=db, user=user)
+        # placeのみ登録されていない場合は登録
+        return crud.add_user_places(db=db, user=user, place_id=place_id)
+    return crud.create_user(db=db, user=user, place_id=place_id)
 
 
-@app.delete("/api/place/{p_id}/delete/{u_id}", response_model=schemas.User)
+@app.delete("/api/user/{user_id}", response_model=schemas.User)
 def delete_user(
-    p_id: int,
-    u_id: int,
+    user_id: int,
     user: schemas.User,
+    place_id: Union[int, None] = None,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    user.place_id = p_id
-    user.id = u_id
-    db_user = crud.get_user_by_id(db, user=user)
+    user.id = user_id
+    db_user = crud.get_user_by_id(db, user=user, place_id=place_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return crud.delete_user(db=db, user=user)
+    return crud.delete_user(db=db, user=user, place_id=place_id)
 
 
-@app.get("/api/place/{p_id}/random", response_model=schemas.User)
+@app.get("/api/random", response_model=schemas.User)
 def read_random_user(
-    p_id: int,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    db_user = crud.get_random_user(db, p_id)
+    db_user = crud.get_random_user(db)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     winner = schemas.WinnerCreate
-    winner.place_id = db_user.place_id
     winner.user_id = db_user.id
     crud.create_winner(db, winner)
     return db_user
 
 
-@app.get("/api/place/{p_id}/winner", response_model=List[schemas.User])
-# 返しているのはUserなのでresponseはUser
-def read_winners(p_id: int, db: Session = Depends(get_db)):
-    db_win_users = crud.get_win_users(db, p_id)
+@app.get("/api/winners", response_model=List[schemas.User])
+def read_winners(db: Session = Depends(get_db)):
+    db_win_users = crud.get_win_users(db)
     if db_win_users is None:
         raise HTTPException(status_code=404, detail="Winner not found")
     return db_win_users
 
 
-@app.delete(
-    "/api/place/{p_id}/winner/delete/{w_id}", response_model=schemas.WinnerDelete
-)
+@app.delete("/api/winners/{winner_id}", response_model=schemas.WinnerDelete)
 def delete_winner(
-    p_id: int,
-    w_id: int,
+    winner_id: int,
     winner: schemas.Winner,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    winner.place_id = p_id
-    winner.user_id = w_id
+    winner.user_id = winner_id
     db_user = crud.get_winner_by_user_id(db, winner=winner)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")

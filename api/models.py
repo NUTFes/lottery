@@ -49,7 +49,9 @@ class Place(Base):
         nullable=False,
         server_default=current_timestamp(),
     )
-    users = relationship("User", secondary=UserPlaces.__tablename__, back_populates="places")
+    users = relationship(
+        "User", secondary=UserPlaces.__tablename__, back_populates="places", lazy="dynamic"
+    )
 
 
 class User(Base):
@@ -79,7 +81,9 @@ class User(Base):
         nullable=False,
         server_default=current_timestamp(),
     )
-    places = relationship("Place", secondary=UserPlaces.__tablename__, back_populates="users")
+    places = relationship(
+        "Place", secondary=UserPlaces.__tablename__, back_populates="users", lazy="dynamic"
+    )
 
 
 class Time(Base):
@@ -110,7 +114,6 @@ class Winner(Base):
     """
     当選者テーブル
     id          : 主キー
-    place_id    : 外部キー
     user_id     : 外部キー
     updated_at  : 最終更新
     created_at  : 登録日時
@@ -118,7 +121,6 @@ class Winner(Base):
 
     __tablename__ = "winner"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    place_id = Column("place_id", ForeignKey("place.id"))
     user_id = Column("user_id", ForeignKey("user.id"))
     updated_at = Column(
         "updated_at",

@@ -26,7 +26,6 @@ class Place(PlaceBase):
 
 
 class UserBase(BaseModel):
-    place_id: int
     number: int
 
 
@@ -40,7 +39,6 @@ class UserDelete(UserBase):
 
 class User(UserBase):
     id: int
-    place_id: int
     number: int
     updated_at: datetime
     created_at: datetime
@@ -50,7 +48,6 @@ class User(UserBase):
 
 
 class WinnerBase(BaseModel):
-    place_id: int
     user_id: int
 
 
