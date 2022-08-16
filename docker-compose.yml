@@ -3,7 +3,7 @@ version: '3'
 services:
   api:
     container_name: 'ST-API'
-    build: ./docker/fastapi
+    build: ./.docker/fastapi
     volumes:
       - ./api:/var/www/html
     ports:
@@ -15,7 +15,7 @@ services:
 
   web:
     container_name: 'ST-WEB'
-    build: ./docker/node
+    build: ./.docker/node
     ports:
       - '3000:3000'
     volumes:
@@ -26,7 +26,7 @@ services:
 
   app:
     container_name: 'ST-APP'
-    build: ./docker/nextjs
+    build: ./.docker/nextjs
     ports:
       - '8888:8888'
     volumes:
