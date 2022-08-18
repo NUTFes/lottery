@@ -1,7 +1,12 @@
+import MobileLayout from '@/components/MobileLayout'
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
-  return <>Hello Stickee!!</>
+  return (
+    <>
+    <MobileLayout/>
+    </>
+  )
 }
 
 export default Home
