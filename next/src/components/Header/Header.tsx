@@ -11,67 +11,7 @@ interface HeaderProps {
 }
 const Header = (props: HeaderProps) => {
   return (
-    <header className="flex justify-between items-center py-4 md:py-8">
-      <a
-        href="/admin"
-        className="inline-flex items-center text-black-800 text-2xl md:text-3xl font-bold gap-2.5"
-        aria-label="logo"
-      >
-        学籍番号抽選会
-      </a>
-
-      <nav className="hidden lg:flex gap-12">
-        <a
-          href="/admin"
-          className="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100"
-        >
-          Home
-        </a>
-        <a href="#" className="inline-flex items-center text-indigo-500 text-lg font-semibold gap-1">
-          Features
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-gray-800"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </a>
-        <a
-          href="#"
-          className="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100"
-        >
-          Pricing
-        </a>
-        <a
-          href="#"
-          className="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100"
-        >
-          About
-        </a>
-      </nav>
-
-      <div className="hidden lg:flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-2.5 -ml-8">
-        <a
-          href="#"
-          className="inline-block focus-visible:ring ring-indigo-300 text-gray-500 hover:text-indigo-500 active:text-indigo-600 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-4 py-3"
-        >
-          Sign in
-        </a>
-
-        <a
-          href="#"
-          className="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
-        >
-          Sign up
-        </a>
-      </div>
-
+    <header className="flex justify-between items-center px-2 py-8 md:py-8">
       <button
         type="button"
         className="inline-flex items-center lg:hidden bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold rounded-lg gap-2 px-2.5 py-2"
@@ -85,6 +25,13 @@ const Header = (props: HeaderProps) => {
         </svg>
         Menu
       </button>
+      <a
+        href="/admin"
+        className="inline-flex items-center text-black-800 text-2xl md:text-3xl font-bold gap-2.5"
+        aria-label="logo"
+      >
+        学籍番号抽選会 管理者画面
+      </a>
     </header>
   )
 }
