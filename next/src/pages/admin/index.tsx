@@ -2,6 +2,7 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import AdminLayout from '@/components/AdminLayout'
+import { Card } from '@/components/Card'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -17,15 +18,11 @@ const Admin: NextPage = () => {
     <AdminLayout className="bg-white lg:pb-12">
       <div className="bg-white py-6 sm:py-8 lg:py-12">
         <div className="max-w-screen-xl px-4 md:px-8 mx-auto">
-          <div className="mb-10 md:mb-16">
-            <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">管理者画面</h2>
-            <p className="max-w-screen-md text-gray-500 md:text-lg text-center mx-auto">
-              This is a section of some simple filler text, also known as placeholder text. It shares some
-              characteristics of a real written text but is random or otherwise generated.
-            </p>
-          </div>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 sm:gap-12 xl:gap-16">
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
+            <Card></Card>
             <div className="flex flex-col md:flex-row items-center gap-4 lg:gap-6">
               <a
                 href="/admin/lottery"

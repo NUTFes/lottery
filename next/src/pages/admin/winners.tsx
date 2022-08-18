@@ -5,9 +5,8 @@ import AdminLayout from '@/components/AdminLayout'
 import { get } from '@/utils/api_methods'
 import { Search } from '@/components/Search'
 import Table from '@/components/Table'
-import Pagination from '@/components/Pagination'
 
-type User = {
+type Winner = {
   id: number
   place_id: string
   number: string
@@ -17,21 +16,21 @@ type User = {
 }
 
 type Props = {
-  users: User[]
+  winners: Winner[]
 }
 
 export const getServerSideProps = async () => {
-  const getUrl = 'http://api:8000/api/users'
+  const getUrl = 'http://api:8000/api/place/1/winner'
   const json = await get(getUrl)
   return {
     props: {
-      users: json,
+      winners: json,
     },
   }
 }
 
-const UserList: NextPage<Props> = (props) => {
-  const [users, setUsers] = useState<User[]>(props.users)
+const Winner: NextPage<Props> = (props) => {
+  const [winners, setWinners] = useState<Winner[]>(props.winners)
   return (
     <AdminLayout className="bg-white lg:pb-12">
       <div className="bg-white py-6 sm:py-8 lg:py-12 content-center">
@@ -58,13 +57,13 @@ const UserList: NextPage<Props> = (props) => {
             </thead>
             <tbody>
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                {users.map((user) => (
+                {winners.map((winner) => (
                   <>
                     <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {user.number}
+                      {winner.number}
                     </th>
-                    <td className="py-4 px-6">{user.created_at}</td>
-                    <td className="py-4 px-6">{user.created_at}</td>
+                    <td className="py-4 px-6">{winner.created_at}</td>
+                    <td className="py-4 px-6">{winner.created_at}</td>
 
                     <td className="py-4 px-6 text-right">
                       <a href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">
@@ -83,4 +82,4 @@ const UserList: NextPage<Props> = (props) => {
   )
 }
 
-export default UserList
+export default Winner
