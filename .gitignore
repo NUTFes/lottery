@@ -8,3 +8,5 @@ lottery.env
 lottery.db
 api/.cache
 api/.venv
+nfc/.cache
+nfc/.venv

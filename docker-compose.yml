@@ -24,3 +24,13 @@ services:
     environment:
       SSR_API_URI: 'http://localhost:8000/api'
       CSR_API_URI: 'http://api:8000/api'
+
+  nfc:
+    container_name: 'ST-NFC'
+    build: ./.docker/nfc
+    volumes:
+      - ./nfc:/nfc
+    command: python raadic.py
+    environment:
+      ST_USER: admin
+      ST_PASS: password

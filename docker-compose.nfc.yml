@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  nfc:
+    container_name: 'ST-NFC'
+    build: ./.docker/nfc
+    volumes:
+      - ./nfc:/var/www/html
+    command: python raadic.py
+    environment:
+      ST_USER: admin
+      ST_PASS: password
