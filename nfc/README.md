@@ -6,12 +6,12 @@ USB/IP の OSS，[usbipd-win](https://github.com/dorssel/usbipd-win)を使用し
 
 - Windows 11 (ビルド 22000 以降）が実行されていること
 - x64/x86 プロセッサを搭載したマシンであること
-- Linux ディストリビューションがインストールされており、かつ WSL2 に設定されていること
+- Linux ディストリビューションがインストールされており，かつ WSL2 に設定されていること
 - Linux カーネル 5.10.60.1 以上が実行されていること
 
 ## USBIPD-WIN のインストール
 
-USB デバイスの接続のサポートは WSL ではネイティブに使用できないので、オープンソースの usbipd-win プロジェクトをインストールする必要がある。
+USB デバイスの接続のサポートは WSL ではネイティブに使用できないので，オープンソースの usbipd-win プロジェクトをインストールする必要がある。
 
 Windows パッケージ マネージャー (winget) を使用してインストールする。
 
@@ -21,51 +21,59 @@ Windows パッケージ マネージャー (winget) を使用してインスト�
 winget install --interactive --exact dorssel.usbipd-win
 ```
 
-これにより、次のものがインストールされます。
+これにより，次のものがインストールされます。
 
 ## Linux に USBIP ツールとハードウェア データベースをインストールする
 
-USB/IP プロジェクトのインストールが完了したら、ユーザー空間ツールと USB ハードウェア識別子のデータベースをインストールする。
+USB/IP プロジェクトのインストールが完了したら，ユーザー空間ツールと USB ハードウェア識別子のデータベースをインストールする。
 
-Ubuntu で、次のコマンドを実行する。
+Ubuntu で，次のコマンドを実行する。
 
 `Bash`
 
 ```shell
-sudo apt install linux-tools-generic hwdata
-sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/generic/usbip 20
+sudo apt install linux-tools-5.15.0-25-generic hwdata
+sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/5.15.0-25-generic/usbip 20
+
+# インストールできなかったら
+sudo apt install linux-tools-<tab補完で一番新しいバージョン>-generic hwdata
+sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/<tab補完で一番新しいバージョン>-generic/usbip 20
 ```
 
 ## USB デバイスを接続する
 
-USB デバイスを接続する前に、WSL コマンド ラインが開いていることを確認します。 これにより、WSL 2 ライトウェイト VM がアクティブに保たれます。
+WSL を立ち上げ，アクティブに保つ。
 
-PowerShell を "管理者" モードで開き、次のコマンドを入力することで、Windows に接続されたすべての USB デバイスの一覧を表示します。
+PowerShell を **管理者 モード**で開き，次のコマンドを入力することで，Windows に接続されたすべての USB デバイスの一覧を表示する。
 
-PowerShell
+`PowerShell`
 
-コピー
+```powershell
 usbipd wsl list
-WSL に接続するデバイスのバス ID を選択し、こちらのコマンドを実行します。 WSL によって sudo コマンドを実行するためのパスワードが求められます。 アタッチする Linux ディストリビューションは、既定のディストリビューションである必要があります。 (既定のディストリビューションを変更するには 、WSL ドキュメントの基本コマンド を参照してください)。
+```
 
-PowerShell
+WSL に接続するデバイスのバス ID を確認し，以下のコマンドで，デバイスを接続する。
 
-コピー
-usbipd wsl attach --busid <busid>
-Ubuntu (または任意の WSL コマンド ライン) を開き、次のコマンドを使用して接続された USB デバイスの一覧を表示します。
+`PowerShell`
 
-Bash
+```powershell
+usbipd wsl attach -b <busid>
+```
 
-コピー
+Ubuntu を開き，次のコマンドを使用して接続された USB デバイスの一覧を表示する。
+
+`Bash`
+
+```shell
 lsusb
-先ほど接続したデバイスが表示され、Linux の通常のツールを使用して操作できるようになります。 お使いのアプリケーションによっては、ルート以外のユーザーがデバイスにアクセスするのを許可するために、udev の規則を構成する必要がある場合があります。
+```
 
-WSL でデバイスの使用が完了した後は、USB デバイスの接続を物理的に解除するか、PowerShell から "管理者モード" でこちらのコマンドを実行します。
+先ほど接続したデバイスが表示され，Linux の通常のツールを使用して操作できるようになる。 アプリケーションによっては，ルート以外のユーザーがデバイスにアクセスするのを許可するために，udev の設定を構成する必要がある。
 
-PowerShell
+WSL でデバイスの使用が完了した後は，USB デバイスの接続を物理的に解除するか，PowerShell から **管理者モード** で以下のコマンドを実行する。
 
-コピー
+`PowerShell`
+
+```powershell
 usbipd wsl detach --busid <busid>
-この仕組みの詳細については、Windows コマンド ラインのブログと GitHub の usbipd-win リポジトリを参照してください。
-
-ビデオ デモについては、「WSL 2: USB デバイスの接続 (Tabs vs Spaces ショー)」を参照してください。
+```
