@@ -3,7 +3,9 @@ version: '3'
 services:
   api:
     container_name: 'ST-API'
-    build: ./.docker/fastapi
+    build:
+      context: .docker
+      dockerfile: api.Dockerfile
     volumes:
       - ./api:/var/www/html
     ports:
@@ -15,7 +17,9 @@ services:
 
   app:
     container_name: 'ST-APP'
-    build: ./.docker/nextjs
+    build:
+      context: .docker
+      dockerfile: app.Dockerfile
     ports:
       - '8888:8888'
     volumes:
@@ -29,7 +33,9 @@ services:
 
   nfc:
     container_name: 'ST-NFC'
-    build: ./.docker/nfc
+    build:
+      context: .docker
+      dockerfile: nfc.Dockerfile
     volumes:
       - ./nfc:/nfc
       - /dev/bus/usb:/dev/bus/usb:ro
