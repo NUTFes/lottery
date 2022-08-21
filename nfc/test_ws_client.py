@@ -9,21 +9,17 @@ from time import sleep
 
 import requests
 import websockets
-
-# .env ファイルをロードして環境変数へ反映
-from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-load_dotenv()
-os.environ["NO_PROXY"] = "localhost"
+
 ST_USER = os.getenv("ST_USER")
 ST_PASS = os.getenv("ST_PASS")
 ST_APP_URL = os.getenv("ST_APP_URL")
 ST_WS_URL = os.getenv("ST_WS_URL")
+PLACE_ID = os.getenv("PLACE_ID")
 
-PLACE_ID = 1
-POST_URI = f"{ST_APP_URL}/api/place/{PLACE_ID}/add"
+POST_URI = f"{ST_APP_URL}/api/user?place_id={PLACE_ID}"
 SEND_URI = f"{ST_WS_URL}/ws"
 
 
@@ -54,11 +50,14 @@ def post_res_number(number):
     headers = {
         "Content-Type": "application/json",
     }
-    data = {"place_id": PLACE_ID, "number": number}
+    data = {"number": number}
     response = requests.post(
-        POST_URI, headers=headers, data=json.dumps(data), auth=HTTPBasicAuth(ST_USER, ST_PASS)
+        POST_URI,
+        headers=headers,
+        data=json.dumps(data),
+        auth=HTTPBasicAuth(ST_USER, ST_PASS),
     )
-    print(response.text)
+    print(response.text, flush=True)
 
 
 async def send_message(message):
@@ -70,7 +69,7 @@ async def send_message(message):
         # WebSocketサーバからメッセージを受信すればコンソールに出力する。
         data = await websocket.recv()
         # コンソール出力
-        print(data)
+        print(data, flush=True)
 
 
 if __name__ == "__main__":
