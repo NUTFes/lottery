@@ -322,36 +322,32 @@ def read_users(
 @app.post("/api/user", response_model=schemas.User)
 async def create_user(
     user: schemas.UserCreate,
-    place_id: int,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    db_user = crud.get_user_by_number(db, user=user, place_id=place_id)
-    db_user_places = crud.get_user_places(db, user=user, place_id=place_id)
+    db_user = crud.get_user_by_number(db, user=user)
+    db_user_places = crud.get_user_places(db, user=user, place_id=user.place_id)
     if db_user_places:
         # 同じ番号が既に登録されている場合はUPDATE
-        return crud.update_user(db=db, user=user, place_id=place_id)
+        return crud.update_user(db=db, user=user)
     if db_user:
         # placeのみ登録されていない場合は登録
-        return crud.add_user_places(db=db, user=user, place_id=place_id)
-    return crud.create_user(db=db, user=user, place_id=place_id)
+        return crud.add_user_places(db=db, user=user, place_id=user.place_id)
+    return crud.create_user(db=db, user=user, place_id=user.place_id)
 
 
-@app.delete("/api/user/{user_id}", response_model=schemas.User)
+@app.delete("/api/user", response_model=schemas.User)
 def delete_user(
-    user_id: int,
-    user: schemas.User,
-    place_id: Union[int, None] = None,
+    user: schemas.UserDelete,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    user.id = user_id
-    db_user = crud.get_user_by_id(db, user=user, place_id=place_id)
+    db_user = crud.get_user_by_id(db, user=user, place_id=user.place_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return crud.delete_user(db=db, user=user, place_id=place_id)
+    return crud.delete_user(db=db, user=user, place_id=user.place_id)
 
 
 @app.get("/api/random", response_model=schemas.User)

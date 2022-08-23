@@ -33,5 +33,23 @@ if __name__ == "__main__":
     user.places.append(place)
     db.add(user)
 
+    place = Place()
+    place.name = "体育館前-2"
+
+    user = User()
+    user.number = 20002000
+    user.places.append(place)
+    db.add(user)
+
+    user = User()
+    user.number = 30004000
+    place = Place()
+    place.name = "体育館前-3"
+    user.places.append(place)
+    place = Place()
+    place.name = "体育館前-4"
+    user.places.append(place)
+    db.add(user)
+
     db.commit()
     db.close()  # セッションを閉じる

@@ -49,10 +49,10 @@ def get_users(db: Session, place_id: Union[int, None]):
         return db.query(models.User).filter(models.Place.id == place_id).all()
 
 
-def get_user_by_number(db: Session, user: schemas.UserCreate, place_id: int):
+def get_user_by_number(db: Session, user: schemas.UserCreate):
     return (
         db.query(models.User)
-        .filter(models.Place.id == place_id, models.User.number == user.number)
+        .filter(models.Place.id == user.place_id, models.User.number == user.number)
         .first()
     )
 
@@ -68,8 +68,8 @@ def get_user_by_id(db: Session, user: schemas.User, place_id: Union[int, None]):
         )
 
 
-def create_user(db: Session, user: schemas.UserCreate, place_id: int):
-    db_place = db.query(models.Place).filter(models.Place.id == place_id).first()
+def create_user(db: Session, user: schemas.UserCreate):
+    db_place = db.query(models.Place).filter(models.Place.id == user.place_id).first()
     db_user = models.User(
         number=user.number,
         updated_at=datetime.now(JST),
@@ -96,10 +96,10 @@ def delete_user(db: Session, user: schemas.User, place_id: Union[int, None]):
     return
 
 
-def update_user(db: Session, user: schemas.UserCreate, place_id: int):
+def update_user(db: Session, user: schemas.UserCreate):
     db_user = (
         db.query(models.User)
-        .filter(models.Place.id == place_id, models.User.number == user.number)
+        .filter(models.Place.id == user.place_id, models.User.number == user.number)
         .first()
     )
     db_user.updated_at = datetime.now(JST)
@@ -108,8 +108,8 @@ def update_user(db: Session, user: schemas.UserCreate, place_id: int):
     return db_user
 
 
-def add_user_places(db: Session, user: schemas.UserCreate, place_id: int):
-    db_place = db.query(models.Place).filter(models.Place.id == place_id).first()
+def add_user_places(db: Session, user: schemas.UserCreate):
+    db_place = db.query(models.Place).filter(models.Place.id == user.place_id).first()
     db_user = db.query(models.User).filter(models.User.number == user.number).first()
     db_user.updated_at = datetime.now(JST)
     db_user.places.append(db_place)

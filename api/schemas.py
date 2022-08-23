@@ -3,19 +3,18 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class PlaceBase(BaseModel):
+class PlaceCreate(BaseModel):
+    # Request Body (Create)
     name: str
 
 
-class PlaceCreate(PlaceBase):
-    pass
+class PlaceDelete(BaseModel):
+    # Request Body (Delete)
+    name: str
 
 
-class PlaceDelete(PlaceBase):
-    pass
-
-
-class Place(PlaceBase):
+class Place(BaseModel):
+    # Response Body
     id: int
     name: str
     updated_at: datetime
@@ -25,19 +24,20 @@ class Place(PlaceBase):
         orm_mode = True
 
 
-class UserBase(BaseModel):
+class UserCreate(BaseModel):
+    # Request Body (Create)
     number: int
+    place_id: int
 
 
-class UserCreate(UserBase):
-    pass
+class UserDelete(BaseModel):
+    # Request Body (Delete)
+    number: int
+    place_id: int = 0
 
 
-class UserDelete(UserBase):
-    pass
-
-
-class User(UserBase):
+class User(BaseModel):
+    # Response Body
     id: int
     number: int
     updated_at: datetime
@@ -47,19 +47,18 @@ class User(UserBase):
         orm_mode = True
 
 
-class WinnerBase(BaseModel):
+class WinnerCreate(BaseModel):
+    # Request Body (Create)
     user_id: int
 
 
-class WinnerCreate(WinnerBase):
-    pass
+class WinnerDelete(BaseModel):
+    # Request Body (Delete)
+    user_id: int
 
 
-class WinnerDelete(WinnerBase):
-    pass
-
-
-class Winner(WinnerBase):
+class Winner(BaseModel):
+    # Response Body
     id: int
     updated_at: datetime
     created_at: datetime
