@@ -21,8 +21,6 @@ Windows パッケージ マネージャー (winget) を使用してインスト�
 winget install --interactive --exact dorssel.usbipd-win
 ```
 
-これにより，次のものがインストールされます。
-
 ## Linux に USBIP ツールとハードウェア データベースをインストールする
 
 USB/IP プロジェクトのインストールが完了したら，ユーザー空間ツールと USB ハードウェア識別子のデータベースをインストールする。
@@ -42,7 +40,7 @@ sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-too
 
 ## USB デバイスを接続する
 
-WSL を立ち上げ，アクティブに保つ。
+ターミナルで WSL を立ち上げ，アクティブに保つ。
 
 PowerShell を **管理者 モード**で開き，次のコマンドを入力することで，Windows に接続されたすべての USB デバイスの一覧を表示する。
 
