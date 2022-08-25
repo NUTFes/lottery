@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 from database import SQLITE3_NAME, Base, SessionLocal, engine
-from models import Admin, Place, Time, User, Winner
+from models import Admin, Place, Time, User, UserPlaces, Winner
 
 load_dotenv()
 ST_USER = os.getenv("ST_USER")
@@ -42,14 +42,18 @@ if __name__ == "__main__":
     db.add(user)
 
     user = User()
-    user.number = 30004000
-    place = Place()
-    place.name = "体育館前-3"
-    user.places.append(place)
-    place = Place()
-    place.name = "体育館前-4"
-    user.places.append(place)
+    user.number = 12121212
     db.add(user)
+
+    user_places = UserPlaces()
+    user_places.place_id = 1
+    user_places.user_id = 3
+    db.add(user_places)
+
+    user_places = UserPlaces()
+    user_places.place_id = 2
+    user_places.user_id = 3
+    db.add(user_places)
 
     db.commit()
     db.close()  # セッションを閉じる

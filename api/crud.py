@@ -16,7 +16,14 @@ def get_places(db: Session, user_id: Union[int, None]):
     if user_id is None:
         return db.query(models.Place).all()
     else:
-        return db.query(models.Place).filter(models.User.id == user_id).all()
+        return (
+            db.query(models.Place, models.UserPlaces)
+            .filter(
+                models.Place.id == models.UserPlaces.place_id,
+                models.UserPlaces.user_id == user_id,
+            )
+            .all()
+        )
 
 
 def get_place_by_name(db: Session, name: str):
@@ -46,13 +53,24 @@ def get_users(db: Session, place_id: Union[int, None]):
     if place_id is None:
         return db.query(models.User).all()
     else:
-        return db.query(models.User).filter(models.Place.id == place_id).all()
+        return (
+            db.query(models.User)
+            .join(models.UserPlaces)
+            .join(models.Place)
+            .filter(models.Place.id == place_id)
+            .all()
+        )
 
 
 def get_user_by_number(db: Session, user: schemas.UserCreate):
     return (
-        db.query(models.User)
-        .filter(models.Place.id == user.place_id, models.User.number == user.number)
+        db.query(models.User, models.UserPlaces, models.Place)
+        .filter(
+            models.User.id == models.UserPlaces.user_id,
+            models.UserPlaces.place_id == models.Place.id,
+            models.Place.id == user.place_id,
+            models.User.number == user.number,
+        )
         .first()
     )
 
@@ -69,16 +87,20 @@ def get_user_by_id(db: Session, user: schemas.User, place_id: Union[int, None]):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_place = db.query(models.Place).filter(models.Place.id == user.place_id).first()
     db_user = models.User(
         number=user.number,
         updated_at=datetime.now(JST),
         created_at=datetime.now(JST),
     )
-    db_user.places.append(db_place)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
+    db_user_places = models.UserPlaces(user_id=db_user.id, place_id=user.place_id)
+    db.add(db_user_places)
+    db.commit()
+    db.refresh(db_user_places)
+
     return db_user
 
 
@@ -97,25 +119,26 @@ def delete_user(db: Session, user: schemas.User, place_id: Union[int, None]):
 
 
 def update_user(db: Session, user: schemas.UserCreate):
-    db_user = (
-        db.query(models.User)
-        .filter(models.Place.id == user.place_id, models.User.number == user.number)
-        .first()
-    )
+    db_user = db.query(models.User).filter(models.User.number == user.number).first()
     db_user.updated_at = datetime.now(JST)
+    db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
 def add_user_places(db: Session, user: schemas.UserCreate):
-    db_place = db.query(models.Place).filter(models.Place.id == user.place_id).first()
     db_user = db.query(models.User).filter(models.User.number == user.number).first()
     db_user.updated_at = datetime.now(JST)
-    db_user.places.append(db_place)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
+    db_user_places = models.UserPlaces(user_id=db_user.id, place_id=user.place_id)
+    db.add(db_user_places)
+    db.commit()
+    db.refresh(db_user_places)
+
     return db_user
 
 
@@ -210,7 +233,11 @@ def get_admin_by_name(db: Session, name):
 
 def get_user_places(db: Session, user: schemas.User, place_id: int):
     return (
-        db.query(models.UserPlaces)
-        .filter(models.UserPlaces.place_id == place_id, models.User.number == user.number)
+        db.query(models.User, models.UserPlaces)
+        .filter(
+            models.User.id == models.UserPlaces.user_id,
+            models.UserPlaces.place_id == place_id,
+            models.User.number == user.number,
+        )
         .first()
     )

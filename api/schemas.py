@@ -60,6 +60,7 @@ class WinnerDelete(BaseModel):
 class Winner(BaseModel):
     # Response Body
     id: int
+    user_id: int
     updated_at: datetime
     created_at: datetime
 

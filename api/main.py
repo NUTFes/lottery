@@ -3,7 +3,8 @@ import re
 from datetime import datetime
 from typing import List, Union
 
-from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
+                     WebSocketDisconnect)
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -291,7 +292,7 @@ async def create_place(
     return crud.create_place(db=db, place=place)
 
 
-@app.delete("/api/place/{place_id}", response_model=schemas.Place)
+@app.delete("/api/place", response_model=schemas.PlaceDelete)
 def delete_place(
     place_id: int,
     place: schemas.Place,
@@ -326,15 +327,18 @@ async def create_user(
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    db_user = crud.get_user_by_number(db, user=user)
     db_user_places = crud.get_user_places(db, user=user, place_id=user.place_id)
+    db_user = crud.get_user_by_number(db, user=user)
+    # 同じ番号が同じ場所に既に登録されている場合はUPDATE
     if db_user_places:
-        # 同じ番号が既に登録されている場合はUPDATE
+        print("21341234123412341")
         return crud.update_user(db=db, user=user)
-    if db_user:
-        # placeのみ登録されていない場合は登録
-        return crud.add_user_places(db=db, user=user, place_id=user.place_id)
-    return crud.create_user(db=db, user=user, place_id=user.place_id)
+    # placeのみ登録されていない場合は登録
+    elif db_user:
+        print("adfasdfasdfasdf")
+        return crud.add_user_places(db=db, user=user)
+
+    return crud.create_user(db=db, user=user)
 
 
 @app.delete("/api/user", response_model=schemas.User)
