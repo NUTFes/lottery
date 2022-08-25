@@ -73,20 +73,20 @@ class Time(BaseModel):
     end: datetime
 
 
-class UserPlacesBase(BaseModel):
+class UserPlacesCreate(BaseModel):
+    # Request Body (Create)
     place_id: int
     user_id: int
 
 
-class UserPlacesCreate(UserPlacesBase):
-    pass
+class UserPlacesDelete(BaseModel):
+    # Request Body (Delete)
+    place_id: int
+    user_id: int
 
 
-class UserPlacesDelete(UserPlacesBase):
-    pass
-
-
-class UserPlaces(UserPlacesBase):
+class UserPlaces(BaseModel):
+    # Response Body
     place_id: int
     user_id: int
 
