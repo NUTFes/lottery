@@ -10,7 +10,7 @@ class PlaceCreate(BaseModel):
 
 class PlaceDelete(BaseModel):
     # Request Body (Delete)
-    name: str
+    id: int
 
 
 class Place(BaseModel):

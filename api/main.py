@@ -3,8 +3,7 @@ import re
 from datetime import datetime
 from typing import List, Union
 
-from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
-                     WebSocketDisconnect)
+from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -292,15 +291,13 @@ async def create_place(
     return crud.create_place(db=db, place=place)
 
 
-@app.delete("/api/place", response_model=schemas.PlaceDelete)
+@app.delete("/api/place", response_model=schemas.Place)
 def delete_place(
-    place_id: int,
-    place: schemas.Place,
+    place: schemas.PlaceDelete,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    place.id = place_id
     db_place = crud.get_place_by_id(db, id=place.id)
     if db_place is None:
         raise HTTPException(status_code=404, detail="Place not found")
@@ -377,15 +374,13 @@ def read_winners(db: Session = Depends(get_db)):
     return db_win_users
 
 
-@app.delete("/api/winners/{winner_id}", response_model=schemas.WinnerDelete)
+@app.delete("/api/winners", response_model=schemas.WinnerDelete)
 def delete_winner(
-    winner_id: int,
-    winner: schemas.Winner,
+    winner: schemas.WinnerDelete,
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
 ):
     auth(db, credentials)
-    winner.user_id = winner_id
     db_user = crud.get_winner_by_user_id(db, winner=winner)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
