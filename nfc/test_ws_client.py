@@ -50,7 +50,7 @@ def post_res_number(number):
     headers = {
         "Content-Type": "application/json",
     }
-    data = {"number": number}
+    data = {"number": number, "place_id": PLACE_ID}
     response = requests.post(
         POST_URI,
         headers=headers,

@@ -25,6 +25,7 @@ SEND_URI = f"{ST_WS_URL}/ws"
 
 
 def scan_card():
+    # カードをスキャンする。
     clf = nfc.ContactlessFrontend("usb")  # USB接続のNFCリーダーを開く
     clf.connect(rdwr={"on-connect": connected})
     clf.close()
@@ -56,6 +57,7 @@ def connected(tag):
 
 
 def confirm_registerable():
+    # 登録可能かどうか確認する。
     global oldres
     if res["expiration"] < res["updated_at"]:
         return False
@@ -66,6 +68,7 @@ def confirm_registerable():
 
 
 def confirm_sendable(message):
+    # 直前に送信したメッセージと同じかどうか確認する。
     global oldmessage
     if message == oldmessage:
         return False
@@ -74,10 +77,11 @@ def confirm_sendable(message):
 
 
 def post_res_number(number):
+    # 学籍番号をPOSTする。
     headers = {
         "Content-Type": "application/json",
     }
-    data = {"number": number}
+    data = {"number": number, "place_id": PLACE_ID}
     response = requests.post(
         POST_URI, headers=headers, data=json.dumps(data), auth=HTTPBasicAuth(ST_USER, ST_PASS)
     )

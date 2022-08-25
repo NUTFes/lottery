@@ -152,7 +152,10 @@ def get_latest_users(db: Session, p_id: int):
     return db_user
 
 
-def get_random_user(db: Session, starttime: datetime, endtime: datetime):
+def get_random_user(db: Session):
+    db_time = db.query(models.Time).filter(models.Time.id == 1).first()
+    starttime = db_time.start
+    endtime = db_time.end
     winners = db.query(models.Winner).all()
     list = []
     for winner in winners:
