@@ -144,7 +144,7 @@ def delete_user(
     return crud.delete_user(db=db, user=user, place_id=user.place_id)
 
 
-@app.get("/api/random", response_model=schemas.User)
+@app.get("/api/random", response_model=List[schemas.User])
 def read_random_user(
     db: Session = Depends(get_db),
     credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
@@ -156,7 +156,7 @@ def read_random_user(
     winner = schemas.WinnerCreate
     winner.user_id = db_user.id
     crud.create_winner(db, winner)
-    return db_user
+    return [db_user]
 
 
 @app.get("/api/winners", response_model=List[schemas.User])
@@ -167,7 +167,7 @@ def read_winners(db: Session = Depends(get_db)):
     return db_win_users
 
 
-@app.delete("/api/winners", response_model=schemas.WinnerDelete)
+@app.delete("/api/winner", response_model=schemas.WinnerDelete)
 def delete_winner(
     winner: schemas.WinnerDelete,
     db: Session = Depends(get_db),

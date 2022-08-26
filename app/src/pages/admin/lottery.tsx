@@ -1,10 +1,37 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
 import LotteryLayout from '@/components/LotteryLayout'
 import Odometer from '@/components/Odometer'
-const Lottery: NextPage = () => {
+import { get } from '@/utils/api_methods'
+
+type User = {
+  id: number
+  number: string
+  updated_at: string
+  created_at: String
+}
+
+type Props = {
+  users: User[]
+}
+
+export const getServerSideProps = async () => {
+  const getUrl = 'http://api:8000/api/random'
+  const json = await get(getUrl)
+  return {
+    props: {
+      users: json,
+    },
+  }
+}
+
+const Lottery: NextPage<Props> = (props) => {
+  const [users, setUsers] = useState<User[]>(props.users)
   return (
     <LotteryLayout>
-      <Odometer value={'00000000'}></Odometer>
+      {users.map((user) => (
+        <Odometer value={user.number}></Odometer>
+      ))}
     </LotteryLayout>
   )
 }
