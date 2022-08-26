@@ -32,12 +32,12 @@ const UserList: NextPage<Props> = (props) => {
   const [users, setUsers] = useState<User[]>(props.users)
   return (
     <AdminLayout className="bg-white lg:pb-12">
-      <div className="bg-white py-6 sm:py-8 lg:py-12 content-center">
-        <div className="max-w-screen-lg px-4 md:px-8 mx-auto">
+      <div className="content-center bg-white py-6 sm:py-8 lg:py-12">
+        <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <Search className="flex items-center" />
-          <div className="flex flex-col sm:border-t sm:border-b sm:divide-y mb-5 sm:mb-8">asdfasdf</div>
-          <Table className="overflow-x-auto relative shadow-md sm:rounded-lg">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+
+          <Table className="relative my-5 overflow-x-auto shadow-md sm:rounded-lg">
+            <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="py-3 px-6">
                   Student ID
@@ -56,15 +56,15 @@ const UserList: NextPage<Props> = (props) => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
                     {user.number}
                   </th>
                   <td className="py-4 px-6">{user.created_at}</td>
                   <td className="py-4 px-6">{user.created_at}</td>
 
                   <td className="py-4 px-6 text-right">
-                    <a href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">
+                    <a href="#" className="font-medium text-red-600 hover:underline dark:text-blue-500">
                       Delete
                     </a>
                   </td>

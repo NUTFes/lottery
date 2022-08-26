@@ -36,8 +36,8 @@ const Winner: NextPage<Props> = (props) => {
       <div className="content-center bg-white py-6 sm:py-8 lg:py-12">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <Search className="flex items-center" />
-          <div className="mb-5 flex flex-col sm:mb-8 sm:divide-y sm:border-t sm:border-b">asdfasdf</div>
-          <Table className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+          <Table className="relative my-5 overflow-x-auto shadow-md sm:rounded-lg">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="py-3 px-6">
