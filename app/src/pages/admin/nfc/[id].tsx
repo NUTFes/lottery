@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 const Nfc: NextPage = () => {
   const socketRef = useRef<WebSocket>()
@@ -8,6 +9,9 @@ const Nfc: NextPage = () => {
   const [nfcMessage, setNfcMessage] = useState('')
   const [nfcNumber, setNfcNumber] = useState('')
   const [nfcStatus, setNfcStatus] = useState('')
+
+  const { id } = useParams()
+  console.log(id)
 
   useEffect(() => {
     socketRef.current = new WebSocket('ws://localhost:8000/ws')
@@ -28,7 +32,7 @@ const Nfc: NextPage = () => {
       let json = JSON.parse(event.data)
       console.log('message')
       setSentMessage(event.data)
-      if (json.place_id == 1 && json.client == 'NFC') {
+      if (json.place_id == id && json.client == 'NFC') {
         setNfcMessage(json.message)
         setNfcNumber(json.number)
         setNfcStatus(json.status)
@@ -45,7 +49,7 @@ const Nfc: NextPage = () => {
   return (
     <div className="h-screen font-sans">
       <div className="flex h-1/6 w-screen  items-center justify-center bg-gray-700 text-center text-5xl text-white">
-        抽選会受付
+        抽選会受付{id}
       </div>
 
       <div className="text-gray h-1/3 w-screen items-center justify-center text-center text-2xl">
