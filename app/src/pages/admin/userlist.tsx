@@ -9,11 +9,9 @@ import Pagination from '@/components/Pagination'
 
 type User = {
   id: number
-  place_id: string
   number: string
   updated_at: string
   created_at: string
-  detail: string
 }
 
 type Props = {
@@ -57,23 +55,21 @@ const UserList: NextPage<Props> = (props) => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                {users.map((user) => (
-                  <>
-                    <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {user.number}
-                    </th>
-                    <td className="py-4 px-6">{user.created_at}</td>
-                    <td className="py-4 px-6">{user.created_at}</td>
+              {users.map((user) => (
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {user.number}
+                  </th>
+                  <td className="py-4 px-6">{user.created_at}</td>
+                  <td className="py-4 px-6">{user.created_at}</td>
 
-                    <td className="py-4 px-6 text-right">
-                      <a href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">
-                        Delete
-                      </a>
-                    </td>
-                  </>
-                ))}
-              </tr>
+                  <td className="py-4 px-6 text-right">
+                    <a href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </div>
