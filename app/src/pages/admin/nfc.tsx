@@ -1,69 +1,71 @@
 import type { NextPage } from 'next'
-import AdminLayout from '@/components/AdminLayout'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useEffect, useRef, useState } from 'react'
 
 const Nfc: NextPage = () => {
+  const socketRef = useRef<WebSocket>()
+  const [isConnected, setIsConnected] = useState(false)
+  const [sentMessage, setSentMessage] = useState('')
+  const [nfcMessage, setNfcMessage] = useState('')
+  const [nfcNumber, setNfcNumber] = useState('')
+  const [nfcStatus, setNfcStatus] = useState('')
+
+  useEffect(() => {
+    socketRef.current = new WebSocket('ws://localhost:8000/ws')
+    socketRef.current.onopen = function () {
+      //WebSocket接続が確立した時の処理
+      setIsConnected(true)
+      console.log('Connected')
+    }
+
+    socketRef.current.onclose = function () {
+      //WebSocket接続が切断された時の処理
+      console.log('closed')
+      setIsConnected(false)
+    }
+
+    socketRef.current.onmessage = function (event) {
+      //WebSocketサーバからメッセージが送られてきた時の処理
+      let json = JSON.parse(event.data)
+      console.log('message')
+      setSentMessage(event.data)
+      if (json.place_id == 1 && json.client == 'NFC') {
+        setNfcMessage(json.message)
+        setNfcNumber(json.number)
+        setNfcStatus(json.status)
+      }
+    }
+
+    return () => {
+      if (socketRef.current == null) {
+        return
+      }
+      socketRef.current.close()
+    }
+  }, [])
   return (
-    <AdminLayout className="bg-white lg:pb-12">
-      <div className="bg-white py-6 sm:py-8 lg:py-12">
-        <div className="max-w-screen-lg px-4 md:px-8 mx-auto">
-          <div className="mb-6 sm:mb-10 lg:mb-16">
-            <h2 className="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
-              管理者ページ - ユーザーリスト
-            </h2>
-          </div>
+    <div className="h-screen font-sans">
+      <div className="flex h-1/6 w-screen  items-center justify-center bg-gray-700 text-center text-5xl text-white">
+        抽選会受付
+      </div>
 
-          <div className="flex flex-col sm:border-t sm:border-b sm:divide-y mb-5 sm:mb-8">
-            <div className="py-5 sm:py-1">
-              <div className="flex flex-wrap gap-4 lg:gap-6 sm:py-2.5">
-                <div className="sm:-my-2.5">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className=" w-16 sm:w-16 h-16 sm:h-16 fill-gray-500"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-
-                <div className="flex flex-col justify-between flex-1">
-                  <div>
-                    <a
-                      href="#"
-                      className="inline-block text-gray-800 hover:text-gray-500 text-lg lg:text-xl font-bold transition duration-100 mb-1"
-                    >
-                      20301789
-                    </a>
-                    <span className="block text-gray-500">user_id: 1</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col justify-between flex-1">
-                  <div>
-                    <span className="block text-gray-500">登録日時: 2022-07-18 23:46:57.212203</span>
-                    <span className="block text-gray-500">更新日時: 2022-07-18 23:46:57.212203</span>
-                  </div>
-                </div>
-
-                <div className="w-full sm:w-auto flex justify-between border-t sm:border-none pt-4 sm:pt-0">
-                  <div className="flex flex-col items-start gap-2">
-                    <button className="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 text-sm font-semibold select-none transition duration-100">
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div className="text-gray h-1/3 w-screen items-center justify-center text-center text-2xl">
+        <p className="my-8 text-2xl font-bold text-gray-500">学籍番号</p>
+        <div className="text-gray my-2 flex w-screen items-center justify-center text-center text-8xl">{nfcNumber}</div>
+      </div>
+      {nfcStatus == 'success' ? (
+        <div className="text-gray flex h-1/3  w-screen items-center justify-center text-center text-2xl">
+          <div className="text-gray flex h-full w-10/12 items-center justify-center rounded-3xl bg-green-100 py-10 text-center text-5xl">
+            {nfcMessage}
           </div>
         </div>
-      </div>
-    </AdminLayout>
+      ) : (
+        <div className="text-gray flex h-1/3  w-screen items-center justify-center text-center text-2xl">
+          <div className="text-gray flex h-full w-10/12 items-center justify-center rounded-3xl bg-red-100 py-10 text-center text-5xl">
+            {nfcMessage}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
