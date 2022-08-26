@@ -3,6 +3,7 @@ import asyncio
 import json
 import os
 import random
+import re
 import signal
 from datetime import datetime as dt
 from time import sleep
@@ -62,9 +63,23 @@ def post_res_number(number):
 
 async def send_message(message):
     # ウェブソケットに接続する。
+    if bool(re.match(r"([0-9]){8}", message)):
+        number = message
+        message = "エントリー完了"
+        status = "success"
+    else:
+        number = 00000000
+        message = "カードを正しく読み取れませんでした"
+        status = "error"
     async with websockets.connect(SEND_URI) as websocket:
         # メッセージを送信する。
-        data = {"place_id": PLACE_ID, "client": "NFC", "message": message}
+        data = {
+            "place_id": PLACE_ID,
+            "client": "NFC",
+            "number": number,
+            "status": status,
+            "message": message,
+        }
         await websocket.send(json.dumps(data))
         # WebSocketサーバからメッセージを受信すればコンソールに出力する。
         data = await websocket.recv()
