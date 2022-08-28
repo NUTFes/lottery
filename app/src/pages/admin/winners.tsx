@@ -56,23 +56,21 @@ const Winner: NextPage<Props> = (props) => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                {winners.map((winner) => (
-                  <>
-                    <th scope="row" className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
-                      {winner.number}
-                    </th>
-                    <td className="py-4 px-6">{winner.created_at}</td>
-                    <td className="py-4 px-6">{winner.created_at}</td>
+              {winners.map((winner) => (
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
+                    {winner.number}
+                  </th>
+                  <td className="py-4 px-6">{winner.created_at}</td>
+                  <td className="py-4 px-6">{winner.created_at}</td>
 
-                    <td className="py-4 px-6 text-right">
-                      <a href="#" className="font-medium text-red-600 hover:underline dark:text-blue-500">
-                        Delete
-                      </a>
-                    </td>
-                  </>
-                ))}
-              </tr>
+                  <td className="py-4 px-6 text-right">
+                    <a href="#" className="font-medium text-red-600 hover:underline dark:text-blue-500">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </div>
