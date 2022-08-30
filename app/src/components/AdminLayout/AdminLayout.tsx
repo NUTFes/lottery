@@ -15,16 +15,15 @@ interface AdminLayoutProps {
 }
 const AdminLayout = (props: AdminLayoutProps) => {
   return (
-    <div className="max-w-screen-2xl mx-auto">
+    <div className="mx-auto max-w-screen-2xl">
       <div className="sticky top-0 z-50 bg-white">
-        <Header className="flex justify-between items-center py-4 md:py-8" />
+        <Header className="flex items-center justify-between py-4 md:py-8" />
       </div>
       <div className="flex">
-        <Sidebar className="flex-none w-64 h-screen sticky top-0 hidden sm:hidden md:block lg:block xl:block" />
+        <Sidebar className="sticky top-0 hidden h-screen w-64 flex-none sm:hidden md:block lg:block xl:block" />
         <div className="grow">{props.children}</div>
-        <Toolbar className="flex-none w-1/3 h-screen sticky top-0 hidden sm:hidden md:hidden lg:block xl:block" />
+        <Toolbar className="sticky top-0 hidden h-screen w-96 flex-none sm:hidden md:hidden lg:block xl:block" />
       </div>
-      <Footer className="bg-white pt-4 sm:pt-10 lg:pt-12"></Footer>
     </div>
   )
 }

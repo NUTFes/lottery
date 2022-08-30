@@ -19,10 +19,6 @@ const Admin: NextPage = () => {
       <div className="bg-white py-6 sm:py-8 lg:py-12">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-2 xl:grid-cols-2 xl:gap-16">
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
             <div className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
               <a
                 href="/admin/lottery"
@@ -53,7 +49,7 @@ const Admin: NextPage = () => {
                 <div>
                   <a
                     href="/admin/lottery"
-                    className="font-semibold text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700"
+                    className="font-semibold text-blue-600 transition duration-100 hover:text-blue-700 active:text-indigo-700"
                   >
                     Read more
                   </a>
@@ -87,7 +83,7 @@ const Admin: NextPage = () => {
 
                 <div>
                   <a
-                    href="/admin/nfc-places"
+                    href="/admin/nfc"
                     className="font-semibold text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700"
                   >
                     Read more
