@@ -26,7 +26,7 @@ services:
       - ./app:/app/next-project
     command: 'npm run dev'
     environment:
-      SSR_API_URI: 'http://lottery-api.nutfes.net/api'
-      CSR_API_URI: 'http://lottery-api.nutfes.netapi'
+      SSR_API_URI: 'https://lottery-api.nutfes.net/api'
+      CSR_API_URI: 'https://lottery-api.nutfes.netapi'
     depends_on:
       - api

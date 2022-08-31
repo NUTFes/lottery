@@ -16,8 +16,8 @@ services:
       - PLACE_ID=1
       - ST_USER=admin
       - ST_PASS=password
-      - ST_APP_URL=http://api:8000
-      - ST_WS_URL=ws://api:8000
+      - ST_APP_URL=https://lottery-api.nutfes.net
+      - ST_WS_URL=wss://lottery-api.nutfes.net
     privileged: true
     depends_on:
       - api
