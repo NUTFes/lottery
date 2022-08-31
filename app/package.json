@@ -1,0 +1,32 @@
+{
+  "name": "next-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 8888",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "moment": "^2.29.4",
+    "next": "12.2.2",
+    "react": "18.2.0",
+    "react-bounty": "^1.0.4",
+    "react-dom": "18.2.0",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.0.6",
+    "@types/react": "18.0.15",
+    "@types/react-dom": "18.0.6",
+    "autoprefixer": "^10.4.7",
+    "eslint": "8.20.0",
+    "eslint-config-next": "12.2.2",
+    "postcss": "^8.4.14",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
+    "tailwindcss": "^3.1.6",
+    "typescript": "4.7.4"
+  }
+}

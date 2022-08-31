@@ -20,12 +20,12 @@ git clone git@github.com:NUTFes/lottery.git
 ```
 # ビルド
 docker compose build
-
-# npm
 docker compose run --rm app npm install
+docker compose run --rm api poetry install
 
-# dbを削除してテーブルを作成
+# lottery.dbがあれば，削除
 sudo rm api/lottery.db
+# テーブル作成
 docker compose run --rm api python create_table.py
 
 # 立ち上げ

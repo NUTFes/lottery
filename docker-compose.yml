@@ -3,7 +3,9 @@ version: '3'
 services:
   api:
     container_name: 'ST-API'
-    build: ./.docker/fastapi
+    build:
+      context: .docker
+      dockerfile: api.Dockerfile
     volumes:
       - ./api:/var/www/html
     ports:
@@ -13,25 +15,39 @@ services:
       ST_USER: admin
       ST_PASS: password
 
-  web:
-    container_name: 'ST-WEB'
-    build: ./.docker/node
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./app:/usr/src/app
-    environment:
-      ST_USER: admin
-      ST_PASS: password
-
   app:
     container_name: 'ST-APP'
-    build: ./.docker/nextjs
+    build:
+      context: .docker
+      dockerfile: app.Dockerfile
     ports:
       - '8888:8888'
     volumes:
-      - ./next:/app/next-project
+      - ./app:/app/next-project
     command: 'npm run dev'
     environment:
       SSR_API_URI: 'http://localhost:8000/api'
       CSR_API_URI: 'http://api:8000/api'
+    depends_on:
+      - api
+
+  nfc:
+    container_name: 'ST-NFC'
+    build:
+      context: .docker
+      dockerfile: nfc.Dockerfile
+    volumes:
+      - ./nfc:/nfc
+      - /dev/bus/usb:/dev/bus/usb:ro
+    command: sh -c "python -m nfc && python main.py"
+    environment:
+      - VENDOR='054c'
+      - PRODUCT='06c1'
+      - PLACE_ID=1
+      - ST_USER=admin
+      - ST_PASS=password
+      - ST_APP_URL=http://api:8000
+      - ST_WS_URL=ws://api:8000
+    privileged: true
+    depends_on:
+      - api
