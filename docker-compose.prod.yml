@@ -2,24 +2,31 @@ version: '3'
 
 services:
   api:
-    container_name: "ST-API"
-    build: ./docker/fastapi
+    container_name: 'ST-API'
+    build:
+      context: .docker
+      dockerfile: api.Dockerfile
     volumes:
       - ./api:/var/www/html
     ports:
-      - "8000:8000"
+      - '8000:8000'
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-    envfiles:
-      - lottery.env
-    restart: always
+    environment:
+      ST_USER: admin
+      ST_PASS: password
 
-  web:
-    container_name: "ST-WEB"
-    build: ./docker/node
+  app:
+    container_name: 'ST-APP'
+    build:
+      context: .docker
+      dockerfile: app.Dockerfile
     ports:
-      - "8888:8888"
+      - '8888:8888'
     volumes:
-      - ./app:/usr/src/app
-    envfiles:
-      - lottery.env
-    restart: always
+      - ./app:/app/next-project
+    command: 'npm run dev'
+    environment:
+      SSR_API_URI: 'http://lottery-api.nutfes.net/api'
+      CSR_API_URI: 'http://lottery-api.nutfes.netapi'
+    depends_on:
+      - api

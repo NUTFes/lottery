@@ -3,15 +3,21 @@ version: '3'
 services:
   nfc:
     container_name: 'ST-NFC'
-    build: ./.docker/nfc
+    build:
+      context: .docker
+      dockerfile: nfc.Dockerfile
     volumes:
-      - ./nfc:/var/www/html
+      - ./nfc:/nfc
       - /dev/bus/usb:/dev/bus/usb:ro
-    command: python raadic.py
+    command: sh -c "python -m nfc && python main.py"
     environment:
-      ST_USER: admin
-      ST_PASS: password
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - seccomp:unconfined
+      - VENDOR='054c'
+      - PRODUCT='06c1'
+      - PLACE_ID=1
+      - ST_USER=admin
+      - ST_PASS=password
+      - ST_APP_URL=http://api:8000
+      - ST_WS_URL=ws://api:8000
+    privileged: true
+    depends_on:
+      - api
