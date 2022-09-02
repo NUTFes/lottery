@@ -33,11 +33,11 @@ const Winner: NextPage<Props> = (props) => {
   const [winners, setWinners] = useState<Winner[]>(props.winners)
   return (
     <AdminLayout className="bg-white lg:pb-12">
-      <div className="content-center bg-white py-6 sm:py-8 lg:py-12">
+      <div className="content-center bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <Search className="flex items-center" />
 
-          <Table className="relative my-5 overflow-x-auto shadow-md sm:rounded-lg">
+          <Table className="relative my-5 overflow-x-auto shadow-md sm:rounded-lg dark:border dark:border-gray-700">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="py-3 px-6">

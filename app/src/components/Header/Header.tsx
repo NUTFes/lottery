@@ -27,7 +27,7 @@ const Header = (props: HeaderProps) => {
       </button>
       <a
         href="/admin"
-        className="inline-flex items-center text-black-800 text-2xl md:text-3xl font-bold gap-2.5"
+        className="inline-flex items-center text-black-800 text-2xl md:text-3xl font-bold gap-2.5 dark:bg-gray-800 dark:text-white"
         aria-label="logo"
       >
         学籍番号抽選会 管理者画面

@@ -16,7 +16,7 @@ const Admin: NextPage = () => {
   }
   return (
     <AdminLayout className="bg-white lg:pb-12">
-      <div className="bg-white py-6 sm:py-8 lg:py-12">
+      <div className="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-2 xl:grid-cols-2 xl:gap-16">
             <div className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
@@ -33,7 +33,7 @@ const Admin: NextPage = () => {
               </a>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                   <a
                     href="/admin/lottery"
                     className="transition duration-100 hover:text-indigo-500 active:text-indigo-600"
@@ -71,7 +71,7 @@ const Admin: NextPage = () => {
               </a>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                   <a href="/admin/nfc" className="transition duration-100 hover:text-indigo-500 active:text-indigo-600">
                     NFC確認画面
                   </a>
@@ -106,7 +106,7 @@ const Admin: NextPage = () => {
               </a>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                   <a
                     href="/admin/place"
                     className="transition duration-100 hover:text-indigo-500 active:text-indigo-600"
@@ -144,7 +144,7 @@ const Admin: NextPage = () => {
               </a>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                   <a
                     href="/admin/userlist"
                     className="transition duration-100 hover:text-indigo-500 active:text-indigo-600"
@@ -182,7 +182,7 @@ const Admin: NextPage = () => {
               </a>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                   <a
                     href="/admin/usercount"
                     className="transition duration-100 hover:text-indigo-500 active:text-indigo-600"
@@ -220,7 +220,7 @@ const Admin: NextPage = () => {
               </a>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                   <a
                     href="/admin/winner"
                     className="transition duration-100 hover:text-indigo-500 active:text-indigo-600"
