@@ -1,7 +1,8 @@
 import hashlib
 from typing import List, Union
 
-from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
+                     WebSocketDisconnect)
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
@@ -19,7 +20,7 @@ app = FastAPI(title="Stickee", description="student ID keeper", version="0.9 bet
 
 #: Configure CORS
 origins = [
-    "http://localhost:3000",
+    "http://localhost:8888",
 ]
 
 app.add_middleware(
