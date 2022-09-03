@@ -167,7 +167,23 @@ def read_winners(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Winner not found")
     return db_win_users
 
-
+@app.post("/api/winner", response_model=schemas.User)
+async def create_winner(
+    user: schemas.User,
+    winner: schemas.WinnerCreate,
+    db: Session = Depends(get_db),
+    credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
+):
+    auth(db, credentials)
+    db_user = crud.get_user_by_number(db, user=user)
+    db_winner = crud.get_winner_by_user_id(db, winner=winner)
+     
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    elif db_winner is None:
+        raise HTTPException(status_code=404, detail="Winner not found")
+    return crud.create_winner(db=db, winner=winner)
+ 
 @app.delete("/api/winner", response_model=schemas.WinnerDelete)
 def delete_winner(
     winner: schemas.WinnerDelete,

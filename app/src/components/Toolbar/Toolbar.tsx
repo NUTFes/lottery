@@ -8,6 +8,10 @@ interface UserData {
   place_id: string
 }
 
+interface WinnerData {
+  number: string
+}
+
 interface ToolbarProps {
   children?: React.ReactNode
   className?: string
@@ -18,6 +22,10 @@ const Toolbar = (props: ToolbarProps) => {
   const [userData, setUserData] = useState<UserData>({
     number: '',
     place_id: '',
+  })
+  // For add winner
+  const [winnerData, setWinnerData] = useState<WinnerData>({
+    number: '',
   })
    
   const toDatetime = (date: Date) => {
@@ -31,10 +39,23 @@ const Toolbar = (props: ToolbarProps) => {
       (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserData({ ...userData, [input]: e.target.value });
       }
+  // Winner handler
+  const winnerDataHandler =
+    (input: string) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setWinnerData({ ...winnerData, [input]: e.target.value });
+      }
   
   // add user 
   const postUser = async (data: UserData) => {
-    const postUrl = 'http://localhost:8000/api/user'
+    const postUrl = process.env.CSR_API_URI + '/api/user'
+    const postReq = await post(postUrl, data);
+    const postRes = await postReq.json();
+  }
+   
+  // add winner
+  const postWinner = async (data: WinnerData) => {
+    const postUrl = process.env.CSR_API_URI + '/api/winner'
     const postReq = await post(postUrl, data);
     const postRes = await postReq.json();
   }
@@ -137,6 +158,8 @@ const Toolbar = (props: ToolbarProps) => {
               id="student_id"
               className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
               placeholder=" "
+              value={winnerData.number}
+              onChange={winnerDataHandler('number')}
               required
             />
             <label
@@ -147,7 +170,9 @@ const Toolbar = (props: ToolbarProps) => {
             </label>
           </div>
           <div className="flex flex-row-reverse">
-            <ButtonNext href="#">追加</ButtonNext>
+            <AddButton onClick={() => {postWinner(winnerData)}}>
+              追加
+            </AddButton>
           </div>
         </form>
       </div>
