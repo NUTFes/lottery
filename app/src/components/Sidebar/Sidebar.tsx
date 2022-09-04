@@ -11,7 +11,7 @@ const Sidebar = (props: SidebarProps) => {
           <li>
             <button
               type="button"
-              className="inline-flex items-center  gap-2 rounded-lg bg-gray-200 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base"
+              className="inline-flex items-center  gap-2 rounded-lg bg-gray-200 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base dark:bg-gray-800 dark:text-white dark:border-white dark:border dark:hover:bg-gray-700"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                 <path

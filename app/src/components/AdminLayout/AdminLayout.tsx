@@ -15,8 +15,8 @@ interface AdminLayoutProps {
 }
 const AdminLayout = (props: AdminLayoutProps) => {
   return (
-    <div className="mx-auto max-w-screen-2xl">
-      <div className="sticky top-0 z-50 bg-white">
+    <div className="mx-auto max-w-screen-2xl dark:bg-gray-800">
+      <div className="sticky top-0 z-50 bg-white dark:bg-gray-800">
         <Header className="flex items-center justify-between py-4 md:py-8" />
       </div>
       <div className="flex">
