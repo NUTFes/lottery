@@ -72,6 +72,9 @@ class Time(BaseModel):
     start: datetime
     end: datetime
 
+    class Config:
+        orm_mode = True
+
 
 class UserPlacesCreate(BaseModel):
     # Request Body (Create)

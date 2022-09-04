@@ -1,8 +1,7 @@
 import hashlib
 from typing import List, Union
 
-from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
-                     WebSocketDisconnect)
+from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
@@ -122,11 +121,9 @@ async def create_user(
     db_user = crud.get_user_by_number(db, user=user)
     # 同じ番号が同じ場所に既に登録されている場合はUPDATE
     if db_user_places:
-        print("21341234123412341")
         return crud.update_user(db=db, user=user)
     # placeのみ登録されていない場合は登録
     elif db_user:
-        print("adfasdfasdfasdf")
         return crud.add_user_places(db=db, user=user)
 
     return crud.create_user(db=db, user=user)
@@ -179,6 +176,28 @@ def delete_winner(
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return crud.delete_winner(db=db, winner=winner)
+
+
+@app.get("/api/time", response_model=schemas.Time)
+def get_time(
+    db: Session = Depends(get_db),
+    credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
+):
+    auth(db, credentials)
+    db_time = crud.get_limit_time(db=db)
+    if db_time is None:
+        raise HTTPException(status_code=404, detail="Time not found")
+    return db_time
+
+
+@app.post("/api/time", response_model=schemas.Time)
+async def create_time(
+    time: schemas.Time,
+    db: Session = Depends(get_db),
+    credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
+):
+    auth(db, credentials)
+    return crud.update_time(db=db, time=time)
 
 
 # Websocket用のパス
