@@ -18,25 +18,30 @@ const MobileLayout = (props: MobileLayoutProps) => {
         <img src="/bg_corner.png" className={`${ml.corner4}`} />
         <img src="/side.png" className={`${ml.center3}`} />
         <img src="/Lotelly.png" className={`${ml.center2}`} />
-        <br/> {/* 調整用改行*/}
-        <br/> {/* 調整用改行*/}
-        <br/> {/* 調整用改行*/}
-        <br/> {/* 調整用改行*/}
+        <br /> {/* 調整用改行*/}
+        <br /> {/* 調整用改行*/}
+        {props.children}
+        <br /> {/* 調整用改行*/}
+        <br /> {/* 調整用改行*/}
         <img src="/side.png" className={`${ml.center3}`} />
-        <img src="/Results.png" className={`${ml.center1}`} />  
+        <img src="/Results.png" className={`${ml.center1}`} />
         <table className={`${ml.design}`}>
-        <thead>
-          <tr>
-            <th className={`${ml.word1}`}>当選番号<hr className={`${ml.line}`} /></th>
-            <th className={`${ml.word2}`}>学籍番号<hr className={`${ml.line}`} /></th>
-          </tr>
-        </thead>
+          <thead>
+            <tr>
+              <th className={`${ml.word1}`}>
+                当選番号
+                <hr className={`${ml.line}`} />
+              </th>
+              <th className={`${ml.word2}`}>
+                学籍番号
+                <hr className={`${ml.line}`} />
+              </th>
+            </tr>
+          </thead>
         </table>
-        <img src="/side.png" className={`${ml.center4}`} />  
+        <img src="/side.png" className={`${ml.center4}`} />
       </div>
-      {props.children}
     </div>
   )
-  
 }
 export default MobileLayout

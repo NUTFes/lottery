@@ -1,5 +1,5 @@
 import Bounty from 'react-bounty'
-import o from './Odometer.module.css'
+import o from './OdometerMini.module.css'
 interface OdometerProps {
   value?: string
   className?: string
