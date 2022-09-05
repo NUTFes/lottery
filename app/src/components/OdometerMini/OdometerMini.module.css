@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(http://localhost:8000/static/images/bg-4-3.png);
+  background-image: url(/static/images/bg-4-3.png);
   background-size: contain;
   background-position: center;
 

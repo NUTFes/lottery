@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import moment from 'moment'
 import { ButtonNext, AddButton } from '@/components/Button'
 import { post } from '@/utils/api_methods'
- 
+
 interface UserData {
   number: string
   place_id: string
 }
- 
+
 interface WinnerData {
   user_id: string
 }
@@ -16,46 +16,42 @@ interface ToolbarProps {
   children?: React.ReactNode
   className?: string
 }
- 
+
 const Toolbar = (props: ToolbarProps) => {
   // For add user
   const [userData, setUserData] = useState<UserData>({
     number: '',
     place_id: '',
   })
- // For add winner
+  // For add winner
   const [winnerData, setWinnerData] = useState<WinnerData>({
     user_id: '',
-  })  
-   
+  })
+
   const toDatetime = (date: Date) => {
     return moment(date).toISOString(true).substr(0, 16)
   }
-  
+
   // User handler
-  const userDataHandler =
-    (input: string) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserData({ ...userData, [input]: e.target.value });
-      }
+  const userDataHandler = (input: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserData({ ...userData, [input]: e.target.value })
+  }
   // Winner handler
-  const winnerDataHandler =
-    (input: string) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setWinnerData({ ...winnerData, [input]: e.target.value });
-      }
-       
-  // add user 
+  const winnerDataHandler = (input: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWinnerData({ ...winnerData, [input]: e.target.value })
+  }
+
+  // add user
   const postUser = async (data: UserData) => {
     const postUrl = process.env.CSR_API_URI + '/user'
-    await post(postUrl, data);
+    await post(postUrl, data)
   }
   // add winner
   const postWinner = async (data: WinnerData) => {
     const postUrl = process.env.CSR_API_URI + '/winner'
-    await post(postUrl, data);
+    await post(postUrl, data)
   }
-   
+
   return (
     <aside aria-label="Toolbar" className={props.className}>
       <div className="mx-10">
@@ -84,7 +80,7 @@ const Toolbar = (props: ToolbarProps) => {
                 name="end_time"
                 defaultValue={toDatetime(new Date())}
                 id="end_time"
-                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 dark:text-gray-100 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-gray-100 dark:text-white dark:focus:border-blue-500"
                 placeholder=" "
                 required
               />
@@ -141,7 +137,11 @@ const Toolbar = (props: ToolbarProps) => {
             </div>
           </div>
           <div className="flex flex-row-reverse">
-            <AddButton onClick={() => {postUser(userData)}}>
+            <AddButton
+              onClick={() => {
+                postUser(userData)
+              }}
+            >
               追加
             </AddButton>
           </div>
@@ -166,7 +166,11 @@ const Toolbar = (props: ToolbarProps) => {
             </label>
           </div>
           <div className="flex flex-row-reverse">
-            <AddButton onClick={() => {postWinner(winnerData)}}>
+            <AddButton
+              onClick={() => {
+                postWinner(winnerData)
+              }}
+            >
               追加
             </AddButton>
           </div>

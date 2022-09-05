@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const [randomMessage, setRandomMessage] = useState('')
 
   useEffect(() => {
-    socketRef.current = new WebSocket('ws://localhost:8000/ws')
+    socketRef.current = new WebSocket(process.env.WS_API_URI)
 
     socketRef.current.onmessage = function (event) {
       let json = JSON.parse(event.data)

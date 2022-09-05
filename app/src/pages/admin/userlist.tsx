@@ -32,11 +32,11 @@ const UserList: NextPage<Props> = (props) => {
   const [users, setUsers] = useState<User[]>(props.users)
   return (
     <AdminLayout className="bg-white lg:pb-12">
-      <div className="content-center bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
+      <div className="content-center bg-white py-6 dark:bg-gray-800 sm:py-8 lg:py-12">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <Search className="flex items-center" />
 
-          <Table className="relative my-5 overflow-x-auto shadow-md sm:rounded-lg dark:border dark:border-gray-700">
+          <Table className="relative my-5 overflow-x-auto shadow-md dark:border dark:border-gray-700 sm:rounded-lg">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="py-3 px-6">
@@ -60,6 +60,7 @@ const UserList: NextPage<Props> = (props) => {
             <tbody>
               {users.map((user) => (
                 <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <td className="py-4 px-6">{user.id}</td>
                   <th scope="row" className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
                     {user.id}
                   </th>

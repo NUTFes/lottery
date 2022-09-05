@@ -31,22 +31,24 @@ const Place: NextPage<Props> = (props) => {
   const [places, setPlaces] = useState<Place[]>(props.places)
   return (
     <AdminLayout className="bg-white lg:pb-12">
-      <div className="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
+      <div className="bg-white py-6 dark:bg-gray-800 sm:py-8 lg:py-12">
         <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
           <div className="mb-10 md:mb-16">
-            <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl dark:text-white">
+            <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 dark:text-white md:mb-6 lg:text-3xl">
               管理者ページ - 場所一覧
             </h2>
-            <p className="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">This is</p>
-            <Search></Search>
+
+            <Search className="flex items-center" />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 md:gap-8 xl:grid-cols-3">
             {places.map((place) => (
               <Card>
                 <CardTitle>{place.name}</CardTitle>
-                <CardBody>Body</CardBody>
-                <ButtonNext href={'/admin/nfc/' + place.id}>次</ButtonNext>
+                <CardBody></CardBody>
+                <div className="flex flex-row-reverse">
+                  <ButtonNext href={'/admin/nfc/' + place.id}>受付</ButtonNext>
+                </div>
               </Card>
             ))}
           </div>

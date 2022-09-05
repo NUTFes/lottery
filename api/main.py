@@ -19,9 +19,7 @@ app = FastAPI(title="Stickee", description="student ID keeper", version="0.9 bet
 
 
 #: Configure CORS
-origins = [
-    "http://localhost:8888",
-]
+origins = ["http://localhost:8888", "https://lottery.nutfes.net"]
 
 app.add_middleware(
     CORSMiddleware,

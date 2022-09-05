@@ -14,15 +14,13 @@ import nfc
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-
-ST_USER = os.getenv("ST_USER")
-ST_PASS = os.getenv("ST_PASS")
-ST_APP_URL = os.getenv("ST_APP_URL")
-ST_WS_URL = os.getenv("ST_WS_URL")
 PLACE_ID = os.getenv("PLACE_ID")
 
-POST_URI = f"{ST_APP_URL}/api/user?place_id={PLACE_ID}"
-SEND_URI = f"{ST_WS_URL}/ws"
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+
+SSR_API_URI = os.getenv("SSR_API_URI")
+WS_API_URI = os.getenv("WS_API_URI")
 
 
 def scan_card():
@@ -79,12 +77,13 @@ def confirm_sendable(message):
 
 def post_res_number(number):
     # 学籍番号をPOSTする。
+    url = f"{SSR_API_URI}/user?place_id={PLACE_ID}"
     headers = {
         "Content-Type": "application/json",
     }
     data = {"number": number, "place_id": PLACE_ID}
     response = requests.post(
-        POST_URI, headers=headers, data=json.dumps(data), auth=HTTPBasicAuth(ST_USER, ST_PASS)
+        url, headers=headers, data=json.dumps(data), auth=HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET)
     )
     print(response.text, flush=True)
 
@@ -105,7 +104,7 @@ async def send_message_noasync(message):
         number = 00000000
         message = "error: カードを正しく読み取れませんでした"
         status = "error"
-    async with websockets.connect(SEND_URI) as websocket:
+    async with websockets.connect(WS_API_URI) as websocket:
         # メッセージを送信する。
         data = {
             "place_id": PLACE_ID,

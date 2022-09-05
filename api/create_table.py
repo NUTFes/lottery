@@ -9,8 +9,8 @@ from models import Admin, Place, Time, User, UserPlaces, Winner
 JST = timezone(timedelta(hours=+9), "JST")
 
 load_dotenv()
-ST_USER = os.getenv("ST_USER")
-ST_PASS = os.getenv("ST_PASS")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
 if __name__ == "__main__":
     path = SQLITE3_NAME
@@ -21,7 +21,7 @@ if __name__ == "__main__":
         # テーブルを作成する
         Base.metadata.create_all(engine)
 
-    admin = Admin(name=ST_USER, password=ST_PASS)
+    admin = Admin(name=CLIENT_SECRET, password=CLIENT_SECRET)
     db.add(admin)
     time = Time(
         start=datetime.now(JST) - timedelta(hours=3),
