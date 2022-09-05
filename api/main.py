@@ -1,7 +1,8 @@
 import hashlib
 from typing import List, Union
 
-from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
+                     WebSocketDisconnect)
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
@@ -164,6 +165,25 @@ def read_winners(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Winner not found")
     return db_win_users
 
+@app.post("/api/winner", response_model=schemas.Winner)
+async def create_winner(
+    winner: schemas.WinnerCreate,
+    db: Session = Depends(get_db),
+    credentials: HTTPBasicCredentials = Depends(HTTPBasic()),
+):
+    auth(db, credentials)
+
+    user = schemas.User
+    user.id = winner.user_id
+
+    db_user = crud.get_user_by_id(db, user=user, place_id=None)
+    db_winner = crud.get_winner_by_user_id(db, winner=winner)
+
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    elif db_winner:
+        raise HTTPException(status_code=409, detail="Winner already exists")
+    return crud.create_winner(db=db, winner=winner)
 
 @app.delete("/api/winner", response_model=schemas.WinnerDelete)
 def delete_winner(
