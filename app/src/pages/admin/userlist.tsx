@@ -40,6 +40,9 @@ const UserList: NextPage<Props> = (props) => {
             <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="py-3 px-6">
+                  ID
+                </th>
+                <th scope="col" className="py-3 px-6">
                   Student ID
                 </th>
                 <th scope="col" className="py-3 px-6">
@@ -57,6 +60,9 @@ const UserList: NextPage<Props> = (props) => {
             <tbody>
               {users.map((user) => (
                 <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
+                    {user.id}
+                  </th>
                   <th scope="row" className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
                     {user.number}
                   </th>
