@@ -26,8 +26,8 @@ services:
       - ./app:/app/next-project
     command: 'npm run dev'
     environment:
-      SSR_API_URI: 'http://localhost:8000/api'
-      CSR_API_URI: 'http://api:8000/api'
+      SSR_API_URI: 'http://api:8000/api'
+      CSR_API_URI: 'http://localhost:8000/api'
       BASIC_AUTH_USER: "hoge"
       BASIC_AUTH_PASSWORD: "fuga"
     depends_on:
