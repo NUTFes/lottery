@@ -19,11 +19,13 @@ const Nfc: NextPage = () => {
       //WebSocket接続が確立した時の処理
       setIsConnected(true)
       console.log('Connected')
+      console.log('id: ' + query.id)
     }
 
     socketRef.current.onclose = function () {
       //WebSocket接続が切断された時の処理
       console.log('closed')
+      console.log('id: ' + query.id)
       setIsConnected(false)
     }
 
@@ -31,6 +33,7 @@ const Nfc: NextPage = () => {
       //WebSocketサーバからメッセージが送られてきた時の処理
       let json = JSON.parse(event.data)
       console.log('message')
+      console.log('id: ' + query.id)
       setSentMessage(event.data)
       if (json.place_id == query.id && json.client == 'NFC') {
         setNfcMessage(json.message)
