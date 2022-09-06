@@ -7,6 +7,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
+import crud
 import schemas
 from database import SessionLocal
 from notifier import Notifier
