@@ -118,3 +118,15 @@
   height: 1px;
   margin-top: 1rem;
 }
+
+.winner_id{
+  font-size: 1.25rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.winner_number{
+  font-size: 1.25rem;
+  margin-top: 1rem;
+  text-align: center;
+}
