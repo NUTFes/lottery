@@ -1,7 +1,8 @@
 import gspread
+import time
+import atexit
 from oauth2client.service_account import ServiceAccountCredentials
 from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-from database import SessionLocal
 
 import crud
 
@@ -20,6 +21,7 @@ def backup(student_id,u_time):
   write_row = get_last_row(sheet) + 1 
   sheet.update_cell(write_row, 1, str(student_id))
   sheet.update_cell(write_row, 2, str(u_time))
+
 
 
 
