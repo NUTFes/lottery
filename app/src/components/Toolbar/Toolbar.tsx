@@ -40,6 +40,12 @@ const Toolbar = (props: ToolbarProps) => {
     return moment(date).toISOString(true).substr(0, 16)
   }
   
+  // Time handler
+  const timeHandler =
+    (input: string) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTime({ ...time, [input]: e.target.value });
+      }
   // User handler
   const userDataHandler =
     (input: string) =>
@@ -53,6 +59,11 @@ const Toolbar = (props: ToolbarProps) => {
         setWinnerData({ ...winnerData, [input]: e.target.value });
       }
        
+  // add time 
+  const postTime = async (data: Time) => {
+    const postUrl = process.env.CSR_API_URI + '/time'
+    await post(postUrl, data);
+  }
   // add user 
   const postUser = async (data: UserData) => {
     const postUrl = process.env.CSR_API_URI + '/user'
@@ -73,10 +84,12 @@ const Toolbar = (props: ToolbarProps) => {
               <input
                 type="datetime-local"
                 name="start_time"
-                defaultValue={toDatetime(time.start)}
+                // defaultValue={toDatetime(time.start)}
                 id="start_time"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
                 placeholder=" "
+                value={toDatetime(time.start)}
+                onChange={timeHandler('start')}
                 required
               />
               <label
@@ -90,10 +103,12 @@ const Toolbar = (props: ToolbarProps) => {
               <input
                 type="datetime-local"
                 name="end_time"
-                defaultValue={toDatetime(time.end)}
+                // defaultValue={toDatetime(time.end)}
                 id="end_time"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 dark:text-gray-100 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
                 placeholder=" "
+                value={toDatetime(time.end)}
+                onChange={timeHandler('end')}
                 required
               />
               <label
@@ -105,7 +120,9 @@ const Toolbar = (props: ToolbarProps) => {
             </div>
           </div>
           <div className="flex flex-row-reverse">
-            <ButtonNext href="#">設定</ButtonNext>
+            <AddButton onClick={() => {postTime(time)}}>
+              設定
+            </AddButton>
           </div>
         </form>
         <form className="my-10">
