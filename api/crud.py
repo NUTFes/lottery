@@ -206,9 +206,17 @@ def get_win_users(db: Session):
     return win_users
 
 
+def get_winners(db: Session):
+    # placeを絞り込んだWinnersでUserを絞込んでUserを返している
+    winners = db.query(models.Winner).all()
+    return winners
+
+
 def create_winner(db: Session, winner: schemas.WinnerCreate):
+    db_user = db.query(models.User).filter(models.User.id == winner.user_id).first()
     db_winner = models.Winner(
         user_id=winner.user_id,
+        number=db_user.number,
         updated_at=datetime.now(JST),
         created_at=datetime.now(JST),
     )

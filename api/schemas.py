@@ -61,6 +61,7 @@ class Winner(BaseModel):
     # Response Body
     id: int
     user_id: int
+    number: int
     updated_at: datetime
     created_at: datetime
 

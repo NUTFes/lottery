@@ -59,7 +59,7 @@ if __name__ == "__main__":
     user_places.user_id = 3
     db.add(user_places)
 
-    winner = Winner(user_id=1)
+    winner = Winner(user_id=1, number=10001000)
     db.add(winner)
 
     db.commit()
