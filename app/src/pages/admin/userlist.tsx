@@ -7,32 +7,23 @@ import { Search } from '@/components/Search'
 import Table from '@/components/Table'
 import Pagination from '@/components/Pagination'
 
-interface User {
+type User = {
   id: number
   number: string
   updated_at: string
   created_at: string
 }
 
-interface Time {
-  start: Date
-  end: Date
-}
-
-interface Props {
+type Props = {
   users: User[]
-  time: Time
 }
 
 export const getServerSideProps = async () => {
-  const getUrl = process.env.SSR_API_URI + '/users'
-  const getTimeUrl = process.env.SSR_API_URI + '/time'
+  const getUrl = 'http://api:8000/api/users'
   const json = await get(getUrl)
-  const timeJson = await get(getTimeUrl)
   return {
     props: {
       users: json,
-      time: timeJson,
     },
   }
 }
@@ -40,7 +31,7 @@ export const getServerSideProps = async () => {
 const UserList: NextPage<Props> = (props) => {
   const [users, setUsers] = useState<User[]>(props.users)
   return (
-    <AdminLayout time={props.time} className="bg-white lg:pb-12">
+    <AdminLayout className="bg-white lg:pb-12">
       <div className="content-center bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <Search className="flex items-center" />
