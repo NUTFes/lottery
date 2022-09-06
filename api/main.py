@@ -7,9 +7,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
-import crud
 import schemas
-import backup
 from database import SessionLocal
 from notifier import Notifier
 
@@ -127,7 +125,6 @@ async def create_user(
     # placeのみ登録されていない場合は登録
     elif db_user:
         return crud.add_user_places(db=db, user=user)
-    
     return crud.create_user(db=db, user=user)
 
 

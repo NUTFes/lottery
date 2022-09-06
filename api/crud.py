@@ -101,7 +101,6 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user_places)
     db.commit()
     db.refresh(db_user_places)
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     backup.backup(db_user.number, db_user.updated_at)
     return db_user
 
