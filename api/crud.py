@@ -76,7 +76,7 @@ def get_user_by_number(db: Session, user: schemas.UserCreate):
 
 
 def get_user_by_id(db: Session, user: schemas.User, place_id: Union[int, None]):
-    if place_id is None:
+    if place_id == 0:
         return db.query(models.User).filter(models.User.id == user.id).first()
     else:
         return (
@@ -105,17 +105,21 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 def delete_user(db: Session, user: schemas.User, place_id: Union[int, None]):
-    if place_id is None:
-        db_user = db.query(models.User).filter(models.User.id == user.id).all()
+    if place_id == 0:
+        db_users = db.query(models.User).filter(models.User.id == user.id).all()
+        for db_user in db_users:
+            db.delete(db_user)
+            db.commit()
+        return
     else:
         db_user = (
             db.query(models.User)
             .filter(models.Place.id == place_id, models.User.id == user.id)
             .first()
         )
-    db.delete(db_user)
-    db.commit()
-    return
+        db.delete(db_user)
+        db.commit()
+        return
 
 
 def update_user(db: Session, user: schemas.UserCreate):

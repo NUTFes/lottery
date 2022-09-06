@@ -32,7 +32,7 @@ class UserCreate(BaseModel):
 
 class UserDelete(BaseModel):
     # Request Body (Delete)
-    number: int
+    id: int
     place_id: int = 0
 
 
