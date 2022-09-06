@@ -6,7 +6,12 @@ import { get } from '@/utils/api_methods'
 import { Search } from '@/components/Search'
 import Table from '@/components/Table'
 
-type Winner = {
+interface Time {
+  start: Date
+  end: Date
+}
+
+interface Winner {
   id: number
   place_id: string
   number: string
@@ -15,16 +20,20 @@ type Winner = {
   detail: string
 }
 
-type Props = {
+interface Props {
   winners: Winner[]
+  time: Time
 }
 
 export const getServerSideProps = async () => {
-  const getUrl = 'http://api:8000/api/winners'
+  const getUrl = process.env.SSR_API_URI + '/winners'
+  const getTimeUrl = process.env.SSR_API_URI + '/time'
   const json = await get(getUrl)
+  const timeJson = await get(getTimeUrl)
   return {
     props: {
       winners: json,
+      time: timeJson,
     },
   }
 }
@@ -32,7 +41,7 @@ export const getServerSideProps = async () => {
 const Winner: NextPage<Props> = (props) => {
   const [winners, setWinners] = useState<Winner[]>(props.winners)
   return (
-    <AdminLayout className="bg-white lg:pb-12">
+    <AdminLayout time={props.time} className="bg-white lg:pb-12">
       <div className="content-center bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <Search className="flex items-center" />

@@ -4,6 +4,12 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 import Toolbar from '@/components/Toolbar'
+
+interface Time {
+  start: Date
+  end: Date
+}
+
 interface AdminLayoutProps {
   className?: string
   align?: string
@@ -12,7 +18,9 @@ interface AdminLayoutProps {
   height?: string
   gap?: string
   children?: React.ReactNode
+  time: Time
 }
+ 
 const AdminLayout = (props: AdminLayoutProps) => {
   return (
     <div className="mx-auto max-w-screen-2xl dark:bg-gray-800">
@@ -22,7 +30,7 @@ const AdminLayout = (props: AdminLayoutProps) => {
       <div className="flex">
         <Sidebar className="sticky top-0 hidden h-screen w-64 flex-none sm:hidden md:block lg:block xl:block" />
         <div className="grow">{props.children}</div>
-        <Toolbar className="sticky top-0 hidden h-screen w-96 flex-none sm:hidden md:hidden lg:block xl:block" />
+        <Toolbar time={props.time} className="sticky top-0 hidden h-screen w-96 flex-none sm:hidden md:hidden lg:block xl:block" />
       </div>
     </div>
   )

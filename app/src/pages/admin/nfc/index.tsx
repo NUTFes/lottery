@@ -6,23 +6,32 @@ import { Card, CardTitle, CardBody } from '@/components/Card'
 import { Button, ButtonNext } from '@/components/Button'
 import { Search } from '@/components/Search'
 
-type Place = {
+interface Time {
+  start: Date
+  end: Date
+}
+
+interface Place {
   id: number
   name: string
   updated_at: string
   created_at: string
 }
 
-type Props = {
+interface Props {
   places: Place[]
+  time: Time
 }
 
 export const getServerSideProps = async () => {
-  const getUrl = 'http://api:8000/api/places'
+  const getUrl = process.env.SSR_API_URI + '/places'
+  const getTimeUrl = process.env.SSR_API_URI + '/time'
   const json = await get(getUrl)
+  const timeJson = await get(getTimeUrl)
   return {
     props: {
       places: json,
+      time: timeJson,
     },
   }
 }
@@ -30,7 +39,7 @@ export const getServerSideProps = async () => {
 const Place: NextPage<Props> = (props) => {
   const [places, setPlaces] = useState<Place[]>(props.places)
   return (
-    <AdminLayout className="bg-white lg:pb-12">
+    <AdminLayout time={props.time} className="bg-white lg:pb-12">
       <div className="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
         <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
           <div className="mb-10 md:mb-16">

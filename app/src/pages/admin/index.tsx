@@ -2,12 +2,32 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import AdminLayout from '@/components/AdminLayout'
+import { get } from '@/utils/api_methods'
 import { Card } from '@/components/Card'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const Admin: NextPage = () => {
+interface Time {
+  start: Date
+  end: Date
+}
+ 
+interface Props {
+  time: Time
+}
+
+export const getServerSideProps = async () => {
+  const getTimeUrl = process.env.SSR_API_URI + '/time'
+  const timeJson = await get(getTimeUrl)
+  return {
+    props: {
+      time: timeJson,
+    },
+  }
+}
+ 
+const Admin: NextPage = (props: Props) => {
   const [todos, setTodos] = useState<string[]>([])
   const [tmpTodo, setTmpTodo] = useState('')
   const addTodo = () => {
@@ -15,7 +35,7 @@ const Admin: NextPage = () => {
     setTmpTodo('')
   }
   return (
-    <AdminLayout className="bg-white lg:pb-12">
+    <AdminLayout time={props.time} className="bg-white lg:pb-12">
       <div className="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-2 xl:grid-cols-2 xl:gap-16">

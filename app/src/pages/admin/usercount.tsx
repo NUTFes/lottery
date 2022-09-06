@@ -1,12 +1,32 @@
 import type { NextPage } from 'next'
 import AdminLayout from '@/components/AdminLayout'
+import { get } from '@/utils/api_methods'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const UserList: NextPage = () => {
+interface Time {
+  start: Date
+  end: Date
+}
+
+interface Props {
+  time: Time
+}
+
+export const getServerSideProps = async () => {
+  const getTimeUrl = process.env.SSR_API_URI + '/time'
+  const timeJson = await get(getTimeUrl)
+  return {
+    props: {
+      time: timeJson,
+    },
+  }
+}
+ 
+const UserList: NextPage = (props: Props) => {
   return (
-  <AdminLayout className="bg-white lg:pb-12">
+  <AdminLayout time={props.time} className="bg-white lg:pb-12">
     <div className="bg-white py-6 sm:py-8 lg:py-12">
     <div className="max-w-screen-lg px-4 md:px-8 mx-auto">
       <div className="mb-6 sm:mb-10 lg:mb-16">
