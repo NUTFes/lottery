@@ -7,6 +7,7 @@ from sqlalchemy.sql import func
 
 import models
 import schemas
+import backup
 
 # タイムゾーンの生成
 JST = timezone(timedelta(hours=+9), "JST")
@@ -100,7 +101,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user_places)
     db.commit()
     db.refresh(db_user_places)
-
+    backup.backup(db_user.number, db_user.updated_at)
     return db_user
 
 
@@ -127,7 +128,7 @@ def update_user(db: Session, user: schemas.UserCreate):
     db_user.updated_at = datetime.now(JST)
     db.add(db_user)
     db.commit()
-    db.refresh(db_user)
+    db.refresh(user_info = db_user)
     return db_user
 
 
