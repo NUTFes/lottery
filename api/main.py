@@ -176,7 +176,7 @@ async def create_winner(
     user = schemas.User
     user.id = winner.user_id
 
-    db_user = crud.get_user_by_id(db, user=user, place_id=None)
+    db_user = crud.get_user_by_id(db, user=user, place_id=0)
     db_winner = crud.get_winner_by_user_id(db, winner=winner)
 
     if db_user is None:
