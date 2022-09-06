@@ -52,12 +52,15 @@ export const put = async (url: string, data: any) => {
   return res
 };
 
-export const del = async (url: string) => {
+export const del = async (url: string, data: any) => {
   const res = await fetch(url, { 
     method: 'DELETE',
+    mode: 'cors',
     headers: {
       'Authorization': "Basic " + btoa(username + ":" + password),
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify(data),
   });
   return res;
 };

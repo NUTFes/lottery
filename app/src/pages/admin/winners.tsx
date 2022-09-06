@@ -2,8 +2,9 @@ import type { NextPage } from 'next'
 import React from 'react'
 import { useState } from 'react'
 import AdminLayout from '@/components/AdminLayout'
-import { get } from '@/utils/api_methods'
+import { get, del } from '@/utils/api_methods'
 import { Search } from '@/components/Search'
+import { DeleteButton } from '@/components/Button'
 import Table from '@/components/Table'
 
 type Winner = {
@@ -31,6 +32,20 @@ export const getServerSideProps = async () => {
 
 const Winner: NextPage<Props> = (props) => {
   const [winners, setWinners] = useState<Winner[]>(props.winners)
+   
+  // delete winner 
+  const deleteWinner = async (data: Winner) => {
+    const delUrl = process.env.CSR_API_URI + '/winner';
+    const delRes = await del(delUrl, data);
+    const delId = data.id;
+     
+    // 更新せずにWinnersを更新
+    setWinners(
+      winners.filter((winner, index) => (winner.id !== delId))
+    )
+  }
+   
+     
   return (
     <AdminLayout className="bg-white lg:pb-12">
       <div className="content-center bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-800">
@@ -65,9 +80,7 @@ const Winner: NextPage<Props> = (props) => {
                   <td className="py-4 px-6">{winner.created_at}</td>
 
                   <td className="py-4 px-6 text-right">
-                    <a href="#" className="font-medium text-red-600 hover:underline dark:text-blue-500">
-                      Delete
-                    </a>
+                    <DeleteButton onClick={() => deleteWinner(winner)}>Delete</DeleteButton>
                   </td>
                 </tr>
               ))}
