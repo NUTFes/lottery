@@ -9,6 +9,8 @@ const nextConfig = {
     ENABLE_BASIC_AUTH: process.env.ENABLE_BASIC_AUTH,
     BASIC_AUTH_USER: process.env.BASIC_AUTH_USER,
     BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD,
+    ST_PASS: process.env.ST_PASS,
+    ST_USER: process.env.ST_USER,
   }
 }
 
