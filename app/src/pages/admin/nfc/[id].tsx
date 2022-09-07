@@ -14,7 +14,7 @@ const Nfc: NextPage = () => {
   const query = router.query
 
   useEffect(() => {
-    socketRef.current = new WebSocket('ws://localhost:8000/ws')
+    socketRef.current = new WebSocket(process.env.WS_API_URI)
     socketRef.current.onopen = function () {
       //WebSocket接続が確立した時の処理
       setIsConnected(true)
