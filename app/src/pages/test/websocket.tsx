@@ -9,7 +9,7 @@ const Websocket: NextPage = () => {
   const [hostMessage, setHostMessage] = useState('')
 
   useEffect(() => {
-    socketRef.current = new WebSocket('ws://localhost:8000/ws')
+    socketRef.current = new WebSocket(process.env.WS_API_URI)
     socketRef.current.onopen = function () {
       setIsConnected(true)
       console.log('Connected')

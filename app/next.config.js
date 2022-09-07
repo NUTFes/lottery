@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   env: {
+    WS_API_URI: process.env.WS_API_URI,
     SSR_API_URI: process.env.SSR_API_URI,
     CSR_API_URI: process.env.CSR_API_URI,
     ENABLE_BASIC_AUTH: process.env.ENABLE_BASIC_AUTH,
