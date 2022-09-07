@@ -19,7 +19,7 @@ type Props = {
 }
 
 export const getServerSideProps = async () => {
-  const getUrl = 'http://api:8000/api/winners'
+  const getUrl = process.env.SSR_API_URI + '/winners'
   const json = await get(getUrl)
   return {
     props: {

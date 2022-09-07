@@ -11,9 +11,8 @@ services:
     ports:
       - '8000:8000'
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-    environment:
-      ST_USER: admin
-      ST_PASS: password
+    env_file:
+      - lottery.env
 
   app:
     container_name: 'ST-APP'
@@ -24,9 +23,8 @@ services:
       - '8888:8888'
     volumes:
       - ./app:/app/next-project
-    command: 'npm run dev'
-    environment:
-      SSR_API_URI: 'https://lottery-api.nutfes.net/api'
-      CSR_API_URI: 'https://lottery-api.nutfes.net/api'
+    command: 'npm run start'
+    env_file:
+      - lottery.env
     depends_on:
       - api

@@ -19,17 +19,17 @@ interface MobileLayoutProps {
   gap?: string
   children?: React.ReactNode
 }
- 
+
 const MobileLayout = (props: MobileLayoutProps) => {
   const [winners, setWinners] = React.useState<Winner[]>()
   useEffect(() => {
     const getUrl = process.env.CSR_API_URI + '/winners'
     const getWinners = async (url: string) => {
-      setWinners(await get(url));
+      setWinners(await get(url))
     }
-    getWinners(getUrl);
+    getWinners(getUrl)
   }, [])
-   
+
   return (
     <div className={`${ml.container}`}>
       <div className={`${ml.odometerContainer}`}>

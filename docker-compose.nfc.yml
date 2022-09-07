@@ -10,14 +10,6 @@ services:
       - ./nfc:/nfc
       - /dev/bus/usb:/dev/bus/usb:ro
     command: sh -c "python -m nfc && python main.py"
-    environment:
-      - VENDOR='054c'
-      - PRODUCT='06c1'
-      - PLACE_ID=1
-      - ST_USER=admin
-      - ST_PASS=password
-      - ST_APP_URL=https://lottery-api.nutfes.net
-      - ST_WS_URL=wss://lottery-api.nutfes.net
+    env_file:
+      - lottery.env
     privileged: true
-    depends_on:
-      - api
