@@ -51,12 +51,11 @@ def get_api():
 
 # 現在の登録人数の取得
 @app.get("/api/register")
-def get_registers_view(db: Session = Depends(get_db)):
+def get_registers_view(
+    db: Session = Depends(get_db), 
+    place_id: Union[int, None] = None):
     register_num = 0
-    place_num = len(crud.get_places(db))
-    for i in range(1, place_num + 1):
-        register = crud.get_users(db, i)
-        register_num += len(register)
+    register_num = len(crud.get_users(db, place_id=place_id))
     return register_num
 
 
