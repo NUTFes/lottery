@@ -7,6 +7,7 @@ from sqlalchemy.sql import func
 
 import models
 import schemas
+import backup
 
 # タイムゾーンの生成
 JST = timezone(timedelta(hours=+9), "JST")
@@ -76,7 +77,7 @@ def get_user_by_number(db: Session, user: schemas.UserCreate):
 
 
 def get_user_by_id(db: Session, user: schemas.User, place_id: Union[int, None]):
-    if place_id is None:
+    if place_id == 0:
         return db.query(models.User).filter(models.User.id == user.id).first()
     else:
         return (
@@ -100,22 +101,26 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user_places)
     db.commit()
     db.refresh(db_user_places)
-
+    backup.backup(db_user.number, db_user.updated_at)
     return db_user
 
 
 def delete_user(db: Session, user: schemas.User, place_id: Union[int, None]):
-    if place_id is None:
-        db_user = db.query(models.User).filter(models.User.id == user.id).all()
+    if place_id == 0:
+        db_users = db.query(models.User).filter(models.User.id == user.id).all()
+        for db_user in db_users:
+            db.delete(db_user)
+            db.commit()
+        return
     else:
         db_user = (
             db.query(models.User)
             .filter(models.Place.id == place_id, models.User.id == user.id)
             .first()
         )
-    db.delete(db_user)
-    db.commit()
-    return
+        db.delete(db_user)
+        db.commit()
+        return
 
 
 def update_user(db: Session, user: schemas.UserCreate):
@@ -123,7 +128,7 @@ def update_user(db: Session, user: schemas.UserCreate):
     db_user.updated_at = datetime.now(JST)
     db.add(db_user)
     db.commit()
-    db.refresh(db_user)
+    db.refresh(user_info = db_user)
     return db_user
 
 
@@ -206,9 +211,17 @@ def get_win_users(db: Session):
     return win_users
 
 
+def get_winners(db: Session):
+    # placeを絞り込んだWinnersでUserを絞込んでUserを返している
+    winners = db.query(models.Winner).all()
+    return winners
+
+
 def create_winner(db: Session, winner: schemas.WinnerCreate):
+    db_user = db.query(models.User).filter(models.User.id == winner.user_id).first()
     db_winner = models.Winner(
         user_id=winner.user_id,
+        number=db_user.number,
         updated_at=datetime.now(JST),
         created_at=datetime.now(JST),
     )

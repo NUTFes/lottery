@@ -1,8 +1,7 @@
 import hashlib
 from typing import List, Union
 
-from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
-                     WebSocketDisconnect)
+from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
@@ -126,7 +125,6 @@ async def create_user(
     # placeのみ登録されていない場合は登録
     elif db_user:
         return crud.add_user_places(db=db, user=user)
-
     return crud.create_user(db=db, user=user)
 
 
@@ -158,12 +156,13 @@ def read_random_user(
     return [db_user]
 
 
-@app.get("/api/winners", response_model=List[schemas.User])
+@app.get("/api/winners", response_model=List[schemas.Winner])
 def read_winners(db: Session = Depends(get_db)):
-    db_win_users = crud.get_win_users(db)
-    if db_win_users is None:
+    db_winners = crud.get_winners(db)
+    if db_winners is None:
         raise HTTPException(status_code=404, detail="Winner not found")
-    return db_win_users
+    return db_winners
+
 
 @app.post("/api/winner", response_model=schemas.Winner)
 async def create_winner(
@@ -176,7 +175,7 @@ async def create_winner(
     user = schemas.User
     user.id = winner.user_id
 
-    db_user = crud.get_user_by_id(db, user=user, place_id=None)
+    db_user = crud.get_user_by_id(db, user=user, place_id=0)
     db_winner = crud.get_winner_by_user_id(db, winner=winner)
 
     if db_user is None:
@@ -184,6 +183,7 @@ async def create_winner(
     elif db_winner:
         raise HTTPException(status_code=409, detail="Winner already exists")
     return crud.create_winner(db=db, winner=winner)
+
 
 @app.delete("/api/winner", response_model=schemas.WinnerDelete)
 def delete_winner(

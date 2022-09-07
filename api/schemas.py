@@ -32,7 +32,7 @@ class UserCreate(BaseModel):
 
 class UserDelete(BaseModel):
     # Request Body (Delete)
-    number: int
+    id: int
     place_id: int = 0
 
 
@@ -61,6 +61,7 @@ class Winner(BaseModel):
     # Response Body
     id: int
     user_id: int
+    number: int
     updated_at: datetime
     created_at: datetime
 
