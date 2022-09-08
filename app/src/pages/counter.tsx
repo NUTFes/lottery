@@ -2,12 +2,8 @@ import type { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
 import { get } from '@/utils/api_methods'
 
-interface Register {
-  register: number
-}
-
 interface Props {
-  register: Register
+  register: number
 }
 
 export const getServerSideProps = async () => {
@@ -21,8 +17,7 @@ export const getServerSideProps = async () => {
 }
 
 const Counter: NextPage<Props> = (props) => {
-  console.log(props)
-  const [register, setRegister] = useState<Register>(props.register)
+  const [register, setRegister] = useState<number>(props.register)
   const socketRef = useRef<WebSocket>()
 
   useEffect(() => {
