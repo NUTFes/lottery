@@ -1,11 +1,11 @@
-import Bounty from 'react-bounty'
+import Bounty from '@/components/Bounty'
 import o from './OdometerMini.module.css'
 interface OdometerProps {
   value?: string
   className?: string
 }
 
-const Odometer = (props: OdometerProps) => {
+const OdometerMini = (props: OdometerProps) => {
   return (
     <div className={`${o.flex_container}`}>
       <div className={`${o.flex_container_gold}`}>
@@ -16,7 +16,6 @@ const Odometer = (props: OdometerProps) => {
               initialValue={'77777777'}
               lineHeight={1.35}
               animationDelay={100}
-              duration={2000}
               letterAnimationDelay={800}
             />
           </div>
@@ -26,4 +25,4 @@ const Odometer = (props: OdometerProps) => {
   )
 }
 
-export default Odometer
+export default OdometerMini
