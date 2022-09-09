@@ -9,6 +9,7 @@ interface BountyProps {
   letterSpacing?: number
   animationDelay?: number
   letterAnimationDelay?: number
+  duration?: number
 }
 
 const Bounty = (props: BountyProps) => {
