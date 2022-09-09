@@ -24,7 +24,7 @@ const Websocket: NextPage = () => {
       let json = JSON.parse(event.data)
       console.log('message')
       setSentMessage(event.data)
-      if (json.place_id == 1 && json.client == 'Random') {
+      if (json.client == 'Random') {
         setRandomMessage(json.message)
       }
       if (json.place_id == 1 && json.client == 'Host') {

@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LotteryLayout from '@/components/LotteryLayout'
 import Odometer from '@/components/Odometer'
 import { get } from '@/utils/api_methods'
@@ -27,10 +27,45 @@ export const getServerSideProps = async () => {
 
 const Lottery: NextPage<Props> = (props) => {
   const [users, setUsers] = useState<User[]>(props.users)
+  const [formMessage, setFormMessage] = useState('77777777')
+  const socketRef = useRef<WebSocket>()
+  const [randomMessage, setRandomMessage] = useState('')
+
+  const sendData = (event: any) => {
+    event.preventDefault()
+    setFormMessage(event.target[0].value)
+    socketRef.current?.send(JSON.stringify({ client: 'Random', message: event.target[0].value }))
+  }
+
+  useEffect(() => {
+    socketRef.current = new WebSocket(process.env.WS_API_URI)
+
+    socketRef.current.onmessage = function (event) {
+      let json = JSON.parse(event.data)
+      if (json.client == 'Random') {
+        setRandomMessage(json.message)
+      }
+    }
+
+    return () => {
+      if (socketRef.current == null) {
+        return
+      }
+      socketRef.current.close()
+    }
+  }, [])
   return (
     <LotteryLayout>
       {users.map((user) => (
-        <Odometer value={user.number}></Odometer>
+        <>
+          <Odometer value={formMessage}></Odometer>
+          <form onSubmit={sendData}>
+            <input type="text" name="socketData" value={user.number} className="text-sm" />
+            <button type="submit" className="text-sm">
+              push
+            </button>
+          </form>
+        </>
       ))}
     </LotteryLayout>
   )
