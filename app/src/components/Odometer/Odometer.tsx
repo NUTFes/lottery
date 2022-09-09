@@ -15,8 +15,9 @@ const Odometer = (props: OdometerProps) => {
               value={props.value}
               initialValue={'77777777'}
               lineHeight={1.35}
-              animationDelay={100}
+              animationDelay={100000}
               letterAnimationDelay={800}
+              duration={2000}
             />
           </div>
         </div>
