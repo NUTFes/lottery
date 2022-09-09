@@ -27,10 +27,10 @@ function useDelay(time: number) {
 
 const MobileLayout = (props: MobileLayoutProps) => {
   const getUrl = process.env.CSR_API_URI + '/winners'
-  // 5秒後に当選者を取得するために遅延関数を定義
-  const delayed = useDelay(5000);
+  // 10秒後に当選者を取得するために遅延関数を定義
+  const delayed = useDelay(10000);
    
-  //  当選5秒後に当選者を更新
+  //  当選10秒後に当選者を更新
   const getWinners = useCallback(async () => {
     try {
       const response = await get(getUrl)
