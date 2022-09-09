@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import LotteryLayout from '@/components/LotteryLayout'
 import Odometer from '@/components/Odometer'
 import { get } from '@/utils/api_methods'
@@ -25,19 +25,38 @@ export const getServerSideProps = async () => {
   }
 }
 
+// 遅延を設定
+function useDelay(time: number) {
+  return useCallback(async () => {
+    return await new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
+  }, [time]);
+}
+
 const Lottery: NextPage<Props> = (props) => {
   const [users, setUsers] = useState<User[]>(props.users)
-  const [formMessage, setFormMessage] = useState('77777777')
   const socketRef = useRef<WebSocket>()
   const [randomMessage, setRandomMessage] = useState('')
-
-  const sendData = (event: any) => {
-    event.preventDefault()
-    setFormMessage(event.target[0].value)
-    socketRef.current?.send(JSON.stringify({ client: 'Random', message: event.target[0].value }))
-  }
+  
+  // 5秒後に当選者を取得するために遅延関数を定義
+  const delayed = useDelay(5000);
+   
+  const getWinner = useCallback(async () => {
+    try {
+      socketRef.current?.send(JSON.stringify({ client: 'Random', message: event.target[0].value }))
+      // 当選者を更新
+      delayed().then(() => {
+        setRandomMessage(users[0].number)
+      });
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
 
   useEffect(() => {
+    getWinner();
+     
     socketRef.current = new WebSocket(process.env.WS_API_URI)
 
     socketRef.current.onmessage = function (event) {
@@ -56,17 +75,7 @@ const Lottery: NextPage<Props> = (props) => {
   }, [])
   return (
     <LotteryLayout>
-      {users.map((user) => (
-        <>
-          <Odometer value={formMessage}></Odometer>
-          <form onSubmit={sendData}>
-            <input type="text" name="socketData" value={user.number} className="text-sm" />
-            <button type="submit" className="text-sm">
-              push
-            </button>
-          </form>
-        </>
-      ))}
+      <Odometer value={randomMessage}></Odometer>
     </LotteryLayout>
   )
 }
