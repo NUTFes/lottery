@@ -12,7 +12,7 @@ export interface Winner {
   created_at: string
   detail: string
 }
- 
+
 interface Props {
   winners: Winner[]
 }
@@ -27,12 +27,11 @@ export const getServerSideProps = async () => {
   }
 }
 
-
 const Home: NextPage<Props> = (props) => {
   const socketRef = useRef<WebSocket>()
-  const [randomMessage, setRandomMessage] = useState('')
+  const [randomMessage, setRandomMessage] = useState('77777777')
   // 当選者が追加された時に、時間を空けて当選者を取得するためのフラグ
-  const [isAddWinner, setIsAddWinner] = useState(false);
+  const [isAddWinner, setIsAddWinner] = useState(false)
   // ページ読み込み時にwinnersを表示
   const [winners, setWinners] = useState<Winner[]>(props.winners)
 
@@ -43,7 +42,7 @@ const Home: NextPage<Props> = (props) => {
       let json = JSON.parse(event.data)
       if (json.client == 'Random') {
         setRandomMessage(json.message)
-        setIsAddWinner(true);
+        setIsAddWinner(true)
       }
     }
     return () => {
