@@ -11,7 +11,7 @@ const Sidebar = (props: SidebarProps) => {
           <li>
             <button
               type="button"
-              className="inline-flex items-center  gap-2 rounded-lg bg-gray-200 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base dark:bg-gray-800 dark:text-white dark:border-white dark:border dark:hover:bg-gray-700"
+              className="inline-flex items-center  gap-2 rounded-lg bg-gray-200 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 dark:border dark:border-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 md:text-base"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                 <path
@@ -43,7 +43,7 @@ const Sidebar = (props: SidebarProps) => {
           </li>
           <li>
             <a
-              href="/admin/lottery-before"
+              href="/admin/lottery"
               className="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <svg
@@ -116,28 +116,7 @@ const Sidebar = (props: SidebarProps) => {
           </li>
           <li>
             <a
-              href="/admin/places"
-              className="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-            >
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="ml-3 flex-1 whitespace-nowrap">場所一覧</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
+              href="/counter"
               className="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <svg
