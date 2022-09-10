@@ -30,12 +30,12 @@ const Lottery: NextPage<Props> = (props) => {
   const [users, setUsers] = useState<User[]>(props.users)
   const socketRef = useRef<WebSocket>()
   const [randomMessage, setRandomMessage] = useState('')
-  const [isLottery, setIsLottery] = useState(false);
+  const [isLottery, setIsLottery] = useState(false)
 
   const sendData = () => {
     setRandomMessage(users[0].number)
     socketRef.current?.send(JSON.stringify({ client: 'Random', message: users[0].number }))
-    setIsLottery(true);
+    setIsLottery(true)
   }
 
   useEffect(() => {
@@ -62,7 +62,9 @@ const Lottery: NextPage<Props> = (props) => {
           {isLottery ? (
             <Odometer value={randomMessage}></Odometer>
           ) : (
-            <LotteryButton className={"w-96"} onClick={sendData}>抽選開始</LotteryButton>
+            <LotteryButton className={'w-100 px-96'} onClick={sendData}>
+              Click to Start
+            </LotteryButton>
           )}
         </>
       ))}
