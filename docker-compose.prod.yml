@@ -23,7 +23,7 @@ services:
       - '8888:8888'
     volumes:
       - ./app:/app/next-project
-    command: 'npm run start'
+    command: 'npm run dev'
     env_file:
       - lottery.env
     depends_on:
