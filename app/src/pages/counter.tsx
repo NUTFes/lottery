@@ -19,6 +19,7 @@ export const getServerSideProps = async () => {
 const Counter: NextPage<Props> = (props) => {
   const [register, setRegister] = useState<number>(props.register)
   const socketRef = useRef<WebSocket>()
+  const increment = () => setRegister((prevCount) => prevCount + 1)
 
   useEffect(() => {
     socketRef.current = new WebSocket(process.env.WS_API_URI)
@@ -26,7 +27,7 @@ const Counter: NextPage<Props> = (props) => {
     socketRef.current.onmessage = function (event) {
       let json = JSON.parse(event.data)
       if (json.client == 'NFC') {
-        setRegister(register + 1)
+        increment
       }
     }
 
