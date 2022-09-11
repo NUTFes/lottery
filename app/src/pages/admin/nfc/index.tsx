@@ -37,16 +37,16 @@ const Place: NextPage<Props> = (props) => {
             <h2 className="mb-4 text-center text-2xl font-bold text-gray-800 dark:text-white md:mb-6 lg:text-3xl">
               管理者ページ - 場所一覧
             </h2>
-            <p className="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">This is</p>
-            <Search></Search>
+            <Search className="flex items-center"></Search>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 md:gap-8 xl:grid-cols-3">
             {places.map((place) => (
               <Card>
                 <CardTitle>{place.name}</CardTitle>
-                <CardBody>Body</CardBody>
-                <ButtonNext href={'/admin/nfc/' + place.id}>次</ButtonNext>
+                <div className="flex justify-end">
+                  <ButtonNext href={'/admin/nfc/' + place.id}>次</ButtonNext>
+                </div>
               </Card>
             ))}
           </div>
