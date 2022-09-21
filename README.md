@@ -22,6 +22,7 @@ git clone git@github.com:NUTFes/lottery.git
 docker compose build
 docker compose run --rm app npm install
 docker compose run --rm api poetry install
+docker compose run --rm nfc poetry install
 
 # lottery.dbがあれば，削除
 sudo rm api/lottery.db
