@@ -20,8 +20,8 @@ git clone git@github.com:NUTFes/lottery.git
 ```
 # ビルド
 docker compose build
-docker compose run --rm app npm install
 docker compose run --rm api poetry install
+docker compose run --rm app npm install
 docker compose run --rm nfc poetry install
 
 # lottery.dbがあれば，削除
