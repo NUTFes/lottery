@@ -62,7 +62,7 @@ services:
     container_name: "go-db"
     volumes:
       - ./mysql/db:/docker-entrypoint-initdb.d # 初期データ
-#      - ./mysql/data:/var/lib/mysql
+      - ./mysql/data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: gomysql
       MYSQL_USER: gomysql
@@ -80,6 +80,5 @@ services:
       dockerfile: go.Dockerfile
     volumes:
       - ./go_api:/goapi
-    command: go run continued.go
     ports:
       - '1323:1323'
