@@ -66,3 +66,6 @@ git push origin <branch名>
 
 ### 5. Pull Request
 - 確認してほしい点を明記してプルリクを書いてください 
+
+### 6. ER図
+![image](https://user-images.githubusercontent.com/50622120/193559747-c4bdb4c3-36c6-4625-b0e5-78c36cb87984.png)
