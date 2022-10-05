@@ -56,3 +56,29 @@ services:
     privileged: true
     depends_on:
       - api
+
+  db:
+    image: mysql:8.0
+    container_name: "go-db"
+    volumes:
+      - ./mysql/db:/docker-entrypoint-initdb.d # 初期データ
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: gomysql
+      MYSQL_USER: gomysql
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      TZ: 'Asia/Tokyo'
+    ports:
+      - "3306:3306"
+    restart: always
+
+  go:
+    container_name: 'ST-GO'
+    build:
+      context: .docker
+      dockerfile: go.Dockerfile
+    volumes:
+      - ./go_api:/goapi
+    ports:
+      - '1323:1323'
