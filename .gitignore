@@ -10,4 +10,5 @@ lottery.db
 api/.cache
 api/.venv
 nfc/.cache
-nfc/.venv
+nfc/.ve
+mysql/*
