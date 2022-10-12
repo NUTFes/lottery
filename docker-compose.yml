@@ -59,7 +59,7 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: "go-db"
+    container_name: 'go-db'
     volumes:
       - ./mysql/db:/docker-entrypoint-initdb.d # 初期データ
       - ./mysql/data:/var/lib/mysql
@@ -70,7 +70,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: 'Asia/Tokyo'
     ports:
-      - "3306:3306"
+      - '3306:3306'
     restart: always
 
   go:
@@ -82,3 +82,4 @@ services:
       - ./go_api:/goapi
     ports:
       - '1323:1323'
+    command: go run server.go
