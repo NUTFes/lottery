@@ -82,4 +82,4 @@ services:
       - ./go_api:/goapi
     ports:
       - '1323:1323'
-    command: go run server.go
+    command: "./start.sh"
