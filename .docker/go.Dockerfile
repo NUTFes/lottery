@@ -11,6 +11,8 @@ RUN apt-get install -y locales \
 RUN export LANG=C.UTF-8
 RUN export LANGUAGE=en_US:
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
