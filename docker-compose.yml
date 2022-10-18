@@ -86,6 +86,4 @@ services:
       DSN: gomysql:password@tcp(db:3306)/gomysql?charset=utf8mb4&parseTime=True&loc=Local
     ports:
       - '1323:1323'
-    command: go run server.go
-    depends_on:
-      - db
+    command: './start.sh'

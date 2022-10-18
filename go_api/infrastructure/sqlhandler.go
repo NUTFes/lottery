@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"os"
 
-	"github.com/FUTFes/lottery/go_api/interfaces/database"
+	"github.com/NUTFes/lottery/go_api/interfaces/database"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
