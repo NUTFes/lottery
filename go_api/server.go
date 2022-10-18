@@ -31,6 +31,7 @@ type (
 )
 
 func main() {
+	dbinit()
 	e := echo.New()
 	e.GET("/", healthCheck)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
@@ -45,6 +46,7 @@ func healthCheck(c echo.Context) error {
 func dbinit() {
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
+		return
 	}
 	db.Migrator().CreateTable(domain.User{})
 }
