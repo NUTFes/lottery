@@ -1,23 +1,23 @@
 package database
 
 import (
-    "api/domain"
+	"github.com/FUTFes/lottery/go_api/domain"
 )
 
 type UserRepository struct {
-    SqlHandler
+	SqlHandler
 }
 
 func (db *UserRepository) Store(u domain.User) {
-    db.Create(&u)
+	db.Create(&u)
 }
 
 func (db *UserRepository) Select() []domain.User {
-    user := []domain.User{}
-    db.FindAll(&user)
-    return user
+	user := []domain.User{}
+	db.FindAll(&user)
+	return user
 }
 func (db *UserRepository) Delete(id string) {
-    user := []domain.User{}
-    db.DeleteById(&user, id)
+	user := []domain.User{}
+	db.DeleteById(&user, id)
 }
