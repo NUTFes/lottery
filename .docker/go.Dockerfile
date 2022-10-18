@@ -16,3 +16,6 @@ RUN go install github.com/swaggo/swag/cmd/swag@latest
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
+
+RUN go install github.com/cosmtrek/air@latest
+CMD ["air", "-c", ".air.toml"]

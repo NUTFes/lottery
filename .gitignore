@@ -11,3 +11,4 @@ api/.cache
 api/.venv
 nfc/.cache
 nfc/.venv
+mysql/
