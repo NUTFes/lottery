@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/FUTFes/lottery/go_api/domain"
+	"github.com/NUTFes/lottery/go_api/domain"
 )
 
 type UserRepository struct {
