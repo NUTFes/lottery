@@ -1,6 +1,6 @@
 FROM golang:latest
 
-WORKDIR /goapi
+WORKDIR /usr/local/go/src/api
 
 RUN apt-get update
 RUN apt-get upgrade -y
@@ -11,9 +11,12 @@ RUN apt-get install -y locales \
 RUN export LANG=C.UTF-8
 RUN export LANGUAGE=en_US:
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN go install github.com/cosmtrek/air@latest
 CMD ["air", "-c", ".air.toml"]

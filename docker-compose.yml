@@ -62,7 +62,9 @@ services:
     container_name: 'go-db'
     volumes:
       - ./mysql/db:/docker-entrypoint-initdb.d # 初期データ
+      - ./mysql/conf:/etc/mysql/conf.d # 設定ファイル
       - ./mysql/data:/var/lib/mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_DATABASE: gomysql
       MYSQL_USER: gomysql
@@ -79,7 +81,9 @@ services:
       context: .docker
       dockerfile: go.Dockerfile
     volumes:
-      - ./go_api:/goapi
+      - ./go_api:/usr/local/go/src/api
+    environment:
+      DSN: gomysql:password@tcp(db:3306)/gomysql?charset=utf8mb4&parseTime=True&loc=Local
     ports:
       - '1323:1323'
-    command: "./start.sh"
+    command: './start.sh'
