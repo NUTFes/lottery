@@ -1,6 +1,6 @@
 FROM golang:latest
 
-WORKDIR /goapi
+WORKDIR /usr/local/go/src/api
 
 RUN apt-get update
 RUN apt-get upgrade -y
@@ -17,5 +17,6 @@ ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN go install github.com/cosmtrek/air@latest
 CMD ["air", "-c", ".air.toml"]

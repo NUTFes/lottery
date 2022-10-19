@@ -15,5 +15,8 @@
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
   }
 }
