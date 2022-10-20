@@ -9,7 +9,7 @@ type Admin struct {
 	Name      string    `json:"name" gorm:"not null"`
 	Email     string    `json:"email" gorm:"not null"`
 	Password  string    `json:"password" gorm:"not null"`
-	CreatedID time.Time `json:"created_id" gorm:"not null"`
-	UpdatedID time.Time `json:"updated_id" gorm:"not null"`
+	CreatedAT time.Time `json:"created_at" gorm:"not null"`
+	UpdatedAT time.Time `json:"updated_at" gorm:"not null"`
 
 }
