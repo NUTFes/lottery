@@ -4,11 +4,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/NUTFes/lottery/go_api/domain"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/labstack/echo/v4"
-  "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -41,19 +39,6 @@ func main() {
 
 func healthCheck(c echo.Context) error {
 	return c.String(http.StatusOK, "Health Check")
-}
-
-func dbinit() {
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return
-	}
-	db.Migrator().CreateTable(domain.User{})
-  db.Migrator().CreateTable(domain.Admin{})
-  db.Migrator().CreateTable(domain.Event_user{})
-  db.Migrator().CreateTable(domain.Event{})
-  db.Migrator().CreateTable(domain.Winner{})
-
 }
 
 func checkswagger(c echo.Context) error {
