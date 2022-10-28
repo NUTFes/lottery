@@ -2,18 +2,11 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	echoSwagger "github.com/swaggo/echo-swagger"
 
+	"github.com/NUTFes/lottery/go_api/cmd"
 	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
-)
-
-var (
-	db  *gorm.DB
-	err error
-	dsn = os.Getenv("DSN")
 )
 
 type (
@@ -29,7 +22,7 @@ type (
 )
 
 func main() {
-	dbinit()
+	cmd.Dbmain()
 	e := echo.New()
 	e.GET("/", healthCheck)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
