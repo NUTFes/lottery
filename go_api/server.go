@@ -5,7 +5,6 @@ import (
 
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	"github.com/NUTFes/lottery/go_api/cmd"
 	"github.com/labstack/echo/v4"
 )
 
@@ -22,7 +21,6 @@ type (
 )
 
 func main() {
-	cmd.Dbmain()
 	e := echo.New()
 	e.GET("/", healthCheck)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
