@@ -3,6 +3,9 @@ package main
 import (
 	"net/http"
 
+	"github.com/NUTFes/lottery/go_api/infrastructure"
+	controller "github.com/NUTFes/lottery/go_api/interfaces"
+	"github.com/NUTFes/lottery/go_api/usecase"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/labstack/echo/v4"
@@ -22,7 +25,25 @@ type (
 
 func main() {
 	e := echo.New()
-	e.GET("/", healthCheck)
+	// DB接続
+	client := infrastructure.ConnectDB()
+
+	// 依存の方向：controller -> usecase -> domain <ー infrastructure
+	userInfrastructure := infrastructure.NewUserInfrastructure(client)
+
+	userUsecase := usecase.NewUserUsecase(userInfrastructure)
+
+	userController := controller.NewUserController(userUsecase)
+
+	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
+
+	// users
+	e.GET("/users", userController.IndexUser)
+	e.GET("/users/:id", userController.ShowUser)
+	e.POST("/users", userController.CreateUser)
+	e.PUT("/users/:id", userController.UpdateUser)
+	e.DELETE("/users/:id", userController.DeleteUser)
+
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)
 	e.Logger.Fatal(e.Start(":1323"))
