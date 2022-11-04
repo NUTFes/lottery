@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	_ "github.com/NUTFes/lottery/go_api/docs"
 	"github.com/NUTFes/lottery/go_api/infrastructure"
 	controller "github.com/NUTFes/lottery/go_api/interfaces"
 	"github.com/NUTFes/lottery/go_api/usecase"
@@ -22,6 +23,13 @@ type (
 		Text string `json:"text"`
 	}
 )
+
+// @title NUTFes Lottery API
+// @version 1.0
+// @description NUTFes Lottery API
+// @host localhost:1323
+// @BasePath /
+// @schemes http
 
 func main() {
 	e := echo.New()
