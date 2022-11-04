@@ -1,4 +1,11 @@
+basePath: /
+host: localhost:1323
 info:
   contact: {}
+  description: NUTFes Lottery API
+  title: NUTFes Lottery API
+  version: "1.0"
 paths: {}
+schemes:
+- http
 swagger: "2.0"
