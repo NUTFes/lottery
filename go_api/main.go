@@ -36,7 +36,7 @@ func main() {
 	// DB接続
 	client := infrastructure.ConnectDB()
 
-	// 依存の方向：controller -> usecase -> domain <ー infrastructure
+	// 依存の方向：controller -> usecase -> domain <- infrastructure
 	userInfrastructure := infrastructure.NewUserInfrastructure(client)
 
 	userUsecase := usecase.NewUserUsecase(userInfrastructure)
