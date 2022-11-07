@@ -12,3 +12,4 @@ api/.venv
 nfc/.cache
 nfc/.venv
 mysql/
+go_api/tmp
