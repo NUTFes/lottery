@@ -120,6 +120,112 @@ const docTemplate = `{
                         "description":"OK",
                     }
                 }
+            },
+            "/admins":{
+                "get":{
+                    "description":"全アドミンユーザの取得",
+                    "responses":{
+                        "200":{
+                            "description":"OK",
+                            "schema":{
+                                "type":"array",
+                            }
+                        }
+                    }
+                },
+                "post":{
+                    "description":"アドミンユーザーの作成",
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "in": "query",
+                            "description": "アドミンユーザー名",
+                        },
+                        {
+                            "name": "number",
+                            "type": "integer",
+                            "in": "query",
+                            "description": "アドミンユーザーの学籍番号",
+                        }
+                    ],
+                    "responses":{
+                        "200":{
+                            "description":"Created Admin",
+                        },
+                    }
+                }
+            },
+            "/admins/{id}":{
+                "get":{
+                    "description":"IDを指定してアドミンユーザーの取得",
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "in": "path",
+                            "description": "アドミンユーザーID",
+                            "required": true
+                        }
+                    ],
+                    "responses":{
+                        "200":{
+                            "description":"OK",
+                            "schema":{
+                                "type":"object",
+                            }
+                        }
+                    }
+                },
+                "put":{
+                    "description":"IDを指定してアドミンユーザーの更新",
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "in": "path",
+                            "description": "アドミンユーザーID",
+                            "required": true
+                        },
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "in": "query",
+                            "description": "アドミンユーザー名",
+                        },
+                        {
+                            "name": "number",
+                            "type": "integer",
+                            "in": "query",
+                            "description": "アドミンユーザーの学籍番号",
+                        }
+                    ],
+                    "responses":{
+                        "200":{
+                            "description":"OK",
+                            "schema":{
+                                "type":"object",
+                            }
+                        }
+                    }
+                },
+                "delete":{
+                    "description":"IDを指定してアドミンユーザーの削除",
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "in": "path",
+                            "description": "アドミンユーザーID",
+                            "required": true
+                        }
+                    ],
+                    "responses":{
+                        "200":{
+                            "description":"OK",
+                        }
+                    }
+                }
             }
         }
     }
