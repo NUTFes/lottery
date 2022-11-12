@@ -50,10 +50,12 @@ func (u *adminController) ShowAdmin(c echo.Context) error {
 func (u *adminController) CreateAdmin(c echo.Context) error {
 	name := c.QueryParam("name")
 	email := c.QueryParam("email")
+	password := c.QueryParam("password")
 
 	admin := &domain.Admin{
 		Name:      name,
 		Email:     email,
+		Password:  password,
 		CreatedAT: time.Now(),
 		UpdatedAT: time.Now(),
 	}
@@ -68,11 +70,13 @@ func (u *adminController) UpdateAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.QueryParam("name")
 	email := c.QueryParam("email")
+	password := c.QueryParam("password")
 
 	admin := &domain.Admin{
 		ID:        uint(id),
 		Name:      name,
 		Email:     email,
+		Password:  password,
 		UpdatedAT: time.Now(),
 	}
 	if err := u.adminUsecase.UpdateAdmin(admin); err != nil {
