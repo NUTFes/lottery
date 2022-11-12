@@ -12,6 +12,7 @@ type Admin struct {
 	CreatedAT time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT time.Time `json:"updated_at" gorm:"not null"`
 }
+<<<<<<< HEAD
 
 type Admins []Admin
 
@@ -22,3 +23,5 @@ type AdminRepository interface {
 	Update(Admin *Admin) error
 	Delete(id int) error
 }
+=======
+>>>>>>> parent of 5d629c1... WIP adminのCRUD作成(#234)
