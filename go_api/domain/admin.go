@@ -15,8 +15,8 @@ type Admin struct {
 
 type Admins []Admin
 
-type AdminRepositoly interface {
-	FindAll() (*Admin, error)
+type AdminRepository interface {
+	FindAll() (*Admins, error)
 	Find(id int) (*Admin, error)
 	Create(Admin *Admin) error
 	Update(Admin *Admin) error
