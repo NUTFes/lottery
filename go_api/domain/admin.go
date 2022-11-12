@@ -12,13 +12,3 @@ type Admin struct {
 	CreatedAT time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT time.Time `json:"updated_at" gorm:"not null"`
 }
-
-type Admins []Admin
-
-type AdminRepositoly interface {
-	FindAll() (*Admin, error)
-	Find(id int) (*Admin, error)
-	Create(Admin *Admin) error
-	Update(Admin *Admin) error
-	Delete(id int) error
-}
