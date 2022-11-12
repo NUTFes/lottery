@@ -43,12 +43,6 @@ func main() {
 
 	userController := controller.NewUserController(userUsecase)
 
-	// 依存の方向：controller -> usecase -> domain <- infrastructure
-	adminInfrastructure := infrastructure.NewAdminInfrastructure(client)
-
-	adminUsecase := usecase.NewAdminUsecase(adminInfrastructure)
-
-	adminController := controller.NewAdminController(adminUsecase)
 	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
 
 	// users
@@ -57,13 +51,6 @@ func main() {
 	e.POST("/users", userController.CreateUser)
 	e.PUT("/users/:id", userController.UpdateUser)
 	e.DELETE("/users/:id", userController.DeleteUser)
-
-	// admins
-	e.GET("/admins", adminController.IndexAdmin)
-	e.GET("/admins/:id", adminController.ShowAdmin)
-	e.POST("/admins", adminController.CreateAdmin)
-	e.PUT("/admins/:id", adminController.UpdateAdmin)
-	e.DELETE("/admins/:id", adminController.DeleteAdmin)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)
