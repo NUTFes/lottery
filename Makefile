@@ -5,7 +5,8 @@ build:
 run:
 	docker compose up -d
 run-go:
-	docker compose up go db -d
+	docker compose up db -d
+	docker compose run --rm go go run main.go
 run-initdb:
 	docker compose up db -d
 	docker compose run --rm go go run cmd/initdb.go
