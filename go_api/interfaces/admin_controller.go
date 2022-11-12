@@ -1,4 +1,4 @@
-// UserのControllerを定義する
+// AdminのControllerを定義する
 package controller
 
 import (
@@ -27,7 +27,7 @@ func NewAdminController(uu usecase.AdminUsecase) AdminController {
 	return &adminController{adminUsecase: uu}
 }
 
-// 全ユーザーの取得
+// 全アドミンユーザーの取得
 func (u *adminController) IndexAdmin(c echo.Context) error {
 	admins, err := u.adminUsecase.FindAllAdmin()
 	if err != nil {
@@ -36,7 +36,7 @@ func (u *adminController) IndexAdmin(c echo.Context) error {
 	return c.JSON(http.StatusOK, admins)
 }
 
-// idを指定してユーザーを取得
+// idを指定してアドミンユーザーを取得
 func (u *adminController) ShowAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	admin, err := u.adminUsecase.FindAdmin(id)
@@ -46,7 +46,7 @@ func (u *adminController) ShowAdmin(c echo.Context) error {
 	return c.JSON(http.StatusOK, admin)
 }
 
-// ユーザーの作成
+// アドミンユーザーの作成
 func (u *adminController) CreateAdmin(c echo.Context) error {
 	name := c.QueryParam("name")
 	email := c.QueryParam("email")
@@ -63,7 +63,7 @@ func (u *adminController) CreateAdmin(c echo.Context) error {
 	return c.JSON(http.StatusOK, admin)
 }
 
-// ユーザーの更新
+// アドミンユーザーの更新
 func (u *adminController) UpdateAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.QueryParam("name")
@@ -81,7 +81,7 @@ func (u *adminController) UpdateAdmin(c echo.Context) error {
 	return c.JSON(http.StatusOK, admin)
 }
 
-// ユーザーの削除
+// アドミンユーザーの削除
 func (u *adminController) DeleteAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	if err := u.adminUsecase.DeleteAdmin(id); err != nil {

@@ -1,4 +1,4 @@
-// UserのUsecaseを定義する
+// AdminのUsecaseを定義する
 package usecase
 
 import (
@@ -21,7 +21,7 @@ func NewAdminUsecase(ur domain.AdminRepository) AdminUsecase {
 	return &adminUsecase{adminRepository: ur}
 }
 
-// 全ユーザーの取得
+// 全アドミンユーザーの取得
 func (u *adminUsecase) FindAllAdmin() (*domain.Admins, error) {
 	admins, err := u.adminRepository.FindAll()
 	if err != nil {
@@ -30,7 +30,7 @@ func (u *adminUsecase) FindAllAdmin() (*domain.Admins, error) {
 	return admins, nil
 }
 
-// idを指定してユーザーを取得
+// idを指定してアドミンユーザーを取得
 func (u *adminUsecase) FindAdmin(id int) (*domain.Admin, error) {
 	admin, err := u.adminRepository.Find(id)
 	if err != nil {
@@ -39,7 +39,7 @@ func (u *adminUsecase) FindAdmin(id int) (*domain.Admin, error) {
 	return admin, nil
 }
 
-// ユーザーの作成
+// アドミンユーザーの作成
 func (u *adminUsecase) CreateAdmin(admin *domain.Admin) error {
 	if err := u.adminRepository.Create(admin); err != nil {
 		return err
@@ -47,7 +47,7 @@ func (u *adminUsecase) CreateAdmin(admin *domain.Admin) error {
 	return nil
 }
 
-// ユーザーの更新
+// アドミンユーザーの更新
 func (u *adminUsecase) UpdateAdmin(admin *domain.Admin) error {
 	if err := u.adminRepository.Update(admin); err != nil {
 		return err
@@ -55,7 +55,7 @@ func (u *adminUsecase) UpdateAdmin(admin *domain.Admin) error {
 	return nil
 }
 
-// ユーザーの削除
+// アドミンユーザーの削除
 func (u *adminUsecase) DeleteAdmin(id int) error {
 	if err := u.adminRepository.Delete(id); err != nil {
 		return err

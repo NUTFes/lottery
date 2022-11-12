@@ -15,6 +15,7 @@ type Admin struct {
 
 type Admins []Admin
 
+// domainRepository
 type AdminRepository interface {
 	FindAll() (*Admins, error)
 	Find(id int) (*Admin, error)
