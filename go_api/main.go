@@ -38,10 +38,13 @@ func main() {
 
 	// 依存の方向：controller -> usecase -> domain <- infrastructure
 	userInfrastructure := infrastructure.NewUserInfrastructure(client)
+	eventInfrastructure := infrastructure.NewEventInfrastructure(client)
 
 	userUsecase := usecase.NewUserUsecase(userInfrastructure)
+	eventUsecase := usecase.NewEventUsecase(eventInfrastructure)
 
 	userController := controller.NewUserController(userUsecase)
+	eventController := controller.NewEventController(eventUsecase)
 
 	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
 
@@ -51,6 +54,13 @@ func main() {
 	e.POST("/users", userController.CreateUser)
 	e.PUT("/users/:id", userController.UpdateUser)
 	e.DELETE("/users/:id", userController.DeleteUser)
+
+	// events
+	e.GET("/events", eventController.IndexEvent)
+	e.GET("/events/:id", eventController.ShowEvent)
+	e.POST("/events", eventController.CreateEvent)
+	e.PUT("/events/:id", eventController.UpdateEvent)
+	e.DELETE("/events/:id", eventController.DeleteEvent)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)
