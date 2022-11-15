@@ -17,13 +17,13 @@ type AdminUsecase interface {
 	DeleteAdmin(id int) error
 }
 
-func NewAdminUsecase(ur domain.AdminRepository) AdminUsecase {
-	return &adminUsecase{adminRepository: ur}
+func NewAdminUsecase(ar domain.AdminRepository) AdminUsecase {
+	return &adminUsecase{adminRepository: ar}
 }
 
 // 全アドミンユーザーの取得
-func (u *adminUsecase) FindAllAdmin() (*domain.Admins, error) {
-	admins, err := u.adminRepository.FindAll()
+func (a *adminUsecase) FindAllAdmin() (*domain.Admins, error) {
+	admins, err := a.adminRepository.FindAll()
 	if err != nil {
 		return nil, err
 	}
@@ -31,8 +31,8 @@ func (u *adminUsecase) FindAllAdmin() (*domain.Admins, error) {
 }
 
 // idを指定してアドミンユーザーを取得
-func (u *adminUsecase) FindAdmin(id int) (*domain.Admin, error) {
-	admin, err := u.adminRepository.Find(id)
+func (a *adminUsecase) FindAdmin(id int) (*domain.Admin, error) {
+	admin, err := a.adminRepository.Find(id)
 	if err != nil {
 		return nil, err
 	}
@@ -40,24 +40,24 @@ func (u *adminUsecase) FindAdmin(id int) (*domain.Admin, error) {
 }
 
 // アドミンユーザーの作成
-func (u *adminUsecase) CreateAdmin(admin *domain.Admin) error {
-	if err := u.adminRepository.Create(admin); err != nil {
+func (a *adminUsecase) CreateAdmin(admin *domain.Admin) error {
+	if err := a.adminRepository.Create(admin); err != nil {
 		return err
 	}
 	return nil
 }
 
 // アドミンユーザーの更新
-func (u *adminUsecase) UpdateAdmin(admin *domain.Admin) error {
-	if err := u.adminRepository.Update(admin); err != nil {
+func (a *adminUsecase) UpdateAdmin(admin *domain.Admin) error {
+	if err := a.adminRepository.Update(admin); err != nil {
 		return err
 	}
 	return nil
 }
 
 // アドミンユーザーの削除
-func (u *adminUsecase) DeleteAdmin(id int) error {
-	if err := u.adminRepository.Delete(id); err != nil {
+func (a *adminUsecase) DeleteAdmin(id int) error {
+	if err := a.adminRepository.Delete(id); err != nil {
 		return err
 	}
 	return nil
