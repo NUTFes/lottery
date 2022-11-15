@@ -23,13 +23,13 @@ type AdminController interface {
 	DeleteAdmin(c echo.Context) error
 }
 
-func NewAdminController(uu usecase.AdminUsecase) AdminController {
-	return &adminController{adminUsecase: uu}
+func NewAdminController(au usecase.AdminUsecase) AdminController {
+	return &adminController{adminUsecase: au}
 }
 
 // 全アドミンユーザーの取得
-func (u *adminController) IndexAdmin(c echo.Context) error {
-	admins, err := u.adminUsecase.FindAllAdmin()
+func (a *adminController) IndexAdmin(c echo.Context) error {
+	admins, err := a.adminUsecase.FindAllAdmin()
 	if err != nil {
 		return err
 	}
@@ -37,9 +37,9 @@ func (u *adminController) IndexAdmin(c echo.Context) error {
 }
 
 // idを指定してアドミンユーザーを取得
-func (u *adminController) ShowAdmin(c echo.Context) error {
+func (a *adminController) ShowAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	admin, err := u.adminUsecase.FindAdmin(id)
+	admin, err := a.adminUsecase.FindAdmin(id)
 	if err != nil {
 		return err
 	}
@@ -47,44 +47,48 @@ func (u *adminController) ShowAdmin(c echo.Context) error {
 }
 
 // アドミンユーザーの作成
-func (u *adminController) CreateAdmin(c echo.Context) error {
+func (a *adminController) CreateAdmin(c echo.Context) error {
 	name := c.QueryParam("name")
 	email := c.QueryParam("email")
+	password := c.QueryParam("password")
 
 	admin := &domain.Admin{
 		Name:      name,
 		Email:     email,
+		Password:  password,
 		CreatedAT: time.Now(),
 		UpdatedAT: time.Now(),
 	}
-	if err := u.adminUsecase.CreateAdmin(admin); err != nil {
+	if err := a.adminUsecase.CreateAdmin(admin); err != nil {
 		return err
 	}
 	return c.JSON(http.StatusOK, admin)
 }
 
 // アドミンユーザーの更新
-func (u *adminController) UpdateAdmin(c echo.Context) error {
+func (a *adminController) UpdateAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.QueryParam("name")
 	email := c.QueryParam("email")
+	password := c.QueryParam("password")
 
 	admin := &domain.Admin{
 		ID:        uint(id),
 		Name:      name,
 		Email:     email,
+		Password:  password,
 		UpdatedAT: time.Now(),
 	}
-	if err := u.adminUsecase.UpdateAdmin(admin); err != nil {
+	if err := a.adminUsecase.UpdateAdmin(admin); err != nil {
 		return err
 	}
 	return c.JSON(http.StatusOK, admin)
 }
 
 // アドミンユーザーの削除
-func (u *adminController) DeleteAdmin(c echo.Context) error {
+func (a *adminController) DeleteAdmin(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	if err := u.adminUsecase.DeleteAdmin(id); err != nil {
+	if err := a.adminUsecase.DeleteAdmin(id); err != nil {
 		return err
 	}
 	return c.String(http.StatusOK, "Delete admin")
