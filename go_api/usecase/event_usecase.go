@@ -17,13 +17,13 @@ type EventUsecase interface {
 	DeleteEvent(id int) error
 }
 
-func NewEventUsecase(ur domain.EventRepository) EventUsecase {
-	return &eventUsecase{eventRepository: ur}
+func NewEventUsecase(er domain.EventRepository) EventUsecase {
+	return &eventUsecase{eventRepository: er}
 }
 
 // 全イベントの取得
-func (u *eventUsecase) FindAllEvent() (*domain.Events, error) {
-	events, err := u.eventRepository.FindAll()
+func (e *eventUsecase) FindAllEvent() (*domain.Events, error) {
+	events, err := e.eventRepository.FindAll()
 	if err != nil {
 		return nil, err
 	}
@@ -31,8 +31,8 @@ func (u *eventUsecase) FindAllEvent() (*domain.Events, error) {
 }
 
 // idを指定してイベントを取得
-func (u *eventUsecase) FindEvent(id int) (*domain.Event, error) {
-	event, err := u.eventRepository.Find(id)
+func (e *eventUsecase) FindEvent(id int) (*domain.Event, error) {
+	event, err := e.eventRepository.Find(id)
 	if err != nil {
 		return nil, err
 	}
@@ -40,24 +40,24 @@ func (u *eventUsecase) FindEvent(id int) (*domain.Event, error) {
 }
 
 // イベントの作成
-func (u *eventUsecase) CreateEvent(event *domain.Event) error {
-	if err := u.eventRepository.Create(event); err != nil {
+func (e *eventUsecase) CreateEvent(event *domain.Event) error {
+	if err := e.eventRepository.Create(event); err != nil {
 		return err
 	}
 	return nil
 }
 
 // イベントの更新
-func (u *eventUsecase) UpdateEvent(event *domain.Event) error {
-	if err := u.eventRepository.Update(event); err != nil {
+func (e *eventUsecase) UpdateEvent(event *domain.Event) error {
+	if err := e.eventRepository.Update(event); err != nil {
 		return err
 	}
 	return nil
 }
 
 // イベントの削除
-func (u *eventUsecase) DeleteEvent(id int) error {
-	if err := u.eventRepository.Delete(id); err != nil {
+func (e *eventUsecase) DeleteEvent(id int) error {
+	if err := e.eventRepository.Delete(id); err != nil {
 		return err
 	}
 	return nil

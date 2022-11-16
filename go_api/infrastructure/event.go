@@ -15,43 +15,43 @@ func NewEventInfrastructure(db *gorm.DB) *EventInfrastructure {
 }
 
 // 全イベントの取得
-func (u *EventInfrastructure) FindAll() (*domain.Events, error) {
+func (e *EventInfrastructure) FindAll() (*domain.Events, error) {
 	events := domain.Events{}
-	if err := u.db.Find(&events).Error; err != nil {
+	if err := e.db.Find(&events).Error; err != nil {
 		return nil, err
 	}
 	return &events, nil
 }
 
 // idを指定してイベントを取得
-func (u *EventInfrastructure) Find(id int) (*domain.Event, error) {
+func (e *EventInfrastructure) Find(id int) (*domain.Event, error) {
 	event := domain.Event{}
-	if err := u.db.First(&event, id).Error; err != nil {
+	if err := e.db.First(&event, id).Error; err != nil {
 		return nil, err
 	}
 	return &event, nil
 }
 
 // イベントの作成
-func (u *EventInfrastructure) Create(event *domain.Event) error {
-	if err := u.db.Create(event).Error; err != nil {
+func (e *EventInfrastructure) Create(event *domain.Event) error {
+	if err := e.db.Create(event).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 // イベントの更新
-func (u *EventInfrastructure) Update(event *domain.Event) error {
-	if err := u.db.Updates(event).Error; err != nil {
+func (e *EventInfrastructure) Update(event *domain.Event) error {
+	if err := e.db.Updates(event).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 // イベントの削除
-func (u *EventInfrastructure) Delete(id int) error {
+func (e *EventInfrastructure) Delete(id int) error {
 	event := domain.Event{}
-	if err := u.db.Delete(&event, id).Error; err != nil {
+	if err := e.db.Delete(&event, id).Error; err != nil {
 		return err
 	}
 	return nil

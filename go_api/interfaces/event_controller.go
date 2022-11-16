@@ -23,13 +23,13 @@ type EventController interface {
 	DeleteEvent(c echo.Context) error
 }
 
-func NewEventController(uu usecase.EventUsecase) EventController {
-	return &eventController{eventUsecase: uu}
+func NewEventController(eu usecase.EventUsecase) EventController {
+	return &eventController{eventUsecase: eu}
 }
 
 // 全イベントの取得
-func (u *eventController) IndexEvent(c echo.Context) error {
-	events, err := u.eventUsecase.FindAllEvent()
+func (e *eventController) IndexEvent(c echo.Context) error {
+	events, err := e.eventUsecase.FindAllEvent()
 	if err != nil {
 		return err
 	}
@@ -37,9 +37,9 @@ func (u *eventController) IndexEvent(c echo.Context) error {
 }
 
 // idを指定してイベントを取得
-func (u *eventController) ShowEvent(c echo.Context) error {
+func (e *eventController) ShowEvent(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	event, err := u.eventUsecase.FindEvent(id)
+	event, err := e.eventUsecase.FindEvent(id)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (u *eventController) ShowEvent(c echo.Context) error {
 }
 
 // イベントの作成
-func (u *eventController) CreateEvent(c echo.Context) error {
+func (e *eventController) CreateEvent(c echo.Context) error {
 	name := c.QueryParam("name")
 	description := c.QueryParam("description")
 
@@ -57,14 +57,14 @@ func (u *eventController) CreateEvent(c echo.Context) error {
 		CreatedAT:   time.Now(),
 		UpdatedAT:   time.Now(),
 	}
-	if err := u.eventUsecase.CreateEvent(event); err != nil {
+	if err := e.eventUsecase.CreateEvent(event); err != nil {
 		return err
 	}
 	return c.JSON(http.StatusOK, event)
 }
 
 // イベントの更新
-func (u *eventController) UpdateEvent(c echo.Context) error {
+func (e *eventController) UpdateEvent(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.QueryParam("name")
 	description := c.QueryParam("description")
@@ -75,16 +75,16 @@ func (u *eventController) UpdateEvent(c echo.Context) error {
 		Description: description,
 		UpdatedAT:   time.Now(),
 	}
-	if err := u.eventUsecase.UpdateEvent(event); err != nil {
+	if err := e.eventUsecase.UpdateEvent(event); err != nil {
 		return err
 	}
 	return c.JSON(http.StatusOK, event)
 }
 
 // イベントの削除
-func (u *eventController) DeleteEvent(c echo.Context) error {
+func (e *eventController) DeleteEvent(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	if err := u.eventUsecase.DeleteEvent(id); err != nil {
+	if err := e.eventUsecase.DeleteEvent(id); err != nil {
 		return err
 	}
 	return c.String(http.StatusOK, "Delete event")
