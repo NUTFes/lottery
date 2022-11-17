@@ -17,8 +17,8 @@ type AdminUsecase interface {
 	DeleteAdmin(id int) error
 }
 
-func NewAdminUsecase(ar domain.AdminRepository) AdminUsecase {
-	return &adminUsecase{adminRepository: ar}
+func NewAdminUsecase(au domain.AdminRepository) AdminUsecase {
+	return &adminUsecase{adminRepository: au}
 }
 
 // 全アドミンユーザーの取得
