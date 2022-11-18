@@ -40,14 +40,17 @@ func main() {
 	adminInfrastructure := infrastructure.NewAdminInfrastructure(client)
 	eventInfrastructure := infrastructure.NewEventInfrastructure(client)
 	userInfrastructure := infrastructure.NewUserInfrastructure(client)
+	winnerInfrastructure := infrastructure.NewWinnerInfrastructure(client)
 
 	adminUsecase := usecase.NewAdminUsecase(adminInfrastructure)
 	eventUsecase := usecase.NewEventUsecase(eventInfrastructure)
 	userUsecase := usecase.NewUserUsecase(userInfrastructure)
+	winnerUsecase := usecase.NewWinnerUsecase(winnerInfrastructure)
 
 	adminController := controller.NewAdminController(adminUsecase)
 	eventController := controller.NewEventController(eventUsecase)
 	userController := controller.NewUserController(userUsecase)
+	winnerController := controller.NewWinnerController(winnerUsecase)
 
 	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
 
@@ -71,6 +74,13 @@ func main() {
 	e.POST("/users", userController.CreateUser)
 	e.PUT("/users/:id", userController.UpdateUser)
 	e.DELETE("/users/:id", userController.DeleteUser)
+
+	// winners
+	e.GET("/winners", winnerController.IndexWinner)
+	e.GET("/winners/:id", winnerController.ShowWinner)
+	e.POST("/winners", winnerController.CreateWinner)
+	e.PUT("/winners/:id", winnerController.UpdateWinner)
+	e.DELETE("/winners/:id", winnerController.DeleteWinner)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)
