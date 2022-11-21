@@ -14,112 +14,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users":{
-            "get":{
-                "description":"全ユーザーの取得",
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                        "schema":{
-                            "type":"array",
-                        }
-                    }
-                }
-            },
-            "post":{
-                "description":"ユーザーの作成",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "type": "string",
-                        "in": "query",
-                        "description": "ユーザー名",
-                    },
-                    {
-                        "name": "number",
-                        "type": "integer",
-                        "in": "query",
-                        "description": "ユーザーの学籍番号",
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"Created User",
-                    },
-                }
-            }
-        },
-        "/users/{id}":{
-            "get":{
-                "description":"IDを指定してユーザーの取得",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "in": "path",
-                        "description": "ユーザーID",
-                        "required": true
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                        "schema":{
-                            "type":"object",
-                        }
-                    }
-                }
-            },
-            "put":{
-                "description":"IDを指定してユーザーの更新",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "in": "path",
-                        "description": "ユーザーID",
-                        "required": true
-                    },
-                    {
-                        "name": "name",
-                        "type": "string",
-                        "in": "query",
-                        "description": "ユーザー名",
-                    },
-                    {
-                        "name": "number",
-                        "type": "integer",
-                        "in": "query",
-                        "description": "ユーザーの学籍番号",
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                        "schema":{
-                            "type":"object",
-                        }
-                    }
-                }
-            },
-            "delete":{
-                "description":"IDを指定してユーザーの削除",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "in": "path",
-                        "description": "ユーザーID",
-                        "required": true
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                    }
-                }
-            }
-        },
         "/admins":{
             "get":{
                 "description":"全アドミンユーザの取得",
@@ -238,7 +132,219 @@ const docTemplate = `{
                 }
             },
         },
-    },
+        "/events":{
+            "get":{
+                "description":"全イベントの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            },
+            "post":{
+                "description":"イベントの作成",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベント名",
+                    },
+                    {
+                        "name": "description",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベントの説明",
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Created Event",
+                    },
+                }
+            }
+        },
+        "/events/{id}":{
+            "get":{
+                "description":"IDを指定してイベントの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "イベントID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description":"IDを指定してイベントの更新",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "イベントID",
+                        "required": true
+                    },
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベント名",
+                    },
+                    {
+                        "name": "description",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベントの説明",
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "description":"IDを指定してイベントの削除",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "イベントID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                    }
+                }
+            }
+        },
+        "/users":{
+            "get":{
+                "description":"全ユーザーの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            },
+            "post":{
+                "description":"ユーザーの作成",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "in": "query",
+                        "description": "ユーザー名",
+                    },
+                    {
+                        "name": "number",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "ユーザーの学籍番号",
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Created User",
+                    },
+                }
+            }
+        },
+        "/users/{id}":{
+            "get":{
+                "description":"IDを指定してユーザーの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ユーザーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description":"IDを指定してユーザーの更新",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ユーザーID",
+                        "required": true
+                    },
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "in": "query",
+                        "description": "ユーザー名",
+                    },
+                    {
+                        "name": "number",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "ユーザーの学籍番号",
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "description":"IDを指定してユーザーの削除",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ユーザーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                    }
+                }
+            }
+        },
+    }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it

@@ -37,23 +37,19 @@ func main() {
 	client := infrastructure.ConnectDB()
 
 	// 依存の方向：controller -> usecase -> domain <- infrastructure
-	userInfrastructure := infrastructure.NewUserInfrastructure(client)
 	adminInfrastructure := infrastructure.NewAdminInfrastructure(client)
+	eventInfrastructure := infrastructure.NewEventInfrastructure(client)
+	userInfrastructure := infrastructure.NewUserInfrastructure(client)
 
-	userUsecase := usecase.NewUserUsecase(userInfrastructure)
 	adminUsecase := usecase.NewAdminUsecase(adminInfrastructure)
+	eventUsecase := usecase.NewEventUsecase(eventInfrastructure)
+	userUsecase := usecase.NewUserUsecase(userInfrastructure)
 
-	userController := controller.NewUserController(userUsecase)
 	adminController := controller.NewAdminController(adminUsecase)
+	eventController := controller.NewEventController(eventUsecase)
+	userController := controller.NewUserController(userUsecase)
 
 	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
-
-	// users
-	e.GET("/users", userController.IndexUser)
-	e.GET("/users/:id", userController.ShowUser)
-	e.POST("/users", userController.CreateUser)
-	e.PUT("/users/:id", userController.UpdateUser)
-	e.DELETE("/users/:id", userController.DeleteUser)
 
 	// admins
 	e.GET("/admins", adminController.IndexAdmin)
@@ -61,6 +57,20 @@ func main() {
 	e.POST("/admins", adminController.CreateAdmin)
 	e.PUT("/admins/:id", adminController.UpdateAdmin)
 	e.DELETE("/admins/:id", adminController.DeleteAdmin)
+
+	// events
+	e.GET("/events", eventController.IndexEvent)
+	e.GET("/events/:id", eventController.ShowEvent)
+	e.POST("/events", eventController.CreateEvent)
+	e.PUT("/events/:id", eventController.UpdateEvent)
+	e.DELETE("/events/:id", eventController.DeleteEvent)
+
+	// users
+	e.GET("/users", userController.IndexUser)
+	e.GET("/users/:id", userController.ShowUser)
+	e.POST("/users", userController.CreateUser)
+	e.PUT("/users/:id", userController.UpdateUser)
+	e.DELETE("/users/:id", userController.DeleteUser)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)
