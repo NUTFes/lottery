@@ -16,6 +16,7 @@ const docTemplate = `{
     "paths": {
         "/admins":{
             "get":{
+                tags: ["admin"],
                 "description":"全アドミンユーザの取得",
                 "responses":{
                     "200":{
@@ -27,6 +28,7 @@ const docTemplate = `{
                 }
             },
             "post":{
+                tags: ["admin"],
                 "description":"アドミンユーザーの作成",
                 "parameters": [
                     {
@@ -57,6 +59,7 @@ const docTemplate = `{
         },
         "/admins/{id}":{
             "get":{
+                tags: ["admin"],
                 "description":"IDを指定してアドミンユーザーの取得",
                 "parameters": [
                     {
@@ -77,6 +80,7 @@ const docTemplate = `{
                 }
             },
             "put":{
+                tags: ["admin"],
                 "description":"IDを指定してアドミンユーザーの更新",
                 "parameters": [
                     {
@@ -115,6 +119,7 @@ const docTemplate = `{
                 }
             },
             "delete":{
+                tags: ["admin"],
                 "description":"IDを指定してアドミンユーザーの削除",
                 "parameters": [
                     {
@@ -134,6 +139,7 @@ const docTemplate = `{
         },
         "/events":{
             "get":{
+                tags: ["event"],
                 "description":"全イベントの取得",
                 "responses":{
                     "200":{
@@ -145,6 +151,7 @@ const docTemplate = `{
                 }
             },
             "post":{
+                tags: ["event"],
                 "description":"イベントの作成",
                 "parameters": [
                     {
@@ -169,6 +176,7 @@ const docTemplate = `{
         },
         "/events/{id}":{
             "get":{
+                tags: ["event"],
                 "description":"IDを指定してイベントの取得",
                 "parameters": [
                     {
@@ -189,6 +197,7 @@ const docTemplate = `{
                 }
             },
             "put":{
+                tags: ["event"],
                 "description":"IDを指定してイベントの更新",
                 "parameters": [
                     {
@@ -221,6 +230,7 @@ const docTemplate = `{
                 }
             },
             "delete":{
+                tags: ["event"],
                 "description":"IDを指定してイベントの削除",
                 "parameters": [
                     {
@@ -240,6 +250,7 @@ const docTemplate = `{
         },
         "/users":{
             "get":{
+                tags: ["user"],
                 "description":"全ユーザーの取得",
                 "responses":{
                     "200":{
@@ -251,6 +262,7 @@ const docTemplate = `{
                 }
             },
             "post":{
+                tags: ["user"],
                 "description":"ユーザーの作成",
                 "parameters": [
                     {
@@ -275,6 +287,7 @@ const docTemplate = `{
         },
         "/users/{id}":{
             "get":{
+                tags: ["user"],
                 "description":"IDを指定してユーザーの取得",
                 "parameters": [
                     {
@@ -295,6 +308,7 @@ const docTemplate = `{
                 }
             },
             "put":{
+                tags: ["user"],
                 "description":"IDを指定してユーザーの更新",
                 "parameters": [
                     {
@@ -327,6 +341,7 @@ const docTemplate = `{
                 }
             },
             "delete":{
+                tags: ["user"],
                 "description":"IDを指定してユーザーの削除",
                 "parameters": [
                     {
