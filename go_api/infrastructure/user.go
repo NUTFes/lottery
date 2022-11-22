@@ -20,6 +20,7 @@ func (u *UserInfrastructure) FindAll() (*domain.Users, error) {
 	if err := u.db.Find(&users).Error; err != nil {
 		return nil, err
 	}
+	u.db.Debug().Find(&users)
 	return &users, nil
 }
 
@@ -29,6 +30,7 @@ func (u *UserInfrastructure) Find(id int) (*domain.User, error) {
 	if err := u.db.First(&user, id).Error; err != nil {
 		return nil, err
 	}
+	u.db.Debug().First(&user, id)
 	return &user, nil
 }
 
@@ -37,6 +39,7 @@ func (u *UserInfrastructure) Create(user *domain.User) error {
 	if err := u.db.Create(user).Error; err != nil {
 		return err
 	}
+	u.db.Debug().Create(user)
 	return nil
 }
 
@@ -45,6 +48,7 @@ func (u *UserInfrastructure) Update(user *domain.User) error {
 	if err := u.db.Updates(user).Error; err != nil {
 		return err
 	}
+	u.db.Debug().Updates(user)
 	return nil
 }
 
@@ -54,6 +58,7 @@ func (u *UserInfrastructure) Delete(id int) error {
 	if err := u.db.Delete(&user, id).Error; err != nil {
 		return err
 	}
+	u.db.Debug().Delete(&user, id)
 	return nil
 }
 
@@ -63,6 +68,7 @@ func (u *UserInfrastructure) FindAllLinkEvent() (*domain.Users, error) {
 	if err := u.db.Preload("Events").Find(&users).Error; err != nil {
 		return nil, err
 	}
+	u.db.Debug().Preload("Events").Find(&users)
 	return &users, nil
 }
 
@@ -72,5 +78,6 @@ func (u *UserInfrastructure)FindLinkEvent(id int) (*domain.User, error) {
 	if err := u.db.Preload("Events").First(&user, id).Error; err != nil {
 		return nil, err
 	}
+	u.db.Debug().Preload("Events").First(&user, id)
 	return &user, nil
 }

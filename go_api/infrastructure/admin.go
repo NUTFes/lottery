@@ -20,6 +20,7 @@ func (a *AdminInfrastructure) FindAll() (*domain.Admins, error) {
 	if err := a.db.Find(&admins).Error; err != nil {
 		return nil, err
 	}
+	a.db.Debug().Find(&admins)
 	return &admins, nil
 }
 
@@ -29,6 +30,7 @@ func (a *AdminInfrastructure) Find(id int) (*domain.Admin, error) {
 	if err := a.db.First(&admin, id).Error; err != nil {
 		return nil, err
 	}
+	a.db.Debug().First(&admin, id)
 	return &admin, nil
 }
 
@@ -37,6 +39,7 @@ func (a *AdminInfrastructure) Create(admin *domain.Admin) error {
 	if err := a.db.Create(admin).Error; err != nil {
 		return err
 	}
+	a.db.Debug().Create(admin)
 	return nil
 }
 
@@ -45,6 +48,7 @@ func (a *AdminInfrastructure) Update(admin *domain.Admin) error {
 	if err := a.db.Updates(admin).Error; err != nil {
 		return err
 	}
+	a.db.Debug().Updates(admin)
 	return nil
 }
 
@@ -54,5 +58,6 @@ func (a *AdminInfrastructure) Delete(id int) error {
 	if err := a.db.Delete(&admin, id).Error; err != nil {
 		return err
 	}
+	a.db.Debug().Delete(&admin, id)
 	return nil
 }
