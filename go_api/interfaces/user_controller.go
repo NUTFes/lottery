@@ -21,6 +21,8 @@ type UserController interface {
 	CreateUser(c echo.Context) error
 	UpdateUser(c echo.Context) error
 	DeleteUser(c echo.Context) error
+	IndexUserLinkEvent(c echo.Context) error
+	ShowUserLinkEvent(c echo.Context) error
 }
 
 func NewUserController(uu usecase.UserUsecase) UserController {
@@ -88,4 +90,23 @@ func (u *userController) DeleteUser(c echo.Context) error {
 		return err
 	}
 	return c.String(http.StatusOK, "Delete user")
+}
+
+// イベントに紐づいたユーザーの取得
+func (u *userController) IndexUserLinkEvent(c echo.Context) error {
+	users, err := u.userUsecase.FindAllUsersLinkEvent()
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, users)
+}
+
+// イベントに紐づいたユーザーの取得
+func (u *userController) ShowUserLinkEvent(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	user, err := u.userUsecase.FindUserLinkEvent(id)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, user)
 }

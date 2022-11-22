@@ -11,7 +11,7 @@ type User struct {
 	Number    uint64    `json:"number" gorm:"unique;not null"`
 	CreatedAT time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT time.Time `json:"updated_at" gorm:"not null"`
-	Event     []Event   `gorm:"many2many:event_user;"`
+	Events    []Event   `gorm:"many2many:event_user;"`
 }
 
 type Users []User
@@ -22,4 +22,6 @@ type UserRepository interface {
 	Create(user *User) error
 	Update(user *User) error
 	Delete(id int) error
+	FindAllLinkEvent() (*Users, error)
+	FindLinkEvent(id int) (*User, error)
 }

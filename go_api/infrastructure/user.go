@@ -56,3 +56,21 @@ func (u *UserInfrastructure) Delete(id int) error {
 	}
 	return nil
 }
+
+// イベントに紐づいた全ユーザーの取得
+func (u *UserInfrastructure) FindAllLinkEvent() (*domain.Users, error) {
+	users := domain.Users{}
+	if err := u.db.Preload("Events").Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return &users, nil
+}
+
+// イベントに紐づいたユーザーの取得
+func (u *UserInfrastructure)FindLinkEvent(id int) (*domain.User, error) {
+	user := domain.User{}
+	if err := u.db.Preload("Events").First(&user, id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
