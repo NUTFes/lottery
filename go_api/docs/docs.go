@@ -373,7 +373,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/events/{id}":{
+        "/users/{id}/events":{
             "get":{
                 tags: ["user"],
                 "description":"IDを指定してユーザーのイベントの取得",

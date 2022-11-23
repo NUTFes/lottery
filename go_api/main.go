@@ -75,7 +75,7 @@ func main() {
 	e.PUT("/users/:id", userController.UpdateUser)
 	e.DELETE("/users/:id", userController.DeleteUser)
 	e.GET("/users/events", userController.IndexUserLinkEvent)
-	e.GET("/users/events/:id", userController.ShowUserLinkEvent)
+	e.GET("/users/:id/events", userController.ShowUserLinkEvent)
 
 	// winners
 	e.GET("/winners", winnerController.IndexWinner)
