@@ -20,6 +20,7 @@ func (e *EventInfrastructure) FindAll() (*domain.Events, error) {
 	if err := e.db.Find(&events).Error; err != nil {
 		return nil, err
 	}
+	e.db.Debug().Find(&events)
 	return &events, nil
 }
 
@@ -29,6 +30,7 @@ func (e *EventInfrastructure) Find(id int) (*domain.Event, error) {
 	if err := e.db.First(&event, id).Error; err != nil {
 		return nil, err
 	}
+	e.db.Debug().First(&event, id)
 	return &event, nil
 }
 
@@ -37,6 +39,7 @@ func (e *EventInfrastructure) Create(event *domain.Event) error {
 	if err := e.db.Create(event).Error; err != nil {
 		return err
 	}
+	e.db.Debug().Create(event)
 	return nil
 }
 
@@ -45,6 +48,7 @@ func (e *EventInfrastructure) Update(event *domain.Event) error {
 	if err := e.db.Updates(event).Error; err != nil {
 		return err
 	}
+	e.db.Debug().Updates(event)
 	return nil
 }
 
@@ -54,5 +58,6 @@ func (e *EventInfrastructure) Delete(id int) error {
 	if err := e.db.Delete(&event, id).Error; err != nil {
 		return err
 	}
+	e.db.Debug().Delete(&event, id)
 	return nil
 }

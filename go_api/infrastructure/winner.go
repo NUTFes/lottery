@@ -20,6 +20,7 @@ func (w *WinnerInfrastructure) FindAll() (*domain.Winners, error) {
 	if err := w.db.Find(&winners).Error; err != nil {
 		return nil, err
 	}
+	w.db.Debug().Find(&winners)
 	return &winners, nil
 }
 
@@ -29,6 +30,7 @@ func (w *WinnerInfrastructure) Find(id int) (*domain.Winner, error) {
 	if err := w.db.First(&winner, id).Error; err != nil {
 		return nil, err
 	}
+	w.db.Debug().First(&winner, id)
 	return &winner, nil
 }
 
@@ -37,6 +39,7 @@ func (w *WinnerInfrastructure) Create(winner *domain.Winner) error {
 	if err := w.db.Create(winner).Error; err != nil {
 		return err
 	}
+	w.db.Debug().Create(winner)
 	return nil
 }
 
@@ -45,6 +48,7 @@ func (w *WinnerInfrastructure) Update(winner *domain.Winner) error {
 	if err := w.db.Updates(winner).Error; err != nil {
 		return err
 	}
+	w.db.Debug().Updates(winner)
 	return nil
 }
 
@@ -54,5 +58,6 @@ func (w *WinnerInfrastructure) Delete(id int) error {
 	if err := w.db.Delete(&winner, id).Error; err != nil {
 		return err
 	}
+	w.db.Debug().Delete(&winner, id)
 	return nil
 }

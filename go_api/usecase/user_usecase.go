@@ -15,6 +15,8 @@ type UserUsecase interface {
 	CreateUser(user *domain.User) error
 	UpdateUser(user *domain.User) error
 	DeleteUser(id int) error
+	FindAllUsersLinkEvent() (*domain.Users, error)
+	FindUserLinkEvent(id int) (*domain.User, error)
 }
 
 func NewUserUsecase(ur domain.UserRepository) UserUsecase {
@@ -61,4 +63,22 @@ func (u *userUsecase) DeleteUser(id int) error {
 		return err
 	}
 	return nil
+}
+
+// イベントに紐づいた全ユーザーの取得
+func (u *userUsecase) FindAllUsersLinkEvent() (*domain.Users, error) {
+	users, err := u.userRepository.FindAllLinkEvent()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+// イベントに紐づいたユーザの取得
+func (u *userUsecase) FindUserLinkEvent(id int) (*domain.User, error) {
+	user, err := u.userRepository.FindLinkEvent(id)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

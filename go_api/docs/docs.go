@@ -359,6 +359,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/events":{
+            "get":{
+                tags: ["user"],
+                "description":"全ユーザーのイベントの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/events":{
+            "get":{
+                tags: ["user"],
+                "description":"IDを指定してユーザーのイベントの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ユーザーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            }
+        },
         "/winners":{
             "get":{
                 tags: ["winner"],
@@ -457,7 +494,7 @@ const docTemplate = `{
                     }
                 }
             }
-        }
+        },
     }
 }`
 
