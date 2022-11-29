@@ -11,7 +11,7 @@ type User struct {
 	Number    uint64    `json:"number" gorm:"unique;not null"`
 	CreatedAT time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT time.Time `json:"updated_at" gorm:"not null"`
-	Event     []Events  `gorm:"many2many:event_user;"`
+	Events    []Events  `json:"event,omitempty" gorm:"many2many:event_user;"`
 }
 
 type Users []User
