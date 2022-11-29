@@ -248,6 +248,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/events/users":{
+            "get":{
+                tags: ["event"],
+                "description":"全イベントのユーザーの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}/users":{
+            "get":{
+                tags: ["event"],
+                "description":"IDを指定してイベントのユーザーの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "イベントID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            }
+        },
         "/users":{
             "get":{
                 tags: ["user"],

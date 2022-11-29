@@ -64,6 +64,8 @@ func main() {
 	e.POST("/events", eventController.CreateEvent)
 	e.PUT("/events/:id", eventController.UpdateEvent)
 	e.DELETE("/events/:id", eventController.DeleteEvent)
+	e.GET("/events/users", eventController.IndexEventLinkUser)
+	e.GET("/events/:id/users", eventController.ShowEventLinkUser)
 
 	// users
 	e.GET("/users", userController.IndexUser)
