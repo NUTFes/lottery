@@ -17,7 +17,7 @@ type Admins []Admin
 
 // domainRepository
 type AdminRepository interface {
-	FindAll() (*Admins, error)
+	FindAll(　) (*Admins, error)
 	Find(id int) (*Admin, error)
 	Create(Admin *Admin) error
 	Update(Admin *Admin) error
