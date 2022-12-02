@@ -80,4 +80,6 @@ git push origin <branch名>
 - 確認してほしい点を明記してプルリクを書いてください 
 
 ### 6. ER図
-![image](https://user-images.githubusercontent.com/50622120/193559747-c4bdb4c3-36c6-4625-b0e5-78c36cb87984.png)
+![image](https://user-images.githubusercontent.com/50622120/203458275-90662f9b-e50a-4243-b9c3-d9fc13eefc69.png)
+
+

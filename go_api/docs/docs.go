@@ -396,6 +396,142 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/events":{
+            "get":{
+                tags: ["user"],
+                "description":"全ユーザーのイベントの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/events":{
+            "get":{
+                tags: ["user"],
+                "description":"IDを指定してユーザーのイベントの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ユーザーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            }
+        },
+        "/winners":{
+            "get":{
+                tags: ["winner"],
+                "description":"全ウィナーの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            },
+            "post":{
+                tags: ["winner"],
+                "description":"ウィナーの作成",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "ユーザーID",
+                    },
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Created Winner",
+                    },
+                }
+            }
+        },
+        "/winners/{id}":{
+            "get":{
+                tags: ["winner"],
+                "description":"IDを指定してウィナーの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ウィナーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            },
+            "put":{
+                tags: ["winner"],
+                "description":"IDを指定してウィナーの更新",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ウィナーID",
+                        "required": true
+                    },
+                    {
+                        "name": "user_id",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "ユーザーID",
+                    },
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            },
+            "delete":{
+                tags: ["winner"],
+                "description":"IDを指定してウィナーの削除",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ウィナーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                    }
+                }
+            }
+        },
     }
 }`
 

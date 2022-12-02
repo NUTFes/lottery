@@ -22,4 +22,6 @@ type UserRepository interface {
 	Create(user *User) error
 	Update(user *User) error
 	Delete(id int) error
+	FindAllLinkEvent() (*Users, error)
+	FindLinkEvent(id int) (*User, error)
 }
