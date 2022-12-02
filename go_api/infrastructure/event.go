@@ -61,3 +61,23 @@ func (e *EventInfrastructure) Delete(id int) error {
 	e.db.Debug().Delete(&event, id)
 	return nil
 }
+
+// ユーザーに紐づいた全イベントの取得
+func (e *EventInfrastructure) FindAllLinkUser() (*domain.Events, error) {
+	events := domain.Events{}
+	if err := e.db.Preload("Users").Find(&events).Error; err != nil {
+		return nil, err
+	}
+	e.db.Debug().Preload("Users").Find(&events)
+	return &events, nil
+}
+
+// ユーザーに紐づいたイベントの取得
+func (e *EventInfrastructure) FindLinkUser(id int) (*domain.Event, error) {
+	event := domain.Event{}
+	if err := e.db.Preload("Users").First(&event, id).Error; err != nil {
+		return nil, err
+	}
+	e.db.Debug().Preload("Users").First(&event, id)
+	return &event, nil
+}

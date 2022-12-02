@@ -10,6 +10,7 @@ type Event struct {
 	Description string    `json:"description" gorm:"not null"`
 	CreatedAT   time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT   time.Time `json:"updated_at" gorm:"not null"`
+	Users       []User    `json:"user,omitempty" gorm:"many2many:event_user;"`
 }
 
 type Events []Event
@@ -20,4 +21,6 @@ type EventRepository interface {
 	Create(user *Event) error
 	Update(user *Event) error
 	Delete(id int) error
+	FindAllLinkUser() (*Events, error)
+	FindLinkUser(id int) (*Event, error)
 }

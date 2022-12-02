@@ -15,6 +15,8 @@ type EventUsecase interface {
 	CreateEvent(event *domain.Event) error
 	UpdateEvent(event *domain.Event) error
 	DeleteEvent(id int) error
+	FindAllEventsLinkUser() (*domain.Events, error)
+	FindEventLinkUser(id int) (*domain.Event, error)
 }
 
 func NewEventUsecase(er domain.EventRepository) EventUsecase {
@@ -61,4 +63,22 @@ func (e *eventUsecase) DeleteEvent(id int) error {
 		return err
 	}
 	return nil
+}
+
+// ユーザーに紐づいた全イベントの取得
+func (e *eventUsecase) FindAllEventsLinkUser() (*domain.Events, error) {
+	events, err := e.eventRepository.FindAllLinkUser()
+	if err != nil {
+		return nil, err
+	}
+	return events, nil
+}
+
+// ユーザーに紐づいたイベントの取得
+func (e *eventUsecase) FindEventLinkUser(id int) (*domain.Event, error) {
+	event, err := e.eventRepository.FindLinkUser(id)
+	if err != nil {
+		return nil, err
+	}
+	return event, nil
 }

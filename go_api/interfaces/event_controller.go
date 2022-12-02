@@ -21,6 +21,8 @@ type EventController interface {
 	CreateEvent(c echo.Context) error
 	UpdateEvent(c echo.Context) error
 	DeleteEvent(c echo.Context) error
+	IndexEventLinkUser(c echo.Context) error
+	ShowEventLinkUser(c echo.Context) error
 }
 
 func NewEventController(eu usecase.EventUsecase) EventController {
@@ -88,4 +90,23 @@ func (e *eventController) DeleteEvent(c echo.Context) error {
 		return err
 	}
 	return c.String(http.StatusOK, "Delete event")
+}
+
+// ユーザーに紐づいたイベントの取得
+func (e *eventController) IndexEventLinkUser(c echo.Context) error {
+	events, err := e.eventUsecase.FindAllEventsLinkUser()
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, events)
+}
+
+// イベントに紐づいたユーザーの取得
+func (e *eventController) ShowEventLinkUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	event, err := e.eventUsecase.FindEventLinkUser(id)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, event)
 }
