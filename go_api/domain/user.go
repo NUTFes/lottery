@@ -17,7 +17,7 @@ type User struct {
 type Users []User
 
 type UserRepository interface {
-	FindAll() (*Users, error)
+	FindAll(　) (*Users, error)
 	Find(id int) (*User, error)
 	Create(user *User) error
 	Update(user *User) error
