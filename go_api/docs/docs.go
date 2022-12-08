@@ -532,6 +532,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/winners/users":{
+            "get":{
+                tags: ["winner"],
+                "description":"全ウィナーのユーザーの取得",
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"array",
+                        }
+                    }
+                }
+            }
+        },
+        "/winners/{id}/users":{
+            "get":{
+                tags: ["winner"],
+                "description":"IDを指定してウィナーのユーザーの取得",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "in": "path",
+                        "description": "ウィナーID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"OK",
+                        "schema":{
+                            "type":"object",
+                        }
+                    }
+                }
+            }
+        },
     }
 }`
 

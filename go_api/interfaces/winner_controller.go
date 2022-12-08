@@ -21,6 +21,8 @@ type WinnerController interface {
 	CreateWinner(c echo.Context) error
 	UpdateWinner(c echo.Context) error
 	DeleteWinner(c echo.Context) error
+	IndexWinnerLinkUser(c echo.Context) error
+	ShowWinnerLinkUser(c echo.Context) error
 }
 
 func NewWinnerController(wu usecase.WinnerUsecase) WinnerController {
@@ -84,4 +86,23 @@ func (w *winnerController) DeleteWinner(c echo.Context) error {
 		return err
 	}
 	return c.String(http.StatusOK, "Delete winner")
+}
+
+// ユーザーに紐づいたウィナーの取得
+func (w *winnerController) IndexWinnerLinkUser(c echo.Context) error {
+	winners, err := w.winnerUsecase.FindAllWinnersLinkUser()
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, winners)
+}
+
+// イベントに紐づいたウィナーの取得
+func (w *winnerController) ShowWinnerLinkUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	winner, err := w.winnerUsecase.FindWinnerLinkUser(id)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, winner)
 }

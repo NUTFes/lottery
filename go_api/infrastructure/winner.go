@@ -61,3 +61,23 @@ func (w *WinnerInfrastructure) Delete(id int) error {
 	w.db.Debug().Delete(&winner, id)
 	return nil
 }
+
+// ユーザーに紐づいた全ウィナーの取得
+func (w *WinnerInfrastructure) FindAllLinkUser() (*domain.Winners, error) {
+	winners := domain.Winners{}
+	if err := w.db.Preload("Users").Joins("inner join users on winners.user_id = users.id").Find(&winners).Error; err != nil {
+		return nil, err
+	}
+	w.db.Debug().Preload("Users").Joins("inner join users on winners.user_id = users.id").Find(&winners)
+	return &winners, nil
+}
+
+// ユーザーに紐づいたウィナーの取得
+func (w *WinnerInfrastructure) FindLinkUser(id int) (*domain.Winner, error) {
+	winner := domain.Winner{}
+	if err := w.db.Preload("Users").Joins("inner join users on winners.user_id = users.id").First(&winner, id).Error; err != nil {
+		return nil, err
+	}
+	w.db.Debug().Preload("Users").Joins("inner join users on winners.user_id = users.id").First(&winner, id)
+	return &winner, nil
+}

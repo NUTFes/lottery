@@ -85,6 +85,8 @@ func main() {
 	e.POST("/winners", winnerController.CreateWinner)
 	e.PUT("/winners/:id", winnerController.UpdateWinner)
 	e.DELETE("/winners/:id", winnerController.DeleteWinner)
+	e.GET("/winners/users", winnerController.IndexWinnerLinkUser)
+	e.GET("/winners/:id/users", winnerController.ShowWinnerLinkUser)
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)

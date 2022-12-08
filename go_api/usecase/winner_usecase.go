@@ -15,6 +15,8 @@ type WinnerUsecase interface {
 	CreateWinner(winner *domain.Winner) error
 	UpdateWinner(winner *domain.Winner) error
 	DeleteWinner(id int) error
+	FindAllWinnersLinkUser() (*domain.Winners, error)
+	FindWinnerLinkUser(id int) (*domain.Winner, error)
 }
 
 func NewWinnerUsecase(wr domain.WinnerRepository) WinnerUsecase {
@@ -61,4 +63,22 @@ func (w *winnerUsecase) DeleteWinner(id int) error {
 		return err
 	}
 	return nil
+}
+
+// ユーザーに紐づいた全イベントの取得
+func (w *winnerUsecase) FindAllWinnersLinkUser() (*domain.Winners, error) {
+	winners, err := w.winnerRepository.FindAllLinkUser()
+	if err != nil {
+		return nil, err
+	}
+	return winners, nil
+}
+
+// ユーザーに紐づいたイベントの取得
+func (w *winnerUsecase) FindWinnerLinkUser(id int) (*domain.Winner, error) {
+	winner, err := w.winnerRepository.FindLinkUser(id)
+	if err != nil {
+		return nil, err
+	}
+	return winner, nil
 }
