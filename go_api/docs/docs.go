@@ -285,6 +285,31 @@ const docTemplate = `{
                 }
             }
         },
+        "/event-users":{
+            "post":{
+                tags: ["event-users"],
+                "description":"eventとuserの中間テーブルへのInsert",
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "EventID",
+                    },
+                    {
+                        "name": "user_id",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "UserID",
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Created Event-User",
+                    }
+                }
+            }
+        },
         "/users":{
             "get":{
                 tags: ["user"],
