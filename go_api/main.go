@@ -74,7 +74,7 @@ func main() {
 	e.GET("/events/:id/users", eventController.ShowEventLinkUser)
 
 	// event_users
-	e.GET("/event-users", eventUsersController.CreateEventUsers)
+	e.POST("/event-users", eventUsersController.CreateEventUsers)
 
 	// users
 	e.GET("/users", userController.IndexUser)
