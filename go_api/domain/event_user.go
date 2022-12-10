@@ -1,8 +1,8 @@
 package domain
 
 type EventUsers struct {
-	EventID uint64 `json:"event_id"`
-	UserID  uint64 `json:"user_id"`
+	EventID uint64 `json:"event_id" gorm:"not null;"`
+	UserID  uint64 `json:"user_id" gorm:"not null;"`
 }
 
 type EventUsersRepository interface {
