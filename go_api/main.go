@@ -39,16 +39,19 @@ func main() {
 	// 依存の方向：controller -> usecase -> domain <- infrastructure
 	adminInfrastructure := infrastructure.NewAdminInfrastructure(client)
 	eventInfrastructure := infrastructure.NewEventInfrastructure(client)
+	eventUsersInfrastructure := infrastructure.NewEventUsersInfrastructure(client)
 	userInfrastructure := infrastructure.NewUserInfrastructure(client)
 	winnerInfrastructure := infrastructure.NewWinnerInfrastructure(client)
 
 	adminUsecase := usecase.NewAdminUsecase(adminInfrastructure)
 	eventUsecase := usecase.NewEventUsecase(eventInfrastructure)
+	eventUsersUsecase := usecase.NewEventUsersUsecase(eventUsersInfrastructure)
 	userUsecase := usecase.NewUserUsecase(userInfrastructure)
 	winnerUsecase := usecase.NewWinnerUsecase(winnerInfrastructure)
 
 	adminController := controller.NewAdminController(adminUsecase)
 	eventController := controller.NewEventController(eventUsecase)
+	eventUsersController := controller.NewEventUsersController(eventUsersUsecase)
 	userController := controller.NewUserController(userUsecase)
 	winnerController := controller.NewWinnerController(winnerUsecase)
 
@@ -69,6 +72,9 @@ func main() {
 	e.DELETE("/events/:id", eventController.DeleteEvent)
 	e.GET("/events/users", eventController.IndexEventLinkUser)
 	e.GET("/events/:id/users", eventController.ShowEventLinkUser)
+
+	// event_users
+	e.GET("/event-users", eventUsersController.CreateEventUsers)
 
 	// users
 	e.GET("/users", userController.IndexUser)
