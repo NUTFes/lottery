@@ -15,6 +15,7 @@ type eventUsersController struct {
 
 type EventUsersController interface {
 	CreateEventUsers(c echo.Context) error
+	DeleteEventUsers(c echo.Context) error
 }
 
 func NewEventUsersController(eu usecase.EventUsersUsecase) EventUsersController {
@@ -34,4 +35,15 @@ func (eu *eventUsersController) CreateEventUsers(c echo.Context) error {
 		return err
 	}
 	return c.JSON(http.StatusOK, eventUsers)
+}
+
+// 中間テーブルのレコードDelete
+func (eu *eventUsersController) DeleteEventUsers(c echo.Context) error {
+	eventID, _ := strconv.ParseUint(c.QueryParam("event_id"), 10, 64)
+	userID, _ := strconv.ParseUint(c.QueryParam("user_id"), 10, 64)
+
+	if err := eu.eventUsersUsecase.DeleteEventUsers(eventID, userID); err != nil {
+		return err
+	}
+	return c.String(http.StatusOK, "Delete EventUsers")
 }

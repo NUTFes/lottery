@@ -7,4 +7,5 @@ type EventUsers struct {
 
 type EventUsersRepository interface {
 	Create(eventUsers *EventUsers) error
+	Delete(eventID uint64, userID uint64) error
 }
