@@ -305,7 +305,7 @@ const docTemplate = `{
                 ],
                 "responses":{
                     "200":{
-                        "description":"Created Event-User",
+                        "description":"Created Event-Users",
                     }
                 }
             }
