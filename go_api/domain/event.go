@@ -10,7 +10,7 @@ type Event struct {
 	Description string    `json:"description" gorm:"not null"`
 	CreatedAT   time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT   time.Time `json:"updated_at" gorm:"not null"`
-	Users       []User    `json:"user,omitempty" gorm:"many2many:event_user;"`
+	Users       []User    `json:"user,omitempty" gorm:"many2many:event_users;"`
 }
 
 type Events []Event
