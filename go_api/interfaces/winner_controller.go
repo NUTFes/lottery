@@ -50,10 +50,10 @@ func (w *winnerController) ShowWinner(c echo.Context) error {
 
 // ウィナーの作成
 func (w *winnerController) CreateWinner(c echo.Context) error {
-	user_id, _ := strconv.Atoi(c.QueryParam("user_id"))
+	UserID, _ := strconv.Atoi(c.QueryParam("user_id"))
 
 	winner := &domain.Winner{
-		UserID:    uint(user_id),
+		UserID:    uint(UserID),
 		CreatedAT: time.Now(),
 		UpdatedAT: time.Now(),
 	}
@@ -66,11 +66,11 @@ func (w *winnerController) CreateWinner(c echo.Context) error {
 // ウィナーの更新
 func (w *winnerController) UpdateWinner(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	user_id, _ := strconv.Atoi(c.QueryParam("user_id"))
+	UserID, _ := strconv.Atoi(c.QueryParam("user_id"))
 
 	winner := &domain.Winner{
 		ID:        uint(id),
-		UserID:    uint(user_id),
+		UserID:    uint(UserID),
 		UpdatedAT: time.Now(),
 	}
 	if err := w.winnerUsecase.UpdateWinner(winner); err != nil {
