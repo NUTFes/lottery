@@ -308,6 +308,31 @@ const docTemplate = `{
                         "description":"Created Event-Users",
                     }
                 }
+            },
+            "delete":{
+                tags: ["event-users"],
+                "description":"eventとuserの中間テーブルのレコードのDelete",
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "EventID",
+                        "required": true
+                    },
+                    {
+                        "name": "user_id",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "UserID",
+                        "required": true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Deleted Event-Users",
+                    }
+                }
             }
         },
         "/users":{

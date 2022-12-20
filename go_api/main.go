@@ -75,6 +75,7 @@ func main() {
 
 	// event_users
 	e.POST("/event-users", eventUsersController.CreateEventUsers)
+	e.DELETE("/event-users", eventUsersController.DeleteEventUsers)
 
 	// users
 	e.GET("/users", userController.IndexUser)
