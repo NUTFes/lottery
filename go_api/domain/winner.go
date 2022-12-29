@@ -14,12 +14,14 @@ type Winner struct {
 
 type Winners []Winner
 
+type WinnersIncludeUsers []User
+
 type WinnerRepository interface {
 	FindAll() (*Winners, error)
 	Find(id int) (*Winner, error)
 	Create(winner *Winner) error
 	Update(winner *Winner) error
 	Delete(id int) error
-	FindAllLinkUser() (*Winners, error)
-	FindLinkUser(id int) (*Winner, error)
+	FindAllLinkUser() (*WinnersIncludeUsers, error)
+	FindLinkUser(id int) (*WinnersIncludeUsers, error)
 }
