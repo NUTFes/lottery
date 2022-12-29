@@ -14,12 +14,20 @@ type Winner struct {
 
 type Winners []Winner
 
+type WinnerIncludedUser struct {
+	ID		 uint   `json:"id"`
+	Name   string `json:"name"`
+	Number uint64 `json:"number"`
+}
+
+type WinnerIncludedUsers []WinnerIncludedUser
+
 type WinnerRepository interface {
 	FindAll() (*Winners, error)
 	Find(id int) (*Winner, error)
 	Create(winner *Winner) error
 	Update(winner *Winner) error
 	Delete(id int) error
-	FindAllLinkUser() (*Winners, error)
+	FindAllLinkUser() (*WinnerIncludedUsers, error)
 	FindLinkUser(id int) (*Winner, error)
 }
