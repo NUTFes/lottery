@@ -19,4 +19,6 @@ type WinnerRepository interface {
 	Create(winner *Winner) error
 	Update(winner *Winner) error
 	Delete(id int) error
+	FindAllLinkUser() (*Users, error)
+	FindLinkUser(id int) (*User, error)
 }
