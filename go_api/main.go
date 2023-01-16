@@ -10,6 +10,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type (
@@ -56,6 +57,14 @@ func main() {
 	winnerController := controller.NewWinnerController(winnerUsecase)
 
 	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
+
+	// BasicAuth
+	e.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
+		if username == "admin" && password == "password" {
+			return true, nil
+		}
+		return false, nil
+	}))
 
 	// admins
 	e.GET("/admins", adminController.IndexAdmin)
