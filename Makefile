@@ -8,6 +8,6 @@ run:
 run-initdb:
 	docker compose up db -d
 	# create models
-	docker compose run --rm go go run cmd/initdb.go
+	docker compose run --rm go go run cmd/initdb.go cmd/seed.go
 down:
 	docker compose down

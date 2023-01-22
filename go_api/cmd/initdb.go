@@ -17,6 +17,7 @@ var (
 
 func main() {
 	Dbmain()
+	CreateSeed()
 }
 
 func Dbmain() {
