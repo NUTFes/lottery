@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	_ "github.com/NUTFes/lottery/go_api/docs"
 	"github.com/NUTFes/lottery/go_api/infrastructure"
@@ -60,7 +61,7 @@ func main() {
 
 	// BasicAuth
 	e.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
-		if username == "admin" && password == "password" {
+		if username == os.Getenv("ADMIN_NAME") && password == os.Getenv("ADMIN_PASS") {
 			return true, nil
 		}
 		return false, nil
