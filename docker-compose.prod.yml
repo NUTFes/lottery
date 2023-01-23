@@ -5,14 +5,14 @@ services:
     container_name: 'ST-API'
     build:
       context: .docker
-      dockerfile: api.Dockerfile
+      dockerfile: go.Dockerfile
     volumes:
-      - ./api:/var/www/html
-    ports:
-      - '8000:8000'
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+      - ./go_api:/usr/local/go/src/api
     env_file:
       - lottery.env
+    ports:
+      - '1323:1323'
+    command: './start.sh'
 
   app:
     container_name: 'ST-APP'
