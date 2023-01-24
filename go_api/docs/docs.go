@@ -165,7 +165,25 @@ const docTemplate = `{
                         "type": "string",
                         "in": "query",
                         "description": "イベントの説明",
-                    }
+                    },
+                    {
+                        "name": "max_attendee",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "イベントの最大参加人数",
+                    },
+                    {
+                        "name": "start_at",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベントの開始日時刻 入力format:2006-01-02 15:04:05",
+                    },
+                    {
+                        "name": "end_at",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベントの終了日時刻 入力format:2006-01-02 15:04:05",
+                    },
                 ],
                 "responses":{
                     "200":{
@@ -218,7 +236,25 @@ const docTemplate = `{
                         "type": "string",
                         "in": "query",
                         "description": "イベントの説明",
-                    }
+                    },
+                    {
+                        "name": "max_attendee",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "イベントの最大参加人数",
+                    },
+                    {
+                        "name": "start_at",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベントの開始日時刻 format:2006-01-02 15:04:05",
+                    },
+                    {
+                        "name": "end_at",
+                        "type": "string",
+                        "in": "query",
+                        "description": "イベントの終了日時刻 format:2006-01-02 15:04:05",
+                    },
                 ],
                 "responses":{
                     "200":{

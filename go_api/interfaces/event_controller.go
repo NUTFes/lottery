@@ -54,9 +54,9 @@ func (e *eventController) CreateEvent(c echo.Context) error {
 	description := c.QueryParam("description")
 	maxAttendee, _ := strconv.Atoi(c.QueryParam("max_attendee"))
 	startAt := c.QueryParam("start_at")
-	endAt := c.QueryParam("end_time")
+	endAt := c.QueryParam("end_at")
 
-	var timeLayout = "2006-01-02T15:04:05Z"
+	var timeLayout = "2006-01-02 15:04:05"
 	startAtTime, _ := time.Parse(timeLayout, startAt)
 	endAtTime, _ := time.Parse(timeLayout, endAt)
 
@@ -84,7 +84,7 @@ func (e *eventController) UpdateEvent(c echo.Context) error {
 	startAt := c.QueryParam("start_at")
 	endAt := c.QueryParam("end_time")
 
-	var timeLayout = "2006-01-02T15:04:05Z"
+	var timeLayout = "2006-01-02 15:04:05"
 	startAtTime, _ := time.Parse(timeLayout, startAt)
 	endAtTime, _ := time.Parse(timeLayout, endAt)
 
