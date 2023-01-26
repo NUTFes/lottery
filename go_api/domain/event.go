@@ -8,6 +8,9 @@ type Event struct {
 	ID          uint      `json:"id" gorm:"primary_key;not null"`
 	Name        string    `json:"name" gorm:"not null"`
 	Description string    `json:"description" gorm:"not null"`
+	MaxAttendee uint      `json:"max_attendee"`
+	StartAt     time.Time `json:"start_at" gorm:"not null"`
+	EndAt       time.Time `json:"end_at" gorm:"not null"`
 	CreatedAT   time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAT   time.Time `json:"updated_at" gorm:"not null"`
 	Users       []User    `json:"user,omitempty" gorm:"many2many:event_users;"`

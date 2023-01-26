@@ -50,13 +50,13 @@ func createAdmin() {
 
 func createEvent() {
 	var events = []domain.Event{
-		{ID: 1, Name: "麻雀 day1", Description: "9/10日11:00より、egg roomにて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
-		{ID: 2, Name: "麻雀 day2", Description: "9/11日11:00より、egg roomにて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
-		{ID: 3, Name: "poker day1", Description: "9/10日11:00より、D講義室にて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
-		{ID: 4, Name: "poker day2", Description: "9/11日11:00より、D講義室にて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
-		{ID: 5, Name: "lottery", Description: "9/11日16:00より、メインステージにて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
-		{ID: 6, Name: "カラオケ day1", Description: "9/10日11:00より、メインステージにて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
-		{ID: 7, Name: "カラオケ day2", Description: "9/11日11:00より、メインステージにて開催します。", CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 1, Name: "麻雀 day1", Description: "9/10日11:00より、egg roomにて開催します。", MaxAttendee: 20, StartAt: time.Date(2023, 9, 11, 11, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 11, 15, 0, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 2, Name: "麻雀 day2", Description: "9/11日11:00より、egg roomにて開催します。", MaxAttendee: 20, StartAt: time.Date(2023, 9, 12, 11, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 12, 15, 0, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 3, Name: "poker day1", Description: "9/10日11:00より、D講義室にて開催します。", MaxAttendee: 32, StartAt: time.Date(2023, 9, 11, 11, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 11, 15, 0, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 4, Name: "poker day2", Description: "9/11日11:00より、D講義室にて開催します。", MaxAttendee: 32, StartAt: time.Date(2023, 9, 12, 11, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 12, 15, 0, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 5, Name: "lottery", Description: "9/11日16:00より、メインステージにて開催します。", StartAt: time.Date(2023, 9, 12, 16, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 11, 1, 7, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 6, Name: "カラオケ day1", Description: "9/10日11:00より、メインステージにて開催します。", StartAt: time.Date(2023, 9, 11, 11, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 11, 15, 0, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
+		{ID: 7, Name: "カラオケ day2", Description: "9/11日11:00より、メインステージにて開催します。", StartAt: time.Date(2023, 9, 12, 11, 0, 0, 0, time.Local), EndAt: time.Date(2023, 9, 12, 15, 0, 0, 0, time.Local), CreatedAT: time.Now(), UpdatedAT: time.Now()},
 	}
 	db.Create(&events)
 }
