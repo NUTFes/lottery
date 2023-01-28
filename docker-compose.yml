@@ -1,40 +1,40 @@
 version: '3'
 
 services:
-  api:
-    container_name: 'ST-API'
-    build:
-      context: .docker
-      dockerfile: api.Dockerfile
-    volumes:
-      - ./api:/var/www/html
-    ports:
-      - '8000:8000'
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-    environment:
-      ST_USER: admin
-      ST_PASS: password
+  # api:
+  #   container_name: 'ST-API'
+  #   build:
+  #     context: .docker
+  #     dockerfile: api.Dockerfile
+  #   volumes:
+  #     - ./api:/var/www/html
+  #   ports:
+  #     - '8000:8000'
+  #   command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+  #   environment:
+  #     ST_USER: admin
+  #     ST_PASS: password
 
-  app:
-    container_name: 'ST-APP'
-    build:
-      context: .docker
-      dockerfile: app.Dockerfile
-    ports:
-      - '8888:8888'
-    volumes:
-      - ./app:/app/next-project
-    command: 'npm run dev'
-    environment:
-      WS_API_URI: 'ws://localhost:8000/ws'
-      SSR_API_URI: 'http://api:8000/api'
-      CSR_API_URI: 'http://localhost:8000/api'
-      BASIC_AUTH_USER: 'hoge'
-      BASIC_AUTH_PASSWORD: 'fuga'
-      ST_USER: 'admin'
-      ST_PASS: 'password'
-    depends_on:
-      - api
+  # app:
+  #   container_name: 'ST-APP'
+  #   build:
+  #     context: .docker
+  #     dockerfile: app.Dockerfile
+  #   ports:
+  #     - '8888:8888'
+  #   volumes:
+  #     - ./app:/app/next-project
+  #   command: 'npm run dev'
+  #   environment:
+  #     WS_API_URI: 'ws://localhost:8000/ws'
+  #     SSR_API_URI: 'http://api:8000/api'
+  #     CSR_API_URI: 'http://localhost:8000/api'
+  #     BASIC_AUTH_USER: 'hoge'
+  #     BASIC_AUTH_PASSWORD: 'fuga'
+  #     ST_USER: 'admin'
+  #     ST_PASS: 'password'
+  #   depends_on:
+  #     - api
 
   nfc:
     container_name: 'ST-NFC'
@@ -89,3 +89,17 @@ services:
     ports:
       - '1323:1323'
     command: './start.sh'
+
+  view:
+    container_name: 'view'
+    build:
+      context: .docker
+      dockerfile: view.Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./view:/app/next-project
+    command: 'npm run dev'
+    depends_on:
+      - go
+    tty: true
