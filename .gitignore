@@ -13,3 +13,5 @@ nfc/.cache
 nfc/.venv
 mysql/
 go_api/tmp
+view/node_modules
+view/.next
