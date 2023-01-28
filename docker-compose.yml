@@ -55,7 +55,7 @@ services:
       - ST_WS_URL=ws://api:8000
     privileged: true
     depends_on:
-      - api
+      - go
 
   db:
     image: mysql:8.0
