@@ -1,30 +1,29 @@
 version: '3'
 
 services:
-  api:
-    container_name: 'ST-API'
+  view:
+    container_name: 'view'
     build:
       context: .docker
-      dockerfile: api.Dockerfile
-    volumes:
-      - ./api:/var/www/html
+      dockerfile: view.Dockerfile
     ports:
-      - '8000:8000'
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-    env_file:
-      - lottery.env
-
-  app:
-    container_name: 'ST-APP'
-    build:
-      context: .docker
-      dockerfile: app.Dockerfile
-    ports:
-      - '8888:8888'
+      - '3000:3000'
     volumes:
-      - ./app:/app/next-project
-    command: 'npm run dev'
-    env_file:
-      - lottery.env
+      - ./view:/app/next-project
+    command: bash -c 'npm run build && npm run start'
     depends_on:
-      - api
+      - go
+    tty: true
+
+  go:
+    container_name: 'ST-GO'
+    build:
+      context: .docker
+      dockerfile: go.Dockerfile
+    volumes:
+      - ./go_api:/usr/local/go/src/api
+    env_file:
+      - lottery.env
+    ports:
+      - '1323:1323'
+    command: './start.sh'
