@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"os"
+	// "os"
 
 	_ "github.com/NUTFes/lottery/go_api/docs"
 	"github.com/NUTFes/lottery/go_api/infrastructure"
@@ -11,7 +11,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	// "github.com/labstack/echo/v4/middleware"
 )
 
 type (
@@ -60,12 +60,12 @@ func main() {
 	// ルーティング(APIが増えると、server.goが肥大化するので、今後別にファイルに分ける)
 
 	// BasicAuth
-	e.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
-		if username == os.Getenv("ADMIN_NAME") && password == os.Getenv("ADMIN_PASS") {
-			return true, nil
-		}
-		return false, nil
-	}))
+	// e.Use(middleware.BasicAuth(func(username string, password string, c echo.Context) (bool, error) {
+	// 	if username == os.Getenv("ADMIN_NAME") && password == os.Getenv("ADMIN_PASS") {
+	// 		return true, nil
+	// 	}
+	// 	return false, nil
+	// }))
 
 	// admins
 	e.GET("/admins", adminController.IndexAdmin)
