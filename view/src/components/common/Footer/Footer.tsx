@@ -26,6 +26,7 @@ const Footer: FC = () => {
           noWrap
           component='div'
           fontFamily='NOTO SANS JP'
+          color="#FFFEF6"
           sx={{ alignSelf: 'flex-start', marginLeft: '30%' , marginTop: '5px' }}
           >
             技大祭実行委員会
