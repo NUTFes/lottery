@@ -102,7 +102,7 @@ services:
     command: 'npm run dev'
     environment:
       SSR_API_URI: 'http://go:1323/api'
-      CSR_API_URI: 'http://localhost:1323/api'
+      CSR_API_URI: 'http://localhost:1323'
     depends_on:
       - go
     tty: true
