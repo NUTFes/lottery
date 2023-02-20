@@ -21,7 +21,7 @@ const ParticpantCard = () => {
   },[])
 
   return (
-    <Card sx={{ maxWidth: 1009 , maxHeight: 500 } }>
+    <Card sx={{ maxWidth: 1009 , maxHeight: 68 } }>
       <CardContent>
         <Typography
           fontSize='24px'
