@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Header from '@components/common/Header/Header'
+import Header from '@components/common/Header/AdminHeader'
 
 const MainLayout: FC = () => {
   return (
