@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
+import Avatar from '@mui/material/Avatar'
 import PeopleIcon from '@mui/icons-material/People'
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -13,31 +14,35 @@ import { useMemo } from 'react'
 const EventParticipantCard = (props: EventParticipantCardProps) => {
   const { participantType, participantParsent, participantCount } = props
 
-  const participant = useMemo(() => {
-    switch (participantType) {
-      case 'all':
-        return '技大祭 全体'
-      case 'inside':
-        return '技大祭 内部'
-      case 'outside':
-        return '技大祭 外部'
-      default:
-        return ''
-    }
-  }, [participantType])
+  const participant = useMemo(
+    () =>
+      ({
+        all: '技大祭 全体',
+        inside: '技大祭 内部',
+        outside: '技大祭 外部',
+      }[participantType] || ''),
+    [participantType]
+  )
 
-  const participantIcon = useMemo(() => {
-    switch (participantType) {
-      case 'all':
-        return <PeopleIcon />
-      case 'inside':
-        return <PersonIcon />
-      case 'outside':
-        return <PersonAddIcon />
-      default:
-        return <PeopleIcon />
-    }
-  }, [participantType])
+  const participantIconColor = useMemo(
+    () =>
+      ({
+        all: 'primary.main',
+        inside: 'success.main',
+        outside: 'warning.main',
+      }[participantType] || 'primary.main'),
+    [participantType]
+  )
+
+  const participantIcon = useMemo(
+    () =>
+      ({
+        all: <PeopleIcon />,
+        inside: <PersonIcon />,
+        outside: <PersonAddIcon />,
+      }[participantType] || <></>),
+    [participantType]
+  )
 
   return (
     <Card sx={{ maxWidth: 300 }}>
@@ -55,15 +60,17 @@ const EventParticipantCard = (props: EventParticipantCardProps) => {
               sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}
             >
               {participantParsent < 0 ? (
-                <Typography sx={{ color: 'red' }}>{participantParsent} % </Typography>
+                <Typography sx={{ color: 'warning.main' }}>{participantParsent} % </Typography>
               ) : (
-                <Typography sx={{ color: 'green' }}>{participantParsent} % </Typography>
+                <Typography sx={{ color: 'success.main' }}>{participantParsent} % </Typography>
               )}
-              <Typography sx={{ display: 'flex', justifyContent: 'center' }}> Sinse last hour</Typography>
+              <Typography sx={{ display: 'flex', justifyContent: 'center', mx: 1 }}> Sinse last hour</Typography>
             </Typography>
           </CardContent>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>{participantIcon}</Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Avatar sx={{ mx: 2, width: 56, height: 56, bgcolor: participantIconColor }}>{participantIcon}</Avatar>
+        </Box>
       </CardActionArea>
     </Card>
   )
