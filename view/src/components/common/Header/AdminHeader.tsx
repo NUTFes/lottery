@@ -12,7 +12,7 @@ const theme = createTheme({
   }
 });
 
-const Header: FC = () => {
+const AdminHeader: FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position='static' color='primary' sx={{height: '64px'}}>
@@ -30,4 +30,4 @@ const Header: FC = () => {
   )
 }
 
-export default Header
+export default AdminHeader
