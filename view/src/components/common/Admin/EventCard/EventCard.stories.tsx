@@ -1,6 +1,7 @@
 import type { ComponentStory, ComponentMeta } from '@storybook/react'
-import { EventCard } from '.'
+import EventCard from './EventCard'
 import { EventCardProps } from './EventCard.type'
+
 //icons
 import HomeIcon from '@mui/icons-material/Home'
 import SettingsIcon from '@mui/icons-material/Settings'

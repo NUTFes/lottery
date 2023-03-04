@@ -1,5 +1,5 @@
 import type { ComponentStory, ComponentMeta } from '@storybook/react'
-import { ToolCard } from '.'
+import ToolCard  from './ToolCard'
 
 export default {
   title: 'ToolCard',

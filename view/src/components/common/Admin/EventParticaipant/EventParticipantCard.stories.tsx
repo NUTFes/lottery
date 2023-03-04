@@ -1,5 +1,5 @@
 import type { ComponentStory, ComponentMeta } from '@storybook/react'
-import { EventParticipantCard } from '.'
+import EventParticipantCard from './EventParticipantCard'
 import { EventParticipantCardProps } from './EventParticipantCard.type'
 
 export default {
