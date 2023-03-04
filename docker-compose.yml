@@ -102,7 +102,7 @@ services:
     environment:
       SSR_API_URI: 'http://go:1323/api'
       CSR_API_URI: 'http://localhost:1323'
-    command: sh -c 'npm run dev & npm run storybook'
+    command: npm run dev
     depends_on:
       - go
     tty: true
