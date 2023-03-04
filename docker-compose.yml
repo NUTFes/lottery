@@ -100,14 +100,10 @@ services:
       - '6006:6006'
     volumes:
       - ./view:/app/next-project
-<<<<<<< HEAD
-    command: 'npm run dev'
     environment:
       SSR_API_URI: 'http://go:1323/api'
       CSR_API_URI: 'http://localhost:1323'
-=======
     command: sh -c 'npm run dev & npm run storybook'
->>>>>>> develop
     depends_on:
       - go
     tty: true
