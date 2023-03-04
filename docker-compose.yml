@@ -97,7 +97,6 @@ services:
       dockerfile: view.Dockerfile
     ports:
       - '3000:3000'
-      - '6006:6006'
     volumes:
       - ./view:/app/next-project
     environment:
@@ -107,3 +106,14 @@ services:
     depends_on:
       - go
     tty: true
+
+  sb:
+    container_name: 'sb'
+    build:
+      context: .docker
+      dockerfile: view.Dockerfile
+    ports:
+      - '6006:6006'
+    volumes:
+      - ./view:/app/next-project
+    command: npm run storybook
