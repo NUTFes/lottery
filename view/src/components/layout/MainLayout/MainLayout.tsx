@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
-import ParticpantCard from '@components/common/ParticpantCard/ParticpantCard'
+import Header from '@components/common/Header/AdminHeader'
+import Footer from '@components/common/Footer/Footer'
 
 const MainLayout: FC = () => {
   return (
     <div>
-      <ParticpantCard />
+      <Header />
+      <Footer />
     </div>
   )
 }

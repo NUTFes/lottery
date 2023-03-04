@@ -36,26 +36,26 @@ services:
   #   depends_on:
   #     - api
 
-  nfc:
-    container_name: 'ST-NFC'
-    build:
-      context: .docker
-      dockerfile: nfc.Dockerfile
-    volumes:
-      - ./nfc:/nfc
-      - /dev/bus/usb:/dev/bus/usb:ro
-    command: sh -c "python -m nfc && python main.py"
-    environment:
-      - VENDOR='054c'
-      - PRODUCT='06c1'
-      - PLACE_ID=1
-      - ST_USER=admin
-      - ST_PASS=password
-      - ST_APP_URL=http://api:8000
-      - ST_WS_URL=ws://api:8000
-    privileged: true
-    depends_on:
-      - go
+  # nfc:
+  #   container_name: 'ST-NFC'
+  #   build:
+  #     context: .docker
+  #     dockerfile: nfc.Dockerfile
+  #   volumes:
+  #     - ./nfc:/nfc
+  #     - /dev/bus/usb:/dev/bus/usb:ro
+  #   command: sh -c "python -m nfc && python main.py"
+  #   environment:
+  #     - VENDOR='054c'
+  #     - PRODUCT='06c1'
+  #     - PLACE_ID=1
+  #     - ST_USER=admin
+  #     - ST_PASS=password
+  #     - ST_APP_URL=http://api:8000
+  #     - ST_WS_URL=ws://api:8000
+  #   privileged: true
+  #   depends_on:
+  #     - go
 
   db:
     image: mysql:8.0
@@ -97,12 +97,17 @@ services:
       dockerfile: view.Dockerfile
     ports:
       - '3000:3000'
+      - '6006:6006'
     volumes:
       - ./view:/app/next-project
+<<<<<<< HEAD
     command: 'npm run dev'
     environment:
       SSR_API_URI: 'http://go:1323/api'
       CSR_API_URI: 'http://localhost:1323'
+=======
+    command: sh -c 'npm run dev & npm run storybook'
+>>>>>>> develop
     depends_on:
       - go
     tty: true
