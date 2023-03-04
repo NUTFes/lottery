@@ -89,6 +89,11 @@ services:
     ports:
       - '1323:1323'
     command: './start.sh'
+    depends_on:
+      db:
+        condition: service_started
+
+
 
   view:
     container_name: 'view'
