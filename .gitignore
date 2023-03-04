@@ -16,3 +16,4 @@ go_api/tmp
 view/node_modules
 view/.next
 view/.env
+view/.env.local
