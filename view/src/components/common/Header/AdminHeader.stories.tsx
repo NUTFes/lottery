@@ -10,4 +10,4 @@ const Template: ComponentStory<typeof AdminHeader> = (args) => <AdminHeader {...
 
 export const Default: ComponentStory<typeof AdminHeader> = Template.bind({})
 
-Default.storyName = 'Default'
+Default.storyName = 'デフォルト'

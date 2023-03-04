@@ -9,7 +9,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { CardActionArea } from '@mui/material'
 import { EventParticipantCardProps } from './EventParticipantCard.type'
-import { useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 const EventParticipantCard = (props: EventParticipantCardProps) => {
   const { participantType, participantParsent, participantCount } = props

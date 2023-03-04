@@ -19,4 +19,4 @@ Default.args = {
   participantType: 'all',
 }
 
-Default.storyName = 'Default'
+Default.storyName = 'デフォルト'
