@@ -1,5 +1,5 @@
 import type { ComponentStory, ComponentMeta } from '@storybook/react'
-import { AdminHeader } from '.'
+import AdminHeader  from './AdminHeader'
 
 export default {
   title: 'AdminHeader',
