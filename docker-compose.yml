@@ -107,6 +107,7 @@ services:
     environment:
       SSR_API_URI: 'http://go:1323/api'
       CSR_API_URI: 'http://localhost:1323'
+      CSR_VIEW_URI: 'http://localhost:3000'
     command: npm run dev
     depends_on:
       - go
