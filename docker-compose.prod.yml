@@ -10,6 +10,8 @@ services:
       - '3000:3000'
     volumes:
       - ./view:/app/next-project
+    environment:
+      CSR_VIEW_URI: 'http://lottery.nutfes.net'
     command: bash -c 'npm run build && npm run start'
     depends_on:
       - go
