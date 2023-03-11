@@ -31,7 +31,7 @@ interface Events {
 };
 
 const EventParticpantCard = () => {
-  const [eventusers, setEventUsers] = useState<Events[]>()
+  const [eventUsers, setEventUsers] = useState<Events>()
 
   useEffect(() => {
     fetch(process.env.CSR_API_URI + '/events/7/users', {
@@ -70,7 +70,7 @@ const EventParticpantCard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {eventusers?.user
+            {eventUsers?.user
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(user => (
             <TableRow
@@ -92,7 +92,7 @@ const EventParticpantCard = () => {
       <TablePagination
         rowsPerPageOptions={[5,10,25,100,{ label: 'All', value: -1 }]}
         component="div"
-        count={eventusers?.user.length}
+        count={eventUsers?.user.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
