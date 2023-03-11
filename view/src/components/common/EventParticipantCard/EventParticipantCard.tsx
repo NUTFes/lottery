@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box'
 import { useState, useEffect } from 'react';
+import { EventParticipantCardProps } from './EventParticipantCard.type';
 
 interface User {
   id: number
@@ -30,11 +31,11 @@ interface Events {
   user: User[]
 };
 
-const EventParticpantCard = () => {
+const EventParticipantCard = (props: EventParticipantCardProps) => {
   const [eventUsers, setEventUsers] = useState<Events>()
 
   useEffect(() => {
-    fetch(process.env.CSR_API_URI + '/events/7/users', {
+    fetch(process.env.CSR_API_URI + `/events/${props.eventId}/users`, {
       method: 'GET',})
     .then(res => res.json())
     .then(data => {
@@ -54,7 +55,7 @@ const EventParticpantCard = () => {
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(Number(event.target.value));
     setPage(0);
   };
 
@@ -81,7 +82,7 @@ const EventParticpantCard = () => {
               <TableCell >
                 {user.name}
               </TableCell>
-              <TableCell align="left">
+              <TableCell>
                 {user.number}
               </TableCell>
             </TableRow>
@@ -103,4 +104,4 @@ const EventParticpantCard = () => {
   );
 }
 
-export default EventParticpantCard
+export default EventParticipantCard
