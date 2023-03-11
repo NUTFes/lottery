@@ -38,13 +38,6 @@ func main() {
 	// DB接続
 	client := infrastructure.ConnectDB()
 
-	// cors設定
-	arrowOrigins := []string{"http://localhost:3000"}
-	e.Use(middleware.Logger())
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: arrowOrigins,
-	}))
-
 	// 依存の方向：controller -> usecase -> domain <- infrastructure
 	adminInfrastructure := infrastructure.NewAdminInfrastructure(client)
 	eventInfrastructure := infrastructure.NewEventInfrastructure(client)
