@@ -15,6 +15,7 @@ const MainLayout = (props:Props) => {
       <Header />
         <div>{props.children}</div>
       <EventRegister />
+        <div>{props.children}</div>
       <Footer />
     </div>
   )
