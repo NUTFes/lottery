@@ -3,7 +3,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { logout } from 'src/util/logout'
+import { logout } from 'src/utils/logout'
 import { HeaderMenuProps } from './HeaderMenu.type'
 
 const HeaderMenu = ({ mode }: HeaderMenuProps) => {
