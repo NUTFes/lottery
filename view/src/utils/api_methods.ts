@@ -5,7 +5,7 @@ export const get = async (url: string) => {
       'Content-Type': 'application/json',
     }
   })
-  return response.json()
+  return await response.json()
 }
 
 export const post = async (url: string, data: any) => {
