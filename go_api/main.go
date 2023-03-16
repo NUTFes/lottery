@@ -39,7 +39,7 @@ func main() {
 	client := infrastructure.ConnectDB()
 
 	// cors設定
-	arrowOrigins := []string{"http://localhost:3000"}
+	arrowOrigins := []string{"*"}
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: arrowOrigins,
