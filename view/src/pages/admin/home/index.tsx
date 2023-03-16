@@ -65,7 +65,6 @@ const Home = (props: Props) => {
             <ToolCard />
             <EventCard eventList={eventList}></EventCard>
           </Box>
-          いまいまい強強
         </Box>
       </MainLayout>
     </>
