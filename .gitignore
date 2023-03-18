@@ -1,19 +1,17 @@
-api/__pycache__
-api/lottery.db
-api/.env
-api/lottery-360514-50882d62107c.json
-app/.env
+lottery.env
+mysql/
+
+# nfc
 nfc/__pychache__
 nfc/.env
-lottery.env
-lottery.db
-api/.cache
-api/.venv
 nfc/.cache
 nfc/.venv
-mysql/
-go_api/tmp
-view/node_modules
-view/.next
-view/.env
-view/.env.local
+
+# api
+api/tmp
+
+# app
+app/node_modules
+app/.next
+app/.env
+app/.env.local
