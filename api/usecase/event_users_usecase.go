@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/NUTFes/lottery/go_api/domain"
+	"github.com/NUTFes/lottery/api/domain"
 )
 
 type eventUsersUsecase struct {

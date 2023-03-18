@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/NUTFes/lottery/go_api/domain"
-	"github.com/NUTFes/lottery/go_api/usecase"
+	"github.com/NUTFes/lottery/api/domain"
+	"github.com/NUTFes/lottery/api/usecase"
 	"github.com/labstack/echo/v4"
 )
 

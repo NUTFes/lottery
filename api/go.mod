@@ -1,4 +1,4 @@
-module github.com/NUTFes/lottery/go_api
+module github.com/NUTFes/lottery/api
 
 go 1.19
 
