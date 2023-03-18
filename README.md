@@ -8,7 +8,7 @@ Raspberry Pi と NFC 端末で学生証を読み取り，学籍番号を用い�
 
 ## 構成
 
-![lottery_diagram.png](lottery_diagram.png)
+![lottery_diagram.png](docs/lottery_diagram.png)
 
 ## 今後の展望
 
@@ -51,7 +51,7 @@ git switch -c dev/issue123
 
 ### 4. add, commit, push
 
-- コミットはコミットメッセージの書式に従ってください。
+- コミットはコミットメッセージの書式にしたがってください。
 - プッシュは今いるブランチと同じ名前の場所にプッシュしてください。
 
 ```bash
@@ -77,9 +77,9 @@ git push origin <branch名>
   `git commit -m "[mod] 学籍番号の送信書式をJSONに変更 (#12)"`
 
 ### 5. Pull Request
-- 確認してほしい点を明記してプルリクを書いてください 
 
-### 6. ER図
-![image](https://user-images.githubusercontent.com/50622120/203458275-90662f9b-e50a-4243-b9c3-d9fc13eefc69.png)
+- 確認してほしい点を明記してプルリクを書いてください
 
+### 6. ER 図
 
+![image](docs/lottery_er.png)
