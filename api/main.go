@@ -4,10 +4,10 @@ import (
 	"net/http"
 	// "os"
 
-	_ "github.com/NUTFes/lottery/go_api/docs"
-	"github.com/NUTFes/lottery/go_api/infrastructure"
-	controller "github.com/NUTFes/lottery/go_api/interfaces"
-	"github.com/NUTFes/lottery/go_api/usecase"
+	_ "github.com/NUTFes/lottery/api/docs"
+	"github.com/NUTFes/lottery/api/infrastructure"
+	controller "github.com/NUTFes/lottery/api/interfaces"
+	"github.com/NUTFes/lottery/api/usecase"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/labstack/echo/v4"

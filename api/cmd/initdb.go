@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/NUTFes/lottery/go_api/domain"
+	"github.com/NUTFes/lottery/api/domain"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
