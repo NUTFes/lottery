@@ -1,69 +1,13 @@
 version: '3'
 
 services:
-  # api:
-  #   container_name: 'ST-API'
-  #   build:
-  #     context: .docker
-  #     dockerfile: api.Dockerfile
-  #   volumes:
-  #     - ./api:/var/www/html
-  #   ports:
-  #     - '8000:8000'
-  #   command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-  #   environment:
-  #     ST_USER: admin
-  #     ST_PASS: password
-
-  # app:
-  #   container_name: 'ST-APP'
-  #   build:
-  #     context: .docker
-  #     dockerfile: app.Dockerfile
-  #   ports:
-  #     - '8888:8888'
-  #   volumes:
-  #     - ./app:/app/next-project
-  #   command: 'npm run dev'
-  #   environment:
-  #     WS_API_URI: 'ws://localhost:8000/ws'
-  #     SSR_API_URI: 'http://api:8000/api'
-  #     CSR_API_URI: 'http://localhost:8000/api'
-  #     BASIC_AUTH_USER: 'hoge'
-  #     BASIC_AUTH_PASSWORD: 'fuga'
-  #     ST_USER: 'admin'
-  #     ST_PASS: 'password'
-  #   depends_on:
-  #     - api
-
-  # nfc:
-  #   container_name: 'ST-NFC'
-  #   build:
-  #     context: .docker
-  #     dockerfile: nfc.Dockerfile
-  #   volumes:
-  #     - ./nfc:/nfc
-  #     - /dev/bus/usb:/dev/bus/usb:ro
-  #   command: sh -c "python -m nfc && python main.py"
-  #   environment:
-  #     - VENDOR='054c'
-  #     - PRODUCT='06c1'
-  #     - PLACE_ID=1
-  #     - ST_USER=admin
-  #     - ST_PASS=password
-  #     - ST_APP_URL=http://api:8000
-  #     - ST_WS_URL=ws://api:8000
-  #   privileged: true
-  #   depends_on:
-  #     - go
-
   db:
     image: mysql:8.0
-    container_name: 'go-db'
+    container_name: 'lottery-db'
     volumes:
-      - ./mysql/db:/docker-entrypoint-initdb.d # 初期データ
-      - ./mysql/conf:/etc/mysql/conf.d # 設定ファイル
-      - ./mysql/data:/var/lib/mysql
+      - .docker/mysql/db:/docker-entrypoint-initdb.d # 初期データ
+      - .docker/mysql/conf:/etc/mysql/conf.d # 設定ファイル
+      - .docker/mysql/data:/var/lib/mysql
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_DATABASE: gomysql
@@ -75,13 +19,13 @@ services:
       - '3306:3306'
     restart: always
 
-  go:
-    container_name: 'ST-GO'
+  api:
+    container_name: 'lottery-api'
     build:
       context: .docker
-      dockerfile: go.Dockerfile
+      dockerfile: api.Dockerfile
     volumes:
-      - ./go_api:/usr/local/go/src/api
+      - ./api:/go/src/app/api
     environment:
       DSN: gomysql:password@tcp(db:3306)/gomysql?charset=utf8mb4&parseTime=True&loc=Local
       ADMIN_NAME: admin
@@ -92,34 +36,31 @@ services:
     depends_on:
       db:
         condition: service_started
-
-
-
-  view:
-    container_name: 'view'
+  app:
+    container_name: 'lottery-app'
     build:
       context: .docker
-      dockerfile: view.Dockerfile
+      dockerfile: app.Dockerfile
     ports:
       - '3000:3000'
     volumes:
-      - ./view:/app/next-project
+      - ./app:/app/next-project
     environment:
       SSR_API_URI: 'http://go:1323'
       CSR_API_URI: 'http://localhost:1323'
       CSR_VIEW_URI: 'http://localhost:3000'
     command: npm run dev
     depends_on:
-      - go
+      - api
     tty: true
 
   sb:
-    container_name: 'sb'
+    container_name: 'lottery-sb'
     build:
       context: .docker
-      dockerfile: view.Dockerfile
+      dockerfile: app.Dockerfile
     ports:
       - '6006:6006'
     volumes:
-      - ./view:/app/next-project
+      - ./app:/app/next-project
     command: npm run storybook
