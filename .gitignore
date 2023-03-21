@@ -1,5 +1,6 @@
 lottery.env
 mysql/
+.docker/mysql/
 
 # nfc
 nfc/__pychache__
@@ -15,3 +16,7 @@ app/node_modules
 app/.next
 app/.env
 app/.env.local
+
+# cloudflare
+cloudflare/**/cert.pem
+cloudflare/**/*.json

@@ -1,31 +1,29 @@
 version: '3'
 
 services:
-  app:
-    container_name: 'lottey-app'
-    build:
-      context: .docker
-      dockerfile: app.Dockerfile
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./app:/app/next-project
-    environment:
-      CSR_VIEW_URI: 'http://lottery.nutfes.net'
-    command: bash -c 'npm run build && npm run start'
-    depends_on:
-      - api
-    tty: true
+  cloudflare:
+    container_name: "lottery-cloudflare"
+    image: 'cloudflare/cloudflared:latest'
+    volumes: ['./cloudflare/prod:/home/nonroot/.cloudflared']
+    command: tunnel run
 
   api:
-    container_name: 'lottey-api'
+    container_name: 'lottery-api'
     build:
-      context: .docker
-      dockerfile: api.Dockerfile
-    volumes:
-      - ./api:/go/src/app/api
-    env_file:
-      - lottery.env
-    ports:
-      - '1323:1323'
+      context: '.docker'
+      dockerfile: 'api.Dockerfile'
+    ports: ['1323:1323']
+    volumes: ['./api:/go/src/app/api']
+    env_file: ['lottery.env']
     command: './start.sh'
+
+  app:
+    container_name: 'lottery-app'
+    build:
+      context: '.docker'
+      dockerfile: 'app.Dockerfile'
+    ports: ['3000:3000']
+    volumes: ['./app:/app/next-project']
+    env_file: ['lottery.env']
+    command: bash -c 'npm run build && npm run start'
+    depends_on: ['api']

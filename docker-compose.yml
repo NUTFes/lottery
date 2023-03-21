@@ -2,65 +2,56 @@ version: '3'
 
 services:
   db:
-    image: mysql:8.0
+    image: 'mysql:8.0'
     container_name: 'lottery-db'
     volumes:
-      - .docker/mysql/db:/docker-entrypoint-initdb.d # 初期データ
-      - .docker/mysql/conf:/etc/mysql/conf.d # 設定ファイル
-      - .docker/mysql/data:/var/lib/mysql
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      - '.docker/mysql/db:/docker-entrypoint-initdb.d' # 初期データ
+      - '.docker/mysql/conf:/etc/mysql/conf.d' # 設定ファイル
+      - '.docker/mysql/data:/var/lib/mysql'
+    command: 'mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
     environment:
-      MYSQL_DATABASE: gomysql
-      MYSQL_USER: gomysql
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: 'gomysql'
+      MYSQL_USER: 'gomysql'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'root'
       TZ: 'Asia/Tokyo'
-    ports:
-      - '3306:3306'
-    restart: always
+    ports: ['3306:3306']
 
   api:
     container_name: 'lottery-api'
     build:
-      context: .docker
-      dockerfile: api.Dockerfile
-    volumes:
-      - ./api:/go/src/app/api
+      context: '.docker'
+      dockerfile: 'api.Dockerfile'
+    volumes: ['./api:/go/src/app/api']
     environment:
-      DSN: gomysql:password@tcp(db:3306)/gomysql?charset=utf8mb4&parseTime=True&loc=Local
-      ADMIN_NAME: admin
-      ADMIN_PASS: password
-    ports:
-      - '1323:1323'
+      DSN: 'gomysql:password@tcp(db:3306)/gomysql?charset=utf8mb4&parseTime=True&loc=Local'
+      ADMIN_NAME: 'admin'
+      ADMIN_PASS: 'password'
+    ports: ['1323:1323']
     command: './start.sh'
     depends_on:
       db:
-        condition: service_started
+        condition: 'service_started'
+
   app:
     container_name: 'lottery-app'
     build:
-      context: .docker
-      dockerfile: app.Dockerfile
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./app:/app/next-project
+      context: '.docker'
+      dockerfile: 'app.Dockerfile'
+    ports: ['3000:3000']
+    volumes: ['./app:/app/next-project']
     environment:
       SSR_API_URI: 'http://go:1323'
       CSR_API_URI: 'http://localhost:1323'
       CSR_VIEW_URI: 'http://localhost:3000'
-    command: npm run dev
-    depends_on:
-      - api
-    tty: true
+    command: 'npm run dev'
+    depends_on: ['api']
 
   sb:
     container_name: 'lottery-sb'
     build:
-      context: .docker
-      dockerfile: app.Dockerfile
-    ports:
-      - '6006:6006'
-    volumes:
-      - ./app:/app/next-project
-    command: npm run storybook
+      context: '.docker'
+      dockerfile: 'app.Dockerfile'
+    ports: ['6006:6006']
+    volumes: ['./app:/app/next-project']
+    command: 'npm run storybook'

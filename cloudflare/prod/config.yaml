@@ -1,0 +1,10 @@
+tunnel: 8afc4bd7-c519-439e-b0be-f6879c37bf1a
+credentials-file: /home/nonroot/.cloudflared/8afc4bd7-c519-439e-b0be-f6879c37bf1a.json
+protocol: http2
+
+ingress:
+  - hostname: lottery.nutfes.net
+    service: http://app:3000
+  - hostname: lottery-api.nutfes.net
+    service: http://api:1323
+  - service: http_status:404
