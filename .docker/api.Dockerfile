@@ -1,8 +1,20 @@
-FROM python:3.10-buster
-WORKDIR /var/www/html
-# ENV POETRY_HOME=/opt/poetry
-RUN pip install poetry && \
-    poetry config --local virtualenvs.create true && \
-    poetry config --local cache-dir .cache/pypoetry && \
-    poetry config --local virtualenvs.in-project true
-ENV PATH=/var/www/html/.venv/bin:$PATH
+FROM golang:latest
+
+WORKDIR /go/src/app/api
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y locales \
+  && locale-gen ja_JP.UTF-8 \
+  && echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc
+
+RUN export LANG=C.UTF-8
+RUN export LANGUAGE=en_US:
+
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+#ENV GOARCH=amd64
+
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN go install github.com/cosmtrek/air@latest
+CMD ["air", "-c", ".air.toml"]

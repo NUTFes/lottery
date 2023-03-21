@@ -1,29 +1,29 @@
 version: '3'
 
 services:
-  view:
-    container_name: 'view'
+  app:
+    container_name: 'lottey-app'
     build:
       context: .docker
-      dockerfile: view.Dockerfile
+      dockerfile: app.Dockerfile
     ports:
       - '3000:3000'
     volumes:
-      - ./view:/app/next-project
+      - ./app:/app/next-project
     environment:
       CSR_VIEW_URI: 'http://lottery.nutfes.net'
     command: bash -c 'npm run build && npm run start'
     depends_on:
-      - go
+      - api
     tty: true
 
-  go:
-    container_name: 'ST-GO'
+  api:
+    container_name: 'lottey-api'
     build:
       context: .docker
-      dockerfile: go.Dockerfile
+      dockerfile: api.Dockerfile
     volumes:
-      - ./go_api:/usr/local/go/src/api
+      - ./api:/go/src/app/api
     env_file:
       - lottery.env
     ports:
