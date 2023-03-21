@@ -2,50 +2,47 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'
-import FormControl from '@mui/material';
 import { Typography } from '@mui/material';
 import { post } from 'src/util/api_methods';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 
-const url = process.env.CSR_API_URI + '/events'
+interface EventData {
+  name: string
+  description: string
+  max_attendee: number
+  start_at: string
+  end_at: string
+}
 
 const EventRegister = () => {
 
-  const [values, setValues] = useState(
+  const [values, setValues] = useState<EventData>(
     {
       name: "",
       description: "",
-      max_attendee: "",
+      max_attendee: 0,
       start_at: "",
       end_at: "",
     }
   );
 
-  const handleChange = (e) => {
-    const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    setValues({ ...values, [name]: value });
+  // useEffect(() => {
+  //   setValues(values);
+  // },[values])
+
+  const handleChange = (input: string) =>
+  (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [input]: e.target.value });
+    console.log(e.target.value)
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (data: EventData) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   name: data.get('name'),
-    //   description: data.get('description'),
-    //   max_attendee: data.get('max_attendee'),
-    //   start_at: data.get('start_at'),
-    //   end_at: data.get('end_at')
-    // });
+    const url = process.env.CSR_API_URI + '/events'
     console.log(values)
-    await post(url,{
-      'name':values.name,
-      'description':values.description,
-      'max_attendee':values.max_attendee,
-      'start_at':values.start_at,
-      'end_at':values.end_at,
-    })
+    console.log(data)
+    const DataPost = await post(url,data)
+    console.log(DataPost)
   };
 
   return (
@@ -53,7 +50,6 @@ const EventRegister = () => {
       component="form"
       noValidate
       autoComplete="off"
-      onSubmit={handleSubmit}
       sx={{maxWidth:800, maxHeight:640}}
     >
       <Typography
@@ -69,12 +65,11 @@ const EventRegister = () => {
         name='name'
         id='name'
         label='企画名'
-        type='name'
-        autoComplete='name'
+        type='text'
         variant='filled'
         margin='dense'
         value={values.name}
-        onChange={handleChange}
+        onChange={handleChange('name')}
         required
       />
       <br/>
@@ -82,12 +77,11 @@ const EventRegister = () => {
         name='description'
         id="description"
         label="説明"
-        type="description"
         autoComplete='current-description'
         variant='filled'
         margin='dense'
         value={values.description}
-        onChange={handleChange}
+        onChange={handleChange('description')}
         multiline
         minRows={5}
       />
@@ -96,42 +90,41 @@ const EventRegister = () => {
         name='max_attendee'
         id="max_attendee"
         label="参加上限人数"
-        type="max_attendee"
         autoComplete="current-max_attendee"
         variant='filled'
         margin='dense'
         value={values.max_attendee}
-        onChange={handleChange}
+        onChange={handleChange('max_attendee')}
       />
       <br/>
       <TextField
         name='start_at'
         id="start_at"
         label="開始時刻"
-        type="start_at"
         autoComplete="current-start_at"
         variant='filled'
         margin='dense'
         value={values.start_at}
-        onChange={handleChange}
+        onChange={handleChange('start_at')}
       />
       <br/>
       <TextField
         name='end_at'
         id="end_at"
         label="終了時刻"
-        type="end_at"
         autoComplete="current-end_at"
         variant='filled'
         margin='dense'
         value={values.end_at}
-        onChange={handleChange}
+        onChange={handleChange('end_at')}
       />
       <br />
       <Button
-      type="submit"
-      variant="outlined"
-      sx={{ mt: 3, mb: 2 }}
+        type="submit"
+        variant="outlined"
+        disabled={(values.name && values.description && values.start_at && values.end_at) ? false : true}
+        sx={{ mt: 3, mb: 2 }}
+        onClick={() => {handleSubmit(values)}}
       >
       企画作成
       </Button>
