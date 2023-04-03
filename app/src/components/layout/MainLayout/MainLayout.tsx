@@ -13,6 +13,7 @@ const MainLayout = (props:Props) => {
   return (
     <div>
       <Header />
+      <EventRegister />
         <div>{props.children}</div>
       <EventRegister />
       <Footer />
