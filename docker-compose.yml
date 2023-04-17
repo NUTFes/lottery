@@ -15,52 +15,60 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root
       TZ: 'Asia/Tokyo'
+    ports: ['3306:3306']
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: 'lottery-keycloak'
     ports:
-      - '3306:3306'
-    restart: always
+      - 8080:8080
+      - 9990:9990
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: MYSQL
+      DB_DATABASE: keycloak
+      DB_USER: root
+      DB_PASSWORD: password
+    volumes: ['./keycloak:/opt/keycloak']
+    depends_on: ['db']
 
   api:
     container_name: 'lottery-api'
     build:
       context: .docker
       dockerfile: api.Dockerfile
-    volumes:
-      - ./api:/go/src/app/api
+    volumes: [./api:/go/src/app/api]
     environment:
       DSN: gomysql:password@tcp(db:3306)/gomysql?charset=utf8mb4&parseTime=True&loc=Local
       ADMIN_NAME: admin
       ADMIN_PASS: password
-    ports:
-      - '1323:1323'
+    ports: ['1323:1323']
     command: './start.sh'
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
+
   app:
     container_name: 'lottery-app'
     build:
       context: .docker
       dockerfile: app.Dockerfile
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./app:/app/next-project
+    ports: ['3000:3000']
+    volumes: [./app:/app/next-project]
     environment:
       SSR_API_URI: 'http://go:1323'
       CSR_API_URI: 'http://localhost:1323'
       CSR_VIEW_URI: 'http://localhost:3000'
     command: npm run dev
-    depends_on:
-      - api
-    tty: true
+    depends_on: [api]
 
   sb:
     container_name: 'lottery-sb'
     build:
       context: .docker
       dockerfile: app.Dockerfile
-    ports:
-      - '6006:6006'
-    volumes:
-      - ./app:/app/next-project
+    ports: ['6006:6006']
+    volumes: [./app:/app/next-project]
     command: npm run storybook
