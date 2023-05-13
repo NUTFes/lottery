@@ -114,6 +114,9 @@ func main() {
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/checkswagger/", checkswagger)
+
+	// e.POST("/gocloak", cloak.CreateKeycloskUser)
+	// e.GET("/gocloak/token", cloak.GetKeycloakToken)
 	e.Logger.Fatal(e.Start(":1323"))
 }
 

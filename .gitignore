@@ -18,3 +18,6 @@ app/.env.local
 
 # keyclaok
 keycloak/data
+
+# ku
+ku/.env
